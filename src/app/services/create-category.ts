@@ -20,7 +20,6 @@ export class CreateCategory {
     this.dialog.open(CategoryFormDialog, {
           maxWidth: "none",
           width: '80vw',
-          minHeight: '80vh',
           data: {
           },
           disableClose: true,
