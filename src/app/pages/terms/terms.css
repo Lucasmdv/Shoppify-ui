@@ -14,13 +14,12 @@
 .terms-container h1 {
   font-size: 2rem;
   text-align: center;
-  color: #8013be; 
+  color: rgb(77, 0, 128);
   margin-bottom: 30px;
   font-weight: 700;
 }
 
 .terms-container h2 {
-  color: #8a14ce;
   font-size: 1.25rem;
   margin-top: 25px;
   margin-bottom: 10px;

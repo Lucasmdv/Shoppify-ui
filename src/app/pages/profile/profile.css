@@ -29,6 +29,7 @@
   font-size: clamp(2rem, 3vw, 2.6rem);
   font-weight: 700;
   letter-spacing: -0.01em;
+  color: #49007a;
 }
 
 .profile-subtitle {
@@ -80,6 +81,7 @@
   margin: 0;
   font-size: clamp(1.4rem, 2.2vw, 1.75rem);
   font-weight: 700;
+  color: #49007a;
 }
 
 .profile-meta {

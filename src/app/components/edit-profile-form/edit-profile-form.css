@@ -4,7 +4,6 @@
   margin: 0;
   padding: 0;
   border-radius: 20px;
-  box-shadow: 0 0 20px #4f46e5;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 /* Esta es la superficie blanca */
@@ -33,7 +32,7 @@ form{
 }
 
 .contenedor h2 {
-  color: #6a0dad;
+  color: #2d0747;
   text-align: center;
   margin-top: 1rem;
   font-weight: 650;

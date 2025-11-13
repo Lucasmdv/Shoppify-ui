@@ -14,13 +14,12 @@
 .privacy-container h1 {
   font-size: 2rem;
   text-align: center;
-  color: #a838ca;
+  color: rgb(77, 0, 128);
   margin-bottom: 30px;
   font-weight: 700;
 }
 
 .privacy-container h2 {
-  color: #b346e5;
   font-size: 1.25rem;
   margin-top: 25px;
   margin-bottom: 10px;
