@@ -13,7 +13,7 @@ export class CartService {
   itemsInCart = computed(() => this.cartItems().length)
 
   total = computed(() =>
-    this.cartItems().reduce((sum, item) => sum + item.price * item.stock, 0)
+    this.cartItems().reduce((sum, item) => sum + item.priceWithDiscount! * item.stock, 0)
   )
 
   constructor(private productService: ProductService) { }
