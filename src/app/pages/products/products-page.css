@@ -304,6 +304,25 @@
   background: linear-gradient(160deg, rgba(236, 253, 245, 0.95) 0%, rgba(209, 250, 229, 0.9) 100%);
 }
 
+/* Estado de producto oculto (visible sólo para admins) */
+.product-card--hidden {
+  opacity: 0.5;
+  filter: grayscale(60%);
+  position: relative;
+}
+
+.product-hidden-badge {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  background: rgba(220, 38, 38, 0.9);
+  color: #fff;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
 .product-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 22px 48px rgba(15, 23, 42, 0.12);

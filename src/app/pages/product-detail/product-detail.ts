@@ -6,6 +6,7 @@ import { Product } from '../../models/product';
 import { CartService } from '../../services/cart-service';
 import { ProductCard } from '../../components/product-card/product-card';
 import Swal from 'sweetalert2';
+import { StorageService } from '../../services/storage-service';
 
 @Component({
   selector: 'app-product-detail',
@@ -18,12 +19,14 @@ export class ProductDetail implements OnInit {
   product!: Product;
   id?: number;
   relatedProducts: Product[] = [];
+  isHidden: boolean = false;
 
   constructor(
     private pService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
-    private cartService: CartService
+    private cartService: CartService,
+    private localStorage: StorageService
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +46,9 @@ export class ProductDetail implements OnInit {
       },
       error: () => this.router.navigate(['/'])
     });
+
+    this.localStorage.getHiddenProductIds();
+    this.isHidden = this.localStorage.getHiddenProductIds().includes(this.id || -1);
   }
 
   renderProduct(id: number){
