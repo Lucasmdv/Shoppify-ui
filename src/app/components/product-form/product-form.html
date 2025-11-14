@@ -143,6 +143,7 @@
 
     <!-- Categories -->
     <fieldset class="categories-fieldset">
+        <label for="description-input">Categorias</label>
         <mat-form-field appearance="fill">
             <mat-label>Categorias</mat-label>
             <mat-select multiple formControlName="categories" panelClass="custom-select-panel">
@@ -152,9 +153,7 @@
                         {{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}} 
                     </mat-option>
                 }
-
                 }
-              
             </mat-select>
         </mat-form-field>
 

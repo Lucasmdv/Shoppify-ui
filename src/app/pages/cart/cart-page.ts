@@ -40,7 +40,7 @@ export class CartPage implements OnInit {
   }
 
   total = computed(() =>
-    this.cartItems().reduce((sum, item) => sum + item.price * item.stock, 0)
+    this.cartItems().reduce((sum, item) => sum + item.priceWithDiscount! * item.stock, 0)
   )
 
   selectedTotal = computed(() => {

@@ -90,7 +90,7 @@
                 <div class="item-text">
                   <p><strong>{{ item.product?.name }}</strong></p>
                   <p>Cantidad: {{ item.quantity }}</p>
-                  <p>Precio unitario: ${{ item.product?.price | number:'1.2-2' }}</p>
+                  <p>Precio: ${{ item.product?.priceWithDiscount | number:'1.2-2' }}</p>
                   <p>Subtotal: <strong>${{ item.subtotal | number:'1.2-2' }}</strong></p>
                 </div>
               </div>

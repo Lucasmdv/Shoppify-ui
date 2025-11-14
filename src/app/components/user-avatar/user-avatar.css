@@ -88,7 +88,7 @@
   z-index: 1080;
 }
 
-.ua-menu a {
+.ua-menu a, .ua-menu button[cDropdownItem] {
   display: block;
   padding: 0.75rem 1rem;
   text-decoration: none;
@@ -97,7 +97,7 @@
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.ua-menu a:hover {
+.ua-menu a:hover, .ua-menu button[cDropdownItem]:hover {
   background: rgba(99, 102, 241, 0.12);
   color: #4338ca;
 }
