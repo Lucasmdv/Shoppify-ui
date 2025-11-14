@@ -19,7 +19,7 @@ export class CreateCategory {
   openDialog(renderCategoriesWithFilters: (filters: any) => void, currentFilters: any) {
     this.dialog.open(CategoryFormDialog, {
           maxWidth: "none",
-          width: '80vw',
+          width: '75vw',
           data: {
           },
           disableClose: true,
