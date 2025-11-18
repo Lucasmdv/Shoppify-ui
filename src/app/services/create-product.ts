@@ -25,11 +25,6 @@ export class CreateProduct {
       },
       disableClose: true,
       panelClass: 'product-dialog-panel'
-    }).afterClosed().subscribe(result => {
-      if (result) {
-        this.swal.success("El producto se agrego correctamente!")
-        renderRefinedProducts(currentFilters)
-      }
     })
   }
 }
