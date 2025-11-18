@@ -35,7 +35,7 @@ export class ProductForm implements OnInit {
 
   @Input() product?: Product
   categories?: Category[]
-  
+
   previewProduct!: Product
 
   constructor(
@@ -45,7 +45,7 @@ export class ProductForm implements OnInit {
     private categoryService: CategoryService,
     private createCategoryService: CreateCategory,
     @Optional() private dialogRef?: MatDialogRef<any>
-  ) {}
+  ) { }
 
   get controls() {
     return this.form.controls
@@ -166,7 +166,7 @@ export class ProductForm implements OnInit {
       error: (err) => {
         const defaultMessage = editMode ? "Error al editar el producto" : "Error al agregar el producto";
         const errorMessage = err.error?.message || defaultMessage;
-        
+
         this.swal.error(errorMessage)
       }
     });
@@ -201,7 +201,14 @@ export class ProductForm implements OnInit {
     })
   }
 
-  openCategoryDialog(){
-    this.createCategoryService.openDialog(() => {},{})
+  openCategoryDialog() {
+    this.createCategoryService.openDialog(() => { }, {}).afterClosed().subscribe({
+      next: (result) => {
+        if (result) {
+          this.swal.success("La categoría se agregó correctamente!")
+          this.getCategories()
+        }
+      }
+    })
   }
 }

@@ -7,6 +7,7 @@ import { CartService } from '../../services/cart-service';
 import { ProductCard } from '../../components/product-card/product-card';
 import Swal from 'sweetalert2';
 import { StorageService } from '../../services/storage-service';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-product-detail',
@@ -26,7 +27,8 @@ export class ProductDetail implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private cartService: CartService,
-    private localStorage: StorageService
+    private localStorage: StorageService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -76,14 +78,23 @@ export class ProductDetail implements OnInit {
 
   onAddToCart(): void {
     if (!this.product) return;
+    if (!this.authService.isLogged){
+      return
+    }else{
+      
     this.cartService.addToCart(this.product)
     this.showCartSuccessToast(this.product.name)
+    }
   }
 
   onBuyNow(): void {
     if (!this.product) return;
+    if (!this.authService.isLogged){
+       return
+    }else {
     this.cartService.addToCart(this.product);
     this.router.navigate(['/cart']);
+    }
   }
 
   showCartSuccessToast = (productName: string) => {

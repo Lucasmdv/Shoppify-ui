@@ -9,7 +9,7 @@
             </app-product-card>
     </article>
 
-    <form [formGroup]="form" (ngSubmit)="submitForm()" id="product-form" >
+    <form [formGroup]="form" id="product-form" >
     <!-- Name -->
     <fieldset>
         <label for="name-input">Nombre*</label>
@@ -166,6 +166,6 @@
         }
     </fieldset>
 
-    <input type="submit" id="submit-button" value="Enviar" [disabled]="form.invalid">
+    <input type="button" id="submit-button" value="Enviar" [disabled]="form.invalid" (click)="submitForm()">
 </form>
 </section>
