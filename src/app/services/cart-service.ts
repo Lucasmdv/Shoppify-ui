@@ -1,136 +1,54 @@
-import { Injectable, signal, computed } from '@angular/core';
-import { Product } from '../models/product';
-import { ProductService } from './product-service';
-import Swal from 'sweetalert2';
-import { SaleRequest } from '../models/sale';
+import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Cart } from '../models/cart/cart';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  cartItems = signal<Product[]>([])
-  itemsInCart = computed(() => this.cartItems().length)
-
-  total = computed(() =>
-    this.cartItems().reduce((sum, item) => sum + item.price * item.stock, 0)
-  )
-
-  constructor(private productService: ProductService) { }
-
-
-  addToCart(product: Product) {
-    this.productService.get(product.id).subscribe({
-      next: updatedProduct => {
-        if (updatedProduct.stock > 0) {
-          const items = [...this.cartItems()];
-          const existing = items.find(i => i.id === product.id)
-
-          if (existing) {
-            if (updatedProduct.stock > existing.stock) {
-              existing.stock++
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "El producto no tiene stock disponible"
-              });
-            }
-          } else {
-            items.push({ ...product, stock: 1 })
-          }
-
-          this.cartItems.set(items)
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "El producto no tiene stock disponible"
-          });
-        }
-      },
-      error: err => console.error('Error verificando stock:', err)
-    })
+  readonly API_URL = `${environment.apiUrl}/user/`
+  
+  constructor(private http: HttpClient) {
   }
 
-  updateQuantity(item: Product, newQty: number): Promise<Product[]> {
-    return new Promise((resolve, reject) => {
-      const quantity = Number(newQty) //esto pasa el imput que viene como string a numero
-
-      if (quantity < 1) {
-        reject(new Error("La cantidad mínima es 1"))
-        return
-      }
-
-      this.productService.get(item.id).subscribe({
-        next: (updatedProduct) => {
-          if (quantity > updatedProduct.stock) {
-            reject(new Error("Solo hay " + updatedProduct.stock + " unidades disponibles"))
-          } else {
-            const updatedCart = this.cartItems().map((i) =>
-              i.id === item.id ? { ...i, stock: quantity } : i
-            )
-            this.cartItems.set(updatedCart)
-            resolve(updatedCart)
-          }
-        },
-        error: (err) => {
-          console.error("Error verificando stock:", err)
-          reject(new Error("No se pudo verificar el stock del producto"))
-        },
-      })
-    })
+  getCart(userId: number) {
+  return this.http.get<Cart>(this.API_URL+userId+"/cart");
   }
 
-
-  removeFromCart(productId: number) {
-    const product = this.cartItems().find(p => p.id === productId)
-    if (product) {
-      this.productService.get(productId).subscribe(p => {
-        p.stock = p.stock + product.stock
-        this.productService.put(p).subscribe()
-      }
-      )
-    }
-    this.cartItems.set(this.cartItems().filter(i => i.id !== productId))
+  clearCart(userId: number){
+  return this.http.delete<void>(this.API_URL+userId+"/cart/items");
   }
 
-  clearCart() {
-    this.cartItems().forEach(product =>
-      this.productService.get(product.id).subscribe(p => {
-        p.stock = p.stock + product.stock
-        this.productService.put(p).subscribe()
-      }
-      )
-    );
-    this.cartItems.set([])
+ addItem(userId: number, productId: number, quantity: number) {
+ 
+    const body = { 
+        productId: productId, 
+        quantity: quantity 
+    };
+    
+    return this.http.post<Cart>(`${this.API_URL}/${userId}/cart/items`, body);
   }
 
-  prepareSaleRequest(formValue: any, userId?: number | null, selectedProducts?: Product[]): SaleRequest | null {
-    if (!userId) {
-      console.error('❌ No hay usuario logueado. No se puede preparar la venta.');
-      return null;
-    }
-    const products = selectedProducts ?? this.cartItems()
-
-    if (!products.length) {
-      console.warn('⚠️ No hay productos en el carrito.');
-      return null;
-    }
-
-    const detailTransactions = products.map(item => ({
-      productID: item.id,
-      quantity: item.stock,
-      subtotal: item.price * item.stock
-    }))
-
-    return {
-      clientId: userId,
-      transaction: {
-        paymentMethod: formValue.paymentMethod || "CASH",
-        description: formValue.description || "Sin descripción",
-        detailTransactions
-      }
-    }
+  removeItem(userId: number, itemId:number) {
+  return this.http.delete<void>(this.API_URL+userId+"/cart/items/"+itemId);
   }
+
+  updateItemQuantity(userId: number, itemId:number,quantity:number){
+     return this.http.put<Cart>(this.API_URL+userId+"/cart/items/"+itemId,quantity)
+  }
+
+  
+  addItems(){
+  //TODO 
+  }
+  removeItems(){
+  //TODO
+  }
+
+  prepareSaleRequest(formValue: any, userId: number, items: any[]): any { 
+    //TODO
+  }
+
 }
