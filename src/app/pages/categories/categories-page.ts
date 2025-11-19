@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Category } from '../../models/category';
 import { CategoryService } from '../../services/category-service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CategoryCard } from '../../components/category-card/category-card';
+import { CategoryForm } from '../../components/category-form/category-form';
 import { CategoryRefiner } from '../../components/category-refiner/category-refiner';
 import { CategoryParams } from '../../models/filters/category-params';
 import { SwalService } from '../../services/swal-service';
@@ -10,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CategoryFormDialog } from '../../components/category-form-dialog/category-form-dialog';
 import { AuthService } from '../../services/auth-service';
 import { CommonModule } from '@angular/common'; 
+import { CreateCategory } from '../../services/create-category';
 
 @Component({
   selector: 'app-categories-page',
@@ -20,7 +22,7 @@ import { CommonModule } from '@angular/common';
 export class CategoriesPage implements OnInit {
   categories: Category[] = [] 
 
-  currentFilters: CategoryParams = { page: 0, size: 6 } 
+  currentFilters: CategoryParams = { page: 0, size: 8 } 
   editMode = false;
 
   constructor(
@@ -29,7 +31,8 @@ export class CategoriesPage implements OnInit {
     private swal: SwalService,
     private route: ActivatedRoute,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private createCategoryService: CreateCategory
   ) { }
 
   ngOnInit(): void {
@@ -90,6 +93,7 @@ export class CategoriesPage implements OnInit {
       panelClass: 'category-dialog-panel'
     }).afterClosed().subscribe(result => {
       if (result) {
+        this.swal.success("La categoría se editó correctamente!")
         this.renderCategoriesWithFilters(this.currentFilters) 
       }
     })
@@ -105,18 +109,7 @@ export class CategoriesPage implements OnInit {
 
 
   createCategory() { 
-    this.dialog.open(CategoryFormDialog, {
-      maxWidth: "none",
-      width: '80vw',
-      data: {
-      },
-      disableClose: true,
-      panelClass: 'category-dialog-panel'
-    }).afterClosed().subscribe(result => {
-      if (result) {
-        this.renderCategoriesWithFilters(this.currentFilters) 
-      }
-    })
+    this.createCategoryService.openDialog(this.renderCategoriesWithFilters.bind(this), this.currentFilters);
   }
 
   private parseFilters(params: Params): CategoryParams {

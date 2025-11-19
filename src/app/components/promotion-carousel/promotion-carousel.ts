@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CarouselComponent, CarouselControlComponent, CarouselIndicatorsComponent, CarouselInnerComponent, CarouselItemComponent } from '@coreui/angular';
 
 import { Router } from '@angular/router';
 import { Carouselitem } from '../../models/carouselitem';
-import { ImageFallbackDirective } from '../../directives/image-fallback';
+import { ImageFallbackDirective } from '../../core/directives/image-fallback';
 
 @Component({
   selector: 'app-promotion-carousel',

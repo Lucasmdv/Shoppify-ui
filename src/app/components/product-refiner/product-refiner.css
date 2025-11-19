@@ -2,25 +2,6 @@
   display: block;
 }
 
-:host ::ng-deep c-card.refiner-card,
-:host ::ng-deep c-card.refiner-card .card,
-:host ::ng-deep c-card.refiner-card .card-body,
-:host ::ng-deep c-card.refiner-card .collapse-horizontal,
-:host ::ng-deep c-card.refiner-card .collapse {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.refiner-card-body {
-  width: 320px;
-  background: transparent;
-  border: none;
-  padding: 0;
-}
-
 .refiner-panel {
   display: flex;
   flex-direction: column;
@@ -274,10 +255,6 @@ app-products-refiner .mat-mdc-select-value-text {
   .price-range,
   .sort-grid {
     grid-template-columns: 1fr;
-  }
-
-  .refiner-card-body {
-    width: 100%;
   }
 }
 

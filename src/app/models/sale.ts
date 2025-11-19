@@ -5,12 +5,11 @@ export interface SaleRequest {
 
 export interface TransactionRequest {
   paymentMethod: string;
-  description: string;
   detailTransactions: DetailTransactionRequest[];
+  description: string;
 }
 
 export interface DetailTransactionRequest {
   productID: number;
   quantity: number;
-  subtotal: number;
 }

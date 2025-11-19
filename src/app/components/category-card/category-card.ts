@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Category } from '../../models/category';
 import { Router } from '@angular/router';
-import { ImageFallbackDirective } from '../../directives/image-fallback';
+import { ImageFallbackDirective } from '../../core/directives/image-fallback';
 
 @Component({
   selector: 'app-category-card',
@@ -15,7 +15,15 @@ constructor(private router:Router){}
 
 @Input() category!:Category
 
-getDetails(id: number){
-  this.router.navigate(["categories/" + id]);
-}
+getDetails(name:string){
+ 
+    this.router.navigate(['/products'], {
+      queryParams: {
+        page: 0,
+        size: 8,
+        categories:name
+      },
+    })
+  }
+
 }

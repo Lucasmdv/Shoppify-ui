@@ -1,30 +1,43 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { StoreService } from '../../services/store-service';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-help',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './help.html',
   styleUrl: './help.css'
 })
-export class Help {
+export class Help implements OnInit{
 
   private fb = inject(FormBuilder)
+  private storeService = inject(StoreService)
+  store: any = {} 
   showFaq = false
   showContact = false
   activeQuestion = signal<number | null>(null)
+  contactForm!: FormGroup
+  wpp = 'https://wa.me/'
 
-  wpp = 'https://wa.me/' // cvariable para el numero de dueño
+  ngOnInit(): void {
+    this.renderPage()
+  }
 
-  contactForm: FormGroup
-
-  constructor() {
+  renderPage(){
+    this.storeService.getStore().subscribe({
+      next: (data) => {
+        this.store = data
+      },
+      error: (err) => console.error('Error al cargar la tienda:', err)
+    })
     this.contactForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       subject: ['', Validators.required],
       message: ['', [Validators.required, Validators.minLength(10)]]
     })
+    this.wpp += this.store.phone ? this.store.phone.replace(/\D/g, '') : ''
   }
 
   toggleFaq() {

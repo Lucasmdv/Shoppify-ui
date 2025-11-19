@@ -2,7 +2,7 @@ import { DecimalPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Product } from '../../models/product';
 import { Router } from '@angular/router';
-import { ImageFallbackDirective } from '../../directives/image-fallback';
+import { ImageFallbackDirective } from '../../core/directives/image-fallback';
 
 @Component({
   selector: 'app-product-card',

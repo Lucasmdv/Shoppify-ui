@@ -1,7 +1,7 @@
 <div class="purchases-container">
   <h2>🛍️ Mis Compras</h2>
 
-  @if (purchases().length > 0) {
+
   <div class="filters">
     <label>Desde: <input type="date" [(ngModel)]="filters.startDate"></label>
     <label>Hasta: <input type="date" [(ngModel)]="filters.endDate"></label>
@@ -9,38 +9,48 @@
       <select [(ngModel)]="filters.paymentMethod">
         <option value="">Todos</option>
         <option value="CASH">Efectivo</option>
-        <option value="CARD">Tarjeta</option>
-        <option value="TRANSFER">Transferencia</option>
+        <option value="CREDIT">Tarjeta</option>
+        <option value="DEBIT">Debito</option>
+        <option value="DIGITAL">Transferencia</option>
       </select>
     </label>
-    <label>Total mínimo: <input type="number" [(ngModel)]="filters.minTotal"></label>
-    <label>Total máximo: <input type="number" [(ngModel)]="filters.maxTotal"></label>
+    <label>Mínimo: <input type="number" [(ngModel)]="filters.minPrice"></label>
+    <label>Máximo: <input type="number" [(ngModel)]="filters.maxPrice"></label>
 
+    <button class="clear-filters" type="button" (click)="clearFilters()">Limpiar filtros</button>
     <button (click)="applyFilters()">Filtrar</button>
+
+    @if (isAdmin) {
+    <button type="button" (click)="toggleAdminView()" class="admin-toggle" id="admin-toggle"
+      [ngClass]="{ 'active': adminView }">
+      Ver todas las compras
+    </button>
+    }
+
+    <label>Mostrar:
+      <select [(ngModel)]="purchasesXPage" (change)="loadTransactions()">
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+        <option [value]="25">25</option>
+        <option [value]="50">50</option>
+      </select>
+      por página
+    </label>
   </div>
 
-  @if (isAdmin) {
-  <div class="admin-actions admin-actions--toolbar">
-    <button type="button" class="view-toggle view-toggle--compact" [class.is-active]="adminView" (click)="viewToggle()">
-      <span class="view-toggle__icon" aria-hidden="true"></span>
-      <span class="view-toggle__label">
-        {{ adminView ? 'Vista admin' : 'Vista cliente' }}
-      </span>
-    </button>
+  @if (purchases().length > 0) {
+  <div class="pagination">
+    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 0">Anterior</button>
+    <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+    <button (click)="changePage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1">Siguiente</button>
   </div>
-  }
 
   <div class="purchases-list">
-    @if (adminView) {
-            
-      
-          }@else {
     @for (purchase of purchases(); let i = $index; track purchase.id) {
     <div class="purchase-card">
       <div class="purchase-header">
         <div class="purchase-summary">
-          <p><strong>Compra #{{ purchase.id }}</strong></p>
-          <p>Fecha: {{ purchase.dateTime| date:'short' }}</p>
+          <p>Fecha: {{ purchase.dateTime | date:'short' }}</p>
           <p>Total: <strong>${{ purchase.total | number:'1.2-2' }}</strong></p>
         </div>
         <button class="toggle-details" (click)="toggleDetails(i)">
@@ -50,16 +60,37 @@
 
       <div class="purchase-details-wrapper" [class.show]="activePurchase() === i">
         <div class="purchase-details">
+          @if (isAdmin && purchase.clientId) {
+            <div class="buy-info-header">
+              <div class="buyer-info-row">
+                <p class="buyer-info"><strong>Comprador:</strong> ID: {{ purchase.clientId }}</p>
+                <button class="view-client-btn" type="button" (click)="toggleClientInfo(purchase.clientId)">
+                  {{ clientsExpanded().has(purchase.clientId) ? 'Ocultar comprador' : 'Ver comprador' }}
+                </button>
+              </div>
+
+              @if (clientsExpanded().has(purchase.clientId)) {
+                <div class="client-details">
+                  <p><strong>Nombre:</strong> {{ clientsCache().get(purchase.clientId)?.firstName }} {{ clientsCache().get(purchase.clientId)?.lastName }}</p>
+                  <p><strong>Email:</strong> {{ clientsCache().get(purchase.clientId)?.email }}</p>
+                  <p><strong>Teléfono:</strong> {{ clientsCache().get(purchase.clientId)?.phone }}</p>
+                  <p><strong>DNI:</strong> {{ clientsCache().get(purchase.clientId)?.dni }}</p>
+                </div>
+              }
+            </div>
+          }
+
           <h4>Productos</h4>
           <ul>
             @for (item of purchase.detailTransactions; track item.id) {
             <li>
               <div class="item-info">
-                <img [src]="item.product?.imgURL" alt={{ item.product?.name }} />
+                <img (click)="gotoDetailsProduct(item.product?.id)" [src]="item.product?.imgURL"
+                  alt="{{ item.product?.name }}" />
                 <div class="item-text">
                   <p><strong>{{ item.product?.name }}</strong></p>
                   <p>Cantidad: {{ item.quantity }}</p>
-                  <p>Precio unitario: ${{ item.product?.price| number:'1.2-2' }}</p>
+                  <p>Precio: ${{ item.product?.priceWithDiscount | number:'1.2-2' }}</p>
                   <p>Subtotal: <strong>${{ item.subtotal | number:'1.2-2' }}</strong></p>
                 </div>
               </div>
@@ -74,11 +105,16 @@
         </div>
       </div>
     </div>
-    }}
+    }
   </div>
-  } @else {
-  <div class="empty-purchases">
-    <p>No tenés compras registradas todavía 😕</p>
-  </div>
+
+  } @else if(filters.startDate || filters.endDate || filters.paymentMethod || filters.minPrice || filters.maxPrice) {
+    <div class="no-results">
+      <p>No se encontraron compras que coincidan con los filtros aplicados 😕</p>
+    </div>
+  } @else{
+    <div class="empty-purchases">
+      <p>No tenés compras registradas todavía 😕</p>
+    </div>
   }
 </div>

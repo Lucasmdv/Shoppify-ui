@@ -120,30 +120,15 @@
       <div class="sort-grid">
         <label class="field" for="name-order">
           <span class="field-label">Alfabético</span>
-          <select id="name-order" class="field-select" formControlName="nameSort">
+          <select id="name-order" class="field-select" formControlName="namePriceSort">
             <option value="">Sin orden</option>
-            <option value="asc">A → Z</option>
-            <option value="desc">Z → A</option>
+            <option value="nameAsc">A → Z</option>
+            <option value="nameDesc">Z → A</option>
+            <option value="priceAsc">Menor a mayor</option>
+            <option value="priceDesc">Mayor a menor</option>
           </select>
         </label>
-
-        <label class="field" for="price-order">
-          <span class="field-label">Precio</span>
-          <select id="price-order" class="field-select" formControlName="priceSort">
-            <option value="">Sin orden</option>
-            <option value="asc">Menor a mayor</option>
-            <option value="desc">Mayor a menor</option>
-          </select>
-        </label>
-
-        <label class="field" for="discount-order">
-          <span class="field-label">Descuento</span>
-          <select id="price-order" class="field-select" formControlName="discountSort">
-            <option value="">Sin orden</option>
-            <option value="asc">Menor a mayor</option>
-            <option value="desc">Mayor a menor</option>
-          </select>
-        </label>
+      
       </div>
     </section>
   </div>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ImageFallbackDirective } from '../../directives/image-fallback';
+import { ImageFallbackDirective } from '../../core/directives/image-fallback';
 
 @Component({
   selector: 'app-header-auth',

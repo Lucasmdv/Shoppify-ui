@@ -2,7 +2,11 @@
   display: block;
 }
 
-.category-page {
+.cardDetails{
+  min-height: 24em;
+}
+
+.products-page {
   margin: clamp(2.5rem, 6vw, 3.75rem) 1vw;
   padding: 0 clamp(1rem, 3vw, 2rem);
   display: flex;
@@ -10,6 +14,54 @@
   gap: clamp(2rem, 4vw, 3.5rem);
   font-family: 'Poppins', sans-serif;
   color: #0f172a;
+}
+
+.products-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: clamp(2rem, 4vw, 3rem);
+  padding: clamp(2rem, 4vw, 3rem);
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(224, 231, 255, 0.92) 100%);
+  border-radius: 2rem;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.1);
+}
+
+.products-hero__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  max-width: 680px;
+}
+
+.products-hero__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  background: rgba(79, 70, 229, 0.12);
+  color: #4338ca;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.products-hero h1 {
+  margin: 0;
+  font-size: clamp(2.1rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.products-hero p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #475569;
 }
 
 .admin-actions {
@@ -23,7 +75,8 @@
   justify-content: flex-end;
 }
 
-.edit-toggle {
+.edit-toggle,
+.view-toggle {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
@@ -39,20 +92,24 @@
 }
 
 .edit-toggle:hover,
-.edit-toggle:focus-visible {
+.edit-toggle:focus-visible,
+.view-toggle:hover,
+.view-toggle:focus-visible {
   transform: translateY(-2px);
   box-shadow: 0 16px 32px rgba(79, 70, 229, 0.2);
   outline: none;
 }
 
-.edit-toggle.is-active {
+.edit-toggle.is-active,
+.view-toggle.is-active {
   background: linear-gradient(135deg, #4338ca 0%, #7c3aed 100%);
   border-color: transparent;
   color: #ffffff;
   box-shadow: 0 20px 38px rgba(79, 70, 229, 0.35);
 }
 
-.edit-toggle__icon {
+.edit-toggle__icon,
+.view-toggle__icon {
   width: 16px;
   height: 16px;
   border-radius: 4px;
@@ -60,7 +117,8 @@
   position: relative;
 }
 
-.edit-toggle__icon::after {
+.edit-toggle__icon::after,
+.view-toggle__icon::after {
   content: '';
   position: absolute;
   width: 6px;
@@ -74,17 +132,23 @@
   translate: -50% -60%;
 }
 
-.edit-toggle.is-active .edit-toggle__icon::after {
+.edit-toggle.is-active .edit-toggle__icon::after,
+.view-toggle.is-active .view-toggle__icon::after {
   width: 8px;
   height: 8px;
   translate: -50% -55%;
 }
 
-.edit-toggle--compact {
+.view-toggle__icon {
+  border-radius: 999px;
+}
+
+.edit-toggle--compact,
+.view-toggle--compact {
   padding-inline: 1.2rem;
 }
 
-.category-content {
+.products-content {
   display: grid;
   grid-template-columns: 320px 1fr;
   gap: clamp(1.5rem, 3vw, 2.5rem);
@@ -92,21 +156,19 @@
   width: 100%;
 }
 
-.category-sidebar {
+.products-sidebar {
   position: sticky;
   top: clamp(1rem, 3vh, 2rem);
   align-self: start;
 }
 
-.category-main {
+.products-main {
   display: flex;
   flex-direction: column;
   gap: clamp(1.5rem, 3vw, 2.4rem);
-  align-items: stretch; 
-  width: 100%;
 }
 
-.category-grid {
+.products-grid {
   display: flex;
   flex-wrap: wrap;
   gap: clamp(1.5rem, 3vw, 2rem);
@@ -116,7 +178,7 @@
   padding-bottom: 5rem;
 }
 
-.category-toolbar {
+.products-toolbar {
   grid-column: 1 / -1;
   width: 100%;
   display: flex;
@@ -147,7 +209,7 @@
   font-weight: 500;
 }
 
-.category-card {
+.product-card {
   display: flex;
   flex-direction: column;
   flex: 0 1 300px;
@@ -161,11 +223,12 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.category-card--create {
+.product-card--create {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
+  width: 90%;
   border-style: dashed;
   border-width: 2px;
   border-color: rgba(79, 70, 229, 0.35);
@@ -174,15 +237,15 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
-.category-card--create:hover,
-.category-card--create:focus-within {
+.product-card--create:hover,
+.product-card--create:focus-within {
   transform: translateY(-4px);
   border-color: rgba(79, 70, 229, 0.5);
   background: rgba(79, 70, 229, 0.14);
   box-shadow: 0 22px 52px rgba(79, 70, 229, 0.24);
 }
 
-.create-category-button {
+.create-product-button {
   all: unset;
   display: flex;
   flex-direction: row;
@@ -198,59 +261,78 @@
   font-weight: 600;
 }
 
-.create-category-button:focus-visible {
+.create-product-button:focus-visible {
   outline: 3px solid rgba(129, 140, 248, 0.65);
   outline-offset: -8px;
 }
 
-.create-category-button__icon {
+.create-product-button__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: clamp(3rem, 5vw, 3.5rem);
-  height: clamp(3rem, 5vw, 3.5rem);
+  width: clamp(2rem, 5vw, 3.5rem);
+  height: clamp(2rem, 5vw, 3.5rem);
   border-radius: 50%;
   background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
   color: #ffffff;
-  font-size: clamp(1.8rem, 3.5vw, 2.3rem);
+  font-size: clamp(1rem, 3.5vw, 2.3rem);
   font-weight: 600;
   box-shadow: 0 18px 36px rgba(79, 70, 229, 0.25);
 }
 
-.create-category-button__content {
+.create-product-button__content {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   max-width: 50ch;
 }
 
-.create-category-button__title {
-  font-size: 1.05rem;
+.create-product-button__title {
+  font-size: clamp(10px, 1vw, 20px);
 }
 
-.create-category-button__helper {
-  font-size: 0.95rem;
+.create-product-button__helper {
+  font-size: clamp(10px, 1vw, 20px);
   font-weight: 500;
   color: #4f46e5;
 }
 
-.category-card--editing {
+.product-card--editing {
   border-color: rgba(79, 70, 229, 0.3);
   box-shadow: 0 18px 48px rgba(79, 70, 229, 0.2);
 }
 
-.category-card--admin {
+.product-card--admin {
   border-color: rgba(15, 118, 110, 0.28);
   box-shadow: 0 18px 42px rgba(13, 148, 136, 0.22);
   background: linear-gradient(160deg, rgba(236, 253, 245, 0.95) 0%, rgba(209, 250, 229, 0.9) 100%);
 }
 
-.category-card:hover {
+/* Estado de producto oculto (visible sólo para admins) */
+.product-card--hidden {
+  opacity: 0.5;
+  filter: grayscale(60%);
+  position: relative;
+}
+
+.product-hidden-badge {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  background: rgba(220, 38, 38, 0.9);
+  color: #fff;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.product-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 22px 48px rgba(15, 23, 42, 0.12);
 }
 
-.category-admin-actions {
+.product-admin-actions {
   display: flex;
   justify-content: center;
   gap: 0.9rem;
@@ -273,8 +355,8 @@
 }
 
 .admin-action svg {
-  width: 18px;
-  height: 18px;
+  width: clamp(1px, 1vw, 18px);
+  height: clamp(1px, 1vw, 18px);
 }
 
 .admin-action--delete {
@@ -301,7 +383,7 @@
   box-shadow: 0 16px 28px rgba(220, 38, 38, 0.22);
 }
 
-.categories-empty {
+.products-empty {
   padding: clamp(2.4rem, 5vw, 3rem);
   border-radius: 2rem;
   border: 1px dashed rgba(148, 163, 184, 0.35);
@@ -310,18 +392,24 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
-.categories-empty h3 {
+.products-empty h3 {
   margin: 0 0 0.75rem;
   font-size: clamp(1.5rem, 2.5vw, 1.9rem);
 }
 
-.categories-empty p {
+.products-empty p {
   margin: 0;
   color: #475569;
   font-weight: 500;
 }
 
-.categories-form-panel {
+.products-pagination {
+  display: flex;
+  justify-content: center;
+  padding: clamp(1.5rem, 4vw, 2.5rem) 0 0;
+}
+
+.products-form-panel {
   padding: clamp(2.2rem, 4.5vw, 3rem);
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.88) 100%);
   border-radius: 2rem;
@@ -351,20 +439,20 @@
 }
 
 @media (max-width: 1100px) {
-  .categories-content {
+  .products-content {
     grid-template-columns: 1fr;
   }
 
-  .categories-sidebar {
+  .products-sidebar {
     position: static;
     width: 100%;
   }
 
-  .categories-grid {
+  .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 
-  .categories-toolbar {
+  .products-toolbar {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
@@ -375,84 +463,48 @@
     justify-content: stretch;
   }
 
-  .edit-toggle--compact {
+  .edit-toggle--compact,
+  .view-toggle--compact {
     width: 100%;
     justify-content: center;
   }
 }
 
 @media (max-width: 768px) {
-  /* Toolbar */
-  .categories-toolbar {
+  .products-hero {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .products-toolbar {
     padding: 1rem;
     gap: 1rem;
-    flex-direction: column;      /* Apila los elementos de la toolbar */
-    align-items: stretch;        /* Ocupa todo el ancho disponible */
   }
 
-  /* Admin actions */
-  .category-admin-actions {
-    flex-direction: column;      /* Apila los botones verticalmente */
-    align-items: stretch;        /* Que ocupen todo el ancho */
-    gap: 0.5rem;                 /* Ajusta el espacio entre botones */
-  }
-
-  .admin-actions--toolbar {
-    flex-direction: column;      /* Apila los elementos de la toolbar de admin */
-    align-items: stretch;
-    width: 100%;
-    gap: 0.75rem;
-  }
-
-  /* Sidebar y main content */
-  .category-content {
-    display: grid;
-    grid-template-columns: 1fr;  /* Solo una columna */
-    gap: 1rem;                   /* Ajusta espacio entre filas */
-  }
-
-  .category-sidebar {
-    position: static;            /* Evita sticky en móvil */
-    width: 100%;
-  }
-
-  .category-main {
-    width: 100%;
-    display: flex;
-    flex-direction: column;      /* Asegura que se apilen los elementos dentro del main */
-    gap: 1rem;
-  }
-
-  /* Grid de cards */
-  .category-grid {
-    display: grid;
-    grid-template-columns: 1fr;  /* Cada card ocupa toda la fila */
-    gap: 1rem;
-    padding-top: 1rem;
-    padding-bottom: 3rem;
-  }
-
-  /* Formularios */
-  .categories-form-panel {
-    width: 100%;
-    padding: 1.5rem;
-    gap: 1rem;
-  }
-
-  .form-header {
-    text-align: center;
-  }
-
-  /* Botones y toggles */
-  .edit-toggle--compact {
-    width: 100%;
-    justify-content: center;
-  }
-
-  /* Cualquier card de administración se adapta */
-  .category-card,
-  .category-card--create {
-    width: 100%;                 /* Ocupa todo el ancho */
-    flex: 1 1 auto;
+  .product-admin-actions {
+    flex-direction: column;
   } 
+}
+
+/* === Personalización del contenedor del MatDialog === */
+.product-dialog-panel .mat-mdc-dialog-container {
+  border-radius: 24px !important;
+  overflow: auto !important;
+  max-height: calc(100vh - 3rem) !important;
+  background: #fff !important;
+  box-shadow: 0 24px 48px rgba(79, 70, 229, 0.25) !important;
+  padding: 0 !important;
+  animation: dialogFadeIn 0.25s ease-out;
+}
+
+/* Animación */
+@keyframes dialogFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

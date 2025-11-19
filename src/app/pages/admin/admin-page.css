@@ -536,3 +536,26 @@
     grid-column: 2 / -1;
   }
 }
+
+/* === Personalización del contenedor del MatDialog === */
+.product-dialog-panel .mat-mdc-dialog-container {
+  border-radius: 24px !important;
+  overflow: auto !important;
+  max-height: calc(100vh - 3rem) !important;
+  background: #fff !important;
+  box-shadow: 0 24px 48px rgba(79, 70, 229, 0.25) !important;
+  padding: 0 !important;
+  animation: dialogFadeIn 0.25s ease-out;
+}
+
+/* Animación */
+@keyframes dialogFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

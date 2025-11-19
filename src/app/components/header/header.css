@@ -7,9 +7,6 @@ header {
   flex-direction: column;
   position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
-  width: auto;
   z-index: 1000;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(16px);
@@ -221,6 +218,7 @@ header button:focus-visible img {
 
 .header-bottom li {
   display: flex;
+  cursor :pointer;
 }
 
 .header-bottom a {

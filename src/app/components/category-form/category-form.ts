@@ -1,13 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Category } from '../../models/category';
 import { CategoryService } from '../../services/category-service';
 import { SwalService } from '../../services/swal-service';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
+import { CategoryCard } from '../category-card/category-card';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-category-form',
-
   imports: [ReactiveFormsModule, CommonModule, CategoryCard], 
   templateUrl: './category-form.html',
   styleUrl: './category-form.css'
@@ -16,14 +17,13 @@ export class CategoryForm implements OnInit {
   @Input() category?: Category
   
   form!: FormGroup
-
-  @Input() category?: Category 
-  @Output() saved = new EventEmitter<Category>();
+  previewCategory!: Category 
 
   constructor(
     private fb: FormBuilder,
     private categoryService: CategoryService,
     private swal: SwalService,
+    @Optional() private dialogRef?: MatDialogRef<any>
   ) {}
 
   get controls() {
@@ -44,7 +44,7 @@ export class CategoryForm implements OnInit {
     this.previewCategory = {
       id: Number(values['id'] ?? this.category?.id ?? 0),
       name: values['name'] || 'Producto sin nombre',
-      imgUrl: values['imgURL'] || ''
+      imgUrl: values['imgUrl'] || ''
     };
   }
 
@@ -66,7 +66,6 @@ export class CategoryForm implements OnInit {
   }
 
   submitForm() {
-
     if (this.form.invalid) { 
       this.form.markAllAsDirty()
       return;
@@ -80,22 +79,18 @@ export class CategoryForm implements OnInit {
       : this.categoryService.post(formValues)
 
     request.subscribe({
-      next: (categoryResponse: Category) => {
+      next: () => {
         this.swal.success(editMode ? "Categoría editada con éxito!" : "Categoría agregada con éxito!")
           .then(() => {
-            this.saved.emit(categoryResponse);
-            if (!editMode) {
-              this.form.reset();
-            }
-          });
+            this.form.reset();
+          })
+          this.dialogRef?.close(true)
       },
       error: (err) => {
         const defaultMessage = editMode ? "Error al editar la categoría" : "Error al agregar la categoría";
         const errorMessage = err.error?.message || defaultMessage; 
-
         this.swal.error(errorMessage)
       }
     })
   }
 }
-

@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import { DropdownComponent, DropdownMenuDirective, DropdownToggleDirective, DropdownItemDirective, ImgDirective} from '@coreui/angular';
 import { ButtonDirective } from '@coreui/angular';
 import { CommonModule } from '@angular/common';
-import { ImageFallbackDirective } from '../../directives/image-fallback';
+import { ImageFallbackDirective } from '../../core/directives/image-fallback';
 
 @Component({
   selector: 'app-user-avatar',

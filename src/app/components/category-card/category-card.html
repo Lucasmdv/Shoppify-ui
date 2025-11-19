@@ -1,5 +1,5 @@
 @if (category) {
-    <div id="card" (click)="getDetails(category.id)">
+    <div id="card" (click)="getDetails(category.name)">
         @if (category.imgUrl) {
             <img [src]="category.imgUrl" [alt]="category.name || 'Categoria'">
         }

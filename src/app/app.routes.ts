@@ -5,10 +5,10 @@ import { Auth } from './layouts/auth/auth';
 import { Register } from './pages/register/register';
 import { Home } from './pages/home/home';
 import { Profile } from './pages/profile/profile';
-import { CartPage } from './pages/cart-page/cart-page';
-import { ProductsPage } from './pages/products-page/products-page';
-import { AdminPage } from './pages/admin-page/admin-page';
-import { CategoriesPage } from './pages/categories-page/categories-page';
+import { CartPage } from './pages/cart/cart-page';
+import { ProductsPage } from './pages/products/products-page';
+import { AdminPage } from './pages/admin/admin-page';
+import { CategoriesPage } from './pages/categories/categories-page';
 import { authGuard } from './core/guards/auth-guard';
 import { Help } from './pages/help/help';
 import { publicGuard } from './core/guards/public-guard';
@@ -19,6 +19,8 @@ import { Purchases } from './pages/purchases/purchases';
 import { Terms } from './pages/terms/terms';
 import { ConfigPages } from './layouts/config-pages/config-pages';
 import { Privacy } from './pages/privacy/privacy';
+import { CredentialsForm } from './pages/credentials-form/credentials-form';
+import { hasPermitsGuard } from './core/guards/has-permits-guard';
 
 export const routes: Routes = [
   {
@@ -27,13 +29,13 @@ export const routes: Routes = [
     children: [
       { path: 'login', component: Login, canActivate: [publicGuard] },
       { path: 'register', component: Register, canActivate: [publicGuard] },
-      { path: 'admin', component: AdminPage },
-      { path:'admin/edit/store',component:StoreForm},
-      { path:'admin/edit/carousel',component:CarouselForm},
-      { path:'admin/edit/carousel/:id',component:CarouselForm},
+      { path: 'settings', component:CredentialsForm, canActivate: [authGuard] },
+      { path: 'admin', component: AdminPage, canActivate: [authGuard] },
+      { path: 'admin/edit/store',component:StoreForm, canActivate: [authGuard,hasPermitsGuard]}, 
+      { path: 'admin/edit/carousel',component:CarouselForm , canActivate: [authGuard,hasPermitsGuard]},
+      { path: 'admin/edit/carousel/:id',component:CarouselForm , canActivate: [authGuard,hasPermitsGuard]},
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: '**', redirectTo: 'login' }
-
     ]
   },
   {
@@ -46,8 +48,10 @@ export const routes: Routes = [
       { path: 'products/search/:q', component: ProductsPage },
       { path: 'categories', component: CategoriesPage },
       { path: 'cart', component: CartPage, canActivate: [authGuard] },
-      { path: 'purchases', component: Purchases, canActivate: [authGuard] },
-      { path: '', redirectTo: 'home', pathMatch: 'full' }
+      { path: 'purchases', component: Purchases, canActivate: [authGuard]},
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+
+
     ]
   },
   {

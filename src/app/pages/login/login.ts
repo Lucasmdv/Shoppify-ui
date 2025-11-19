@@ -35,14 +35,16 @@ export class Login implements OnInit {
 
   login() {
     this.authService.login(this.fg.value).subscribe({
-      next: () => {
+      next: (res) => {
+        this.authService.setSession(res.token, Array.from(res.permits), res.user)
         Swal.fire({
           title: "Bienvenido, " + this.authService.user()?.firstName,
           text: "Has iniciado sesión correctamente.",
           icon: "success",
           background: "#f7f7f8",
           color: "black"
-        });
+        })
+        this.router.navigate(["/"])
       },
       error(err) {
         Swal.fire({

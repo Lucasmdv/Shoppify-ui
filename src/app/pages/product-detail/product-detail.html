@@ -39,6 +39,11 @@
       </div>
 
       <div class="product-purchase-section">
+        @if (isHidden) {
+        <div class="hidden-product-message">
+          <span>Este producto no se encuentra disponible en este momento.</span>
+        </div>
+        }@else {
         <div class="price-container">
           @if (product.discountPercentage > 0) {
             <span class="price-original">$ {{ product.price | number:'1.0-2' }}</span>
@@ -86,6 +91,7 @@
             Agregar al carrito
           </button>
         </div>
+      }
       </div>
 
     </div>

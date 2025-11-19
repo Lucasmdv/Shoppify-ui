@@ -15,7 +15,4 @@ export interface Product extends HalResource{
   imgURL: string;
   soldQuantity:number;
   categories: string[];
-
 }
-
-

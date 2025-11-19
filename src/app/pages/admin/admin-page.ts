@@ -1,24 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { type ChartData } from 'chart.js';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { ProductService } from '../../services/product-service';
 import { ProductParams } from '../../models/filters/productParams';
-import { Product } from '../../models/product';
+import { CreateProduct } from '../../services/create-product';
 
 @Component({
   selector: 'app-admin-page',
   standalone: true,
   imports: [RouterLink,ChartjsComponent],
   templateUrl: './admin-page.html',
-  styleUrls: ['./admin-page.css']
+  styleUrls: ['./admin-page.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AdminPage implements OnInit {
 
   
   constructor(
-  private router : Router,
-  private productService: ProductService
+  private productService: ProductService,
+  private createProductService: CreateProduct
   ){}
 
   data?: ChartData
@@ -62,7 +63,7 @@ getData() {
 
 
 createProduct(){
-  this.router.navigate(["auth/admin/createP"]);
+  this.createProductService.openDialog([],[],{},()=>{})
 }
 
 }

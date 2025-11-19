@@ -1,12 +1,13 @@
 import { DetailTransaction } from "./detailTransaction";
 
 export interface Transaction {
-  id?: number,
-  total: number;
-  dateTime: string;  
-  paymentMethod: 'CASH' | 'CREDIT_CARD' | 'DEBIT_CARD' | 'TRANSFER' | string;
-  description: string;
-  type: 'SALE' | 'PURCHASE' | 'RETURN' | string;
-  storeName: string;
-  detailTransactions: DetailTransaction[];
+  id?: number
+  clientId?: number
+  total: number
+  dateTime: string
+  paymentMethod: string
+  description: string
+  type: string
+  storeName: string
+  detailTransactions: DetailTransaction[]
 }

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PromotionCarousel } from "../promotion-carousel/promotion-carousel";
 import { CarouselService } from '../../services/carousel-service';
 import { Carouselitem } from '../../models/carouselitem';
-import { ImageFallbackDirective } from '../../directives/image-fallback';
+import { ImageFallbackDirective } from '../../core/directives/image-fallback';
 
 
 

@@ -7,7 +7,7 @@ import { EditProfileForm } from '../../components/edit-profile-form/edit-profile
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../services/auth-service';
 import Swal from 'sweetalert2';
-import { ImageFallbackDirective } from "../../directives/image-fallback";
+import { ImageFallbackDirective } from "../../core/directives/image-fallback";
 
 @Component({
   selector: 'app-profile',
@@ -80,7 +80,7 @@ export class Profile implements OnInit {
   }
 
   editarConfiguracion() {
-    this.router.navigate([''])  //TODO
+    this.router.navigate(["/auth/settings"])
   }
 
   verCompras() {

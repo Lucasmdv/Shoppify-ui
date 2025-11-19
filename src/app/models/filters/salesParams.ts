@@ -1,10 +1,13 @@
-import { globalParams } from "./globalParams";
 
-export interface SalesParams extends globalParams {
-  startDate?: string;
-  endDate?: string;
-  minTotal?: number;
-  maxTotal?: number;
+export interface SalesParams {
+  saleId?: string;
+  clientId?: string;
+  transactionId?: string;
+  page?: number;
+  size?: number;
+  startDate: string | null;
+  endDate: string | null;
   paymentMethod?: string;
-  userId?: number;
+  minPrice?: number;
+  maxPrice?: number;
 }

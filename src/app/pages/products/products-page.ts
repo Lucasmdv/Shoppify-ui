@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import Swal from 'sweetalert2';
 import { Product } from '../../models/product';
 import { Category } from '../../models/category';
@@ -16,6 +16,8 @@ import { ProductFormDialog } from '../../components/product-form-dialog/product-
 import { CommonModule } from '@angular/common';
 import { Page } from '../../models/hal/page';
 import { PaginationModule } from '@coreui/angular';
+import { CreateProduct } from '../../services/create-product';
+import { StorageService } from '../../services/storage-service';
 
 @Component({
   selector: 'app-products-page',
@@ -28,12 +30,13 @@ import { PaginationModule } from '@coreui/angular';
     PaginationModule
   ],
   templateUrl: './products-page.html',
-  styleUrl: './products-page.css'
+  styleUrl: './products-page.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class ProductsPage {
   //Paginacion
   productsPage!: Page
-  defaultSize:number = 9
+  defaultSize:number = 8
   //Arreglos
   refinedProducts: Product[] = [];
   categories: Category[] = [];
@@ -42,6 +45,8 @@ export class ProductsPage {
   //Toggles
   editMode = false;
   adminView = false;
+  // ids de productos ocultos por acción de borrar
+  hiddenIds: Set<number> = new Set<number>();
  
 
   constructor(
@@ -51,13 +56,17 @@ export class ProductsPage {
     private swal: SwalService,
     private route: ActivatedRoute,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private createProductService: CreateProduct,
+    private storageService: StorageService
   ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const filters = this.parseFilters(params);
       this.currentFilters = filters;
+
+      this.loadHiddenIdsFromStorage();
 
       this.renderRefinedProducts(filters);
       this.renderCategories();
@@ -81,8 +90,19 @@ export class ProductsPage {
   renderRefinedProducts(filters: ProductParams): void {
     this.productService.getList(filters).subscribe({
       next: (data) => {
-        this.refinedProducts = data.data;
-        this.productsPage = data.page; 
+        let items = data.data;
+        if (!this.auth.permits().includes('ADMIN')) {
+          const hiddenInPage = items.filter(p => this.hiddenIds.has(p.id)).length;
+          items = items.filter(p => !this.hiddenIds.has(p.id));
+          this.productsPage = data.page;
+          if (this.productsPage && typeof this.productsPage.totalElements === 'number') {
+            this.productsPage.totalElements = Math.max(0, (data.page.totalElements || 0) - hiddenInPage);
+          }
+        } else {
+          this.productsPage = data.page;
+        }
+
+        this.refinedProducts = items;
       },
       error: (err) => {
         this.swal.error("Ocurrio un error al filtrar los productos")
@@ -104,13 +124,56 @@ export class ProductsPage {
   deleteProduct(id: number): void {
     this.productService.delete(id).subscribe({
       next: () => {
-        this.swal.success('Producto eliminado con éxito!')
-        this.renderRefinedProducts(this.currentFilters); 
+        this.swal.success('Producto eliminado con éxito!');
+        this.renderRefinedProducts(this.currentFilters);
       },
       error: (err) => {
-        console.error('Error al eliminar el producto:', err);
+        console.error('Error al eliminar el producto en el servidor:', err);
+        this.swal.error('No se pudo eliminar el producto en el servidor.');
       }
     });
+  }
+
+  // Ocultar localmente (persistente) sin tocar el servidor. Mostrado pálido sólo para admins.
+  hideProduct(id: number): void {
+    this.hiddenIds.add(id);
+    this.saveHiddenIdsToStorage();
+
+    if (!this.auth.permits().includes('ADMIN')) {
+      this.refinedProducts = this.refinedProducts.filter(p => p.id !== id);
+      if (this.productsPage && typeof this.productsPage.totalElements === 'number') {
+        this.productsPage.totalElements = Math.max(0, this.productsPage.totalElements - 1);
+      }
+    }
+
+    this.swal.success('Producto ocultado localmente. Sólo administradores lo verán pálido.');
+  }
+
+  unhideProduct(id: number): void {
+    if (this.hiddenIds.has(id)) {
+      this.hiddenIds.delete(id);
+      this.saveHiddenIdsToStorage();
+      this.renderRefinedProducts(this.currentFilters);
+      this.swal.success('Producto dejado de ocultar');
+    }
+  }
+
+  private loadHiddenIdsFromStorage(): void {
+    try {
+      const arr = this.storageService.getHiddenProductIds() || [];
+      this.hiddenIds = new Set<number>(arr);
+    } catch (e) {
+      console.error('No se pudo cargar hiddenProductIds:', e);
+      this.hiddenIds = new Set<number>();
+    }
+  }
+
+  private saveHiddenIdsToStorage(): void {
+    try {
+      this.storageService.setHiddenProductIds(Array.from(this.hiddenIds));
+    } catch (e) {
+      console.error('No se pudo guardar hiddenProductIds:', e);
+    }
   }
 
   onDelete() {
@@ -121,6 +184,7 @@ export class ProductsPage {
     this.dialog.open(ProductFormDialog, {
       maxWidth: "none",
       width: '80vw',
+      height: '90vh',
       data: {
         product: product,
         products: this.refinedProducts, 
@@ -130,6 +194,7 @@ export class ProductsPage {
       panelClass: 'product-dialog-panel'
     }).afterClosed().subscribe(result => {
       if (result) {
+        this.swal.success("El producto se edito correctamente!")
         this.renderRefinedProducts(this.currentFilters); 
       }
     })
@@ -145,20 +210,12 @@ export class ProductsPage {
 
 
   createProduct() {
-    this.dialog.open(ProductFormDialog, {
-      maxWidth: "none",
-      width: '80vw',
-      data: {
-        products: this.refinedProducts,
-        categories: this.categories
-      },
-      disableClose: true,
-      panelClass: 'product-dialog-panel'
-    }).afterClosed().subscribe(result => {
-      if (result) {
-        this.renderRefinedProducts(this.currentFilters);
-      }
-    })
+    this.createProductService.openDialog(
+      this.refinedProducts,
+      this.categories,
+      this.currentFilters,
+      (filters: any) => this.renderRefinedProducts(filters)
+    )
   }
 
   private parseFilters(params: Params): ProductParams {

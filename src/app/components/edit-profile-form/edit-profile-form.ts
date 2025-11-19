@@ -41,7 +41,7 @@ export class EditProfileForm {
       };
       this.dialogRef.close(updatedUser)
     } else {
-      this.form.markAllAsTouched() //para que las validaciones se muestren
+      this.form.markAllAsTouched()
     }
   }
 

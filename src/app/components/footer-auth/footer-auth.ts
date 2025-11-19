@@ -1,6 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from "@angular/router";
-import { Help } from '../../pages/help/help';
 import { StoreService } from '../../services/store-service';
 
 @Component({

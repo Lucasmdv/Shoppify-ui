@@ -9,7 +9,7 @@
             </app-product-card>
     </article>
 
-    <form [formGroup]="form" (ngSubmit)="submitForm()" id="product-form" >
+    <form [formGroup]="form" id="product-form" >
     <!-- Name -->
     <fieldset>
         <label for="name-input">Nombre*</label>
@@ -104,20 +104,6 @@
                 <h5>El descuento debe estar entre 0 y 100</h5>
             }
         }
-
-
-        @if(((+controls['price'].value || 0) > 0) && ((+controls['discountPercentage'].value || 0) > 0)) {
-            <div class="discount-preview">
-                <span>Precio con descuento</span>
-                <strong>
-                    ${{
-                        (+controls['price'].value || 0) -
-                        ((+controls['price'].value || 0) * (+controls['discountPercentage'].value || 0) / 100)
-                        | number:'1.2-2'
-                    }}
-                </strong>
-            </div>
-        }
     </fieldset>
 
 
@@ -134,8 +120,6 @@
             }
         }
     </fieldset>
-
-
 
     <!-- Image -->
     <fieldset>
@@ -159,6 +143,7 @@
 
     <!-- Categories -->
     <fieldset class="categories-fieldset">
+        <label for="description-input">Categorias</label>
         <mat-form-field appearance="fill">
             <mat-label>Categorias</mat-label>
             <mat-select multiple formControlName="categories" panelClass="custom-select-panel">
@@ -168,17 +153,19 @@
                         {{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}} 
                     </mat-option>
                 }
-
                 }
-              
             </mat-select>
         </mat-form-field>
+
+        <button  class="btn-categoria" (click)="openCategoryDialog()">
+            Agregar Categoria
+        </button>
 
         @if (controls['categories'].dirty && controls['categories'].hasError('required')){
             <h5>Se debe elegir al menos una categoria</h5>
         }
     </fieldset>
 
-    <input type="submit" id="submit-button" value="Enviar" [disabled]="form.invalid">
+    <input type="button" id="submit-button" value="Enviar" [disabled]="form.invalid" (click)="submitForm()">
 </form>
 </section>

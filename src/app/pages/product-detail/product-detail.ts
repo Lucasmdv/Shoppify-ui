@@ -6,7 +6,8 @@ import { Product } from '../../models/product';
 import { CartService } from '../../services/cart-service';
 import { ProductCard } from '../../components/product-card/product-card';
 import Swal from 'sweetalert2';
-import { CommonModule } from '@angular/common';
+import { StorageService } from '../../services/storage-service';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-product-detail',
@@ -19,12 +20,15 @@ export class ProductDetail implements OnInit {
   product!: Product;
   id?: number;
   relatedProducts: Product[] = [];
+  isHidden: boolean = false;
 
   constructor(
     private pService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
-    private cartService: CartService
+    private cartService: CartService,
+    private localStorage: StorageService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -44,6 +48,9 @@ export class ProductDetail implements OnInit {
       },
       error: () => this.router.navigate(['/'])
     });
+
+    this.localStorage.getHiddenProductIds();
+    this.isHidden = this.localStorage.getHiddenProductIds().includes(this.id || -1);
   }
 
   renderProduct(id: number){
@@ -71,21 +78,30 @@ export class ProductDetail implements OnInit {
 
   onAddToCart(): void {
     if (!this.product) return;
+    if (!this.authService.isLogged){
+      return
+    }else{
+      
     this.cartService.addToCart(this.product)
     this.showCartSuccessToast(this.product.name)
+    }
   }
 
   onBuyNow(): void {
     if (!this.product) return;
+    if (!this.authService.isLogged){
+       return
+    }else {
     this.cartService.addToCart(this.product);
     this.router.navigate(['/cart']);
+    }
   }
 
   showCartSuccessToast = (productName: string) => {
   Swal.fire({
 
     toast: true,
-    position: 'top-end',
+    position: 'bottom-end',
     showConfirmButton: false,
     
     timer: 1500,
