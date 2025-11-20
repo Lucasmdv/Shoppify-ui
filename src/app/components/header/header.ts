@@ -1,11 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { SearchBar } from '../search-bar/search-bar';
 import { UserAvatar } from '../user-avatar/user-avatar';
 import { User } from '../../models/auth/user';
 import { ImageFallbackDirective } from '../../core/directives/image-fallback';
 import { BadgeComponent, ButtonDirective } from '@coreui/angular';
-import { CartService } from '../../services/cart-service-front';
+import { CartService } from '../../services/cart-service';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-header',
@@ -21,20 +22,22 @@ export class Header {
   user!: User
   itemsInCart = 0
 
-  private cartService = inject(CartService);
+  constructor(
+    private router: Router,
+    private cartService: CartService,
+    private authService: AuthService
+  ) {
+    this.verifyCart()
+  }
 
-  constructor(private router: Router) {
-
-    const userData = localStorage.getItem("user");
-
-    if (userData) {
-      this.user = JSON.parse(userData);
-
+  verifyCart(){
+    if (this.authService.user()) {
+      this.user = this.authService.user()!
       this.cartService.getCart(this.user.id!).subscribe({
-        next: cart => {
-          this.itemsInCart = cart.items.length;
+        next: (cart: any) => {
+          this.itemsInCart = cart.items.length
         }
-      });
+      })
     }
   }
 

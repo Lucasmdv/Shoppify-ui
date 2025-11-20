@@ -144,7 +144,7 @@ private showToast(title: string, icon: 'success' | 'error' | 'info' = 'success')
   onAddToCart(): void {
     if (!this.product) return;
 
-    if (!this.authService.isLogged) {
+    if (!this.aService.isLogged) {
       Swal.fire({
         icon: "warning",
         title: "Atención",
@@ -154,7 +154,7 @@ private showToast(title: string, icon: 'success' | 'error' | 'info' = 'success')
       })
     } else {
 
-      const userId = this.authService.user()!.id!;
+      const userId = this.aService.user()!.id!;
       this.cartService.addItem(userId, this.product.id!, 1).subscribe({
         next: () => {
           this.showCartSuccessToast(this.product.name);
@@ -172,7 +172,7 @@ private showToast(title: string, icon: 'success' | 'error' | 'info' = 'success')
   }
 
   onBuyNow(): void {
-    if (!this.authService.isLogged) {
+    if (!this.aService.isLogged) {
       Swal.fire({
         icon: "warning",
         title: "Atención",
@@ -181,7 +181,7 @@ private showToast(title: string, icon: 'success' | 'error' | 'info' = 'success')
         this.router.navigate(['/auth/login'])
       })
     } else {
-      const userId = this.authService.user()!.id!
+      const userId = this.aService.user()!.id!
 
       this.cartService.addItem(userId, this.product.id!, 1).subscribe({
         next: () => {
