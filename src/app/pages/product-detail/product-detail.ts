@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { ProductService } from '../../services/product-service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { ProductCard } from '../../components/product-card/product-card';
 import Swal from 'sweetalert2';
 import { StorageService } from '../../services/storage-service';
 import { AuthService } from '../../services/auth-service';
+import { WishlistService } from '../../services/wishlist-service';
 
 @Component({
   selector: 'app-product-detail',
@@ -17,10 +18,16 @@ import { AuthService } from '../../services/auth-service';
 })
 export class ProductDetail implements OnInit {
 
+  private aService = inject(AuthService)
+
   product!: Product;
   id?: number;
+  userId?: number = this.aService.user()?.id || undefined
   relatedProducts: Product[] = [];
   isHidden: boolean = false;
+  isFavorite: boolean = false;
+  
+
 
   constructor(
     private pService: ProductService,
@@ -28,8 +35,8 @@ export class ProductDetail implements OnInit {
     private router: Router,
     private cartService: CartService,
     private localStorage: StorageService,
-    private authService: AuthService
-  ) { }
+    private wishlistService:WishlistService
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe({
@@ -43,14 +50,19 @@ export class ProductDetail implements OnInit {
         }
 
         this.id = parsedId;
+        this.checkFavorite();
         this.renderProduct(parsedId);
         this.loadRelatedProducts();
       },
       error: () => this.router.navigate(['/'])
+
+      
+    
     });
 
     this.localStorage.getHiddenProductIds();
     this.isHidden = this.localStorage.getHiddenProductIds().includes(this.id || -1);
+   
   }
 
   renderProduct(id: number) {
@@ -75,6 +87,59 @@ export class ProductDetail implements OnInit {
       }
     });
   }
+
+//Wishlist button logic
+
+  checkFavorite(){
+  
+  if(!this.userId){
+   return
+  }
+
+    this.wishlistService.isFavorite(this.userId,this.id!).subscribe({
+      next:(value) => {
+        this.isFavorite = value
+      },
+    })
+  }
+
+toggleFavorite() {
+  if (!this.userId) {
+    this.router.navigate(["auth/login"]);
+    return;
+  }
+  this.wishlistService.toggleItem(this.userId, this.product.id).subscribe({
+    next: (response) => {
+      const isRemoved = response === false;
+      this.isFavorite = !isRemoved;
+      const message = isRemoved 
+        ? 'Producto eliminado de favoritos' 
+        : 'Producto agregado a favoritos';
+      this.showToast(message, 'success');
+    },
+    error: (err) => {
+      console.error(err);
+      this.showToast('Error al actualizar favoritos', 'error');
+    }
+  });
+}
+
+private showToast(title: string, icon: 'success' | 'error' | 'info' = 'success') {
+  Swal.fire({
+    toast: true,
+    position: 'bottom-end',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+    icon: icon,
+    title: title
+  });
+}
+
+
+ 
+
+  
 
   onAddToCart(): void {
     if (!this.product) return;

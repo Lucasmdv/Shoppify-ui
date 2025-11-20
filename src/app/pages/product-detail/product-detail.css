@@ -139,6 +139,53 @@
     top: 20px;
 }
 
+.favorite-icon-button {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 6px;
+    background: transparent;
+    border: none;
+    color: #3483fa;
+    cursor: pointer;
+    display: inline-flex;
+    z-index: 2;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.favorite-icon-button:not(:disabled):hover {
+    transform: translateY(-2px) scale(1.05);
+    color: #1d4fd7;
+}
+
+.favorite-icon-button:focus-visible {
+    outline: 2px solid rgba(52, 131, 250, 0.4);
+    outline-offset: 3px;
+}
+
+.favorite-icon-button.is-active {
+    color: #1f3fad;
+}
+
+.favorite-icon-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.favorite-heart {
+    width: 24px;
+    height: 24px;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    fill: transparent;
+    transition: transform 0.2s ease, fill 0.2s ease;
+}
+
+.favorite-icon-button.is-active .favorite-heart {
+    fill: currentColor;
+    transform: scale(1.05);
+}
+
 .price-container {
     display: flex;
     flex-direction: column;
@@ -288,7 +335,8 @@
     }
     
     .product-purchase-section {
-        position: static;
+        position: relative;
+        top: 0;
     }
 }
 

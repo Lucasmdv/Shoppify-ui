@@ -21,6 +21,7 @@ import { ConfigPages } from './layouts/config-pages/config-pages';
 import { Privacy } from './pages/privacy/privacy';
 import { CredentialsForm } from './pages/credentials-form/credentials-form';
 import { hasPermitsGuard } from './core/guards/has-permits-guard';
+import { FavoritesPage } from './pages/favorites/favorites-page';
 
 export const routes: Routes = [
   {
@@ -47,6 +48,7 @@ export const routes: Routes = [
       { path: 'products/details/:id', component: ProductDetail },
       { path: 'products/search/:q', component: ProductsPage },
       { path: 'categories', component: CategoriesPage },
+      {path: 'favorites',component:FavoritesPage},
       { path: 'cart', component: CartPage, canActivate: [authGuard] },
       { path: 'purchases', component: Purchases, canActivate: [authGuard]},
       { path: '', redirectTo: 'home', pathMatch: 'full' },

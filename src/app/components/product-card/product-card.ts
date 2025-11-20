@@ -16,7 +16,9 @@ export class ProductCard {
 @Input() isMostrarStock: boolean = false
 @Input() isMostrarCuotas: boolean = false
 @Input() isMostrarDescuento: boolean = false
+@Input() isMostrarDescripcion: boolean = false
 @Input() isNavegar: boolean = true
+@Input() layout: 'card' | 'horizontal' = 'card'
 constructor(private router:Router){}
 
 getDetails(id: number){
@@ -28,6 +30,10 @@ getDetails(id: number){
 
 get hasDiscount(){
   return this.product.discountPercentage > 0
+}
+
+get isHorizontal(){
+  return this.layout === 'horizontal'
 }
 }
 
