@@ -13,17 +13,30 @@ import { CartService } from '../../services/cart-service';
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
-export class Header{
+export class Header {
 
+  mostrarNav = false
+  mostrarBusquedaMovil = false
 
-   constructor(private router:Router){}
- 
-  private cService = inject(CartService)
+  user!: User
+  itemsInCart = 0
 
-  mostrarNav = false;
-  mostrarBusquedaMovil = false;
-  user! : User
-  itemsInCart = this.cService.itemsInCart
+  private cartService = inject(CartService);
+
+  constructor(private router: Router) {
+
+    const userData = localStorage.getItem("user");
+
+    if (userData) {
+      this.user = JSON.parse(userData);
+
+      this.cartService.getCart(this.user.id!).subscribe({
+        next: cart => {
+          this.itemsInCart = cart.items.length;
+        }
+      });
+    }
+  }
 
   toggleNav() {
     this.mostrarNav = !this.mostrarNav;
@@ -48,12 +61,4 @@ export class Header{
       },
     })
   }
-
-
-
-
-
-  
 }
-
-

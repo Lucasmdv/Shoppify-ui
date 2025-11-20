@@ -1,36 +1,36 @@
 <div class="cart-container">
   <h2>🛒 Tu carrito</h2>
 
-  @if (cartItems().length > 0) {
+  @if (items.length > 0) {
   <div class="cart-main-content">
 
     <div class="cart-list">
-      @for (item of cartItems(); track item.id) {
+      @for (item of items; track item.id) {
       <div class="cart-item">
         <label class="select-label">
-          <input type="checkbox" [checked]="selectedItems().has(item.id)"
-            (change)="toggleSelection(item.id, $any($event.target).checked)" />
+          <input type="checkbox" [checked]="selectedItems().has(item.id!)"
+            (change)="toggleSelection(item.id!, $any($event.target).checked)" />
           Seleccionar
         </label>
 
-        <app-product-card [isMostrarCuotas]="true" [isMostrarDescuento]="true" [isMostrarStock]="false" class="product-card" [product]="item"></app-product-card>
+        <app-product-card [isMostrarCuotas]="true" [isMostrarDescuento]="true" [isMostrarStock]="false" class="product-card" [product]="item.product!"></app-product-card>
 
         <div class="cart-controls">
           <div class="quantity-control">
             <label>Cantidad:</label>
             <div class="quantity-buttons">
               <button type="button" (click)="changeQuantity(item, -1)">-</button>
-              <input type="number" [value]="item.stock" readonly />
+              <input type="number" [value]="item.quantity" readonly />
               <button type="button" (click)="changeQuantity(item, 1)">+</button>
             </div>
           </div>
 
           <p class="item-subtotal">
             Subtotal:
-            <strong>${{ item.priceWithDiscount! * item.stock }}</strong>
+            <strong>${{ item.subtotal }}</strong>
           </p>
           
-          <button class="remove-btn" (click)="removeFromCart(item.id)">Eliminar del carrito ❌</button>
+          <button class="remove-btn" (click)="removeFromCart(item.id!)">Eliminar del carrito ❌</button>
         </div>
       </div>
       }
@@ -81,7 +81,7 @@
 
       <div class="cart-summary">
         @if (selectedTotal() == 0) {
-          <p><strong>Total:</strong> ${{ total() }}</p>
+          <p><strong>Total:</strong> ${{ total }}</p>
         } @else {
           <p><strong>Total:</strong> ${{ selectedTotal() }}</p>
         }
@@ -90,7 +90,7 @@
 
   </div>
 
-  <button form="checkout-form" (click)="onSubmit()" [disabled]="checkoutForm.invalid || cartItems().length === 0"
+  <button (click)="onSubmit()" [disabled]="checkoutForm.invalid || items.length === 0"
     class="checkout-btn">
     Finalizar transacción
   </button>

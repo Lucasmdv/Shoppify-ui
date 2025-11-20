@@ -29,7 +29,7 @@ export class ProductDetail implements OnInit {
     private cartService: CartService,
     private localStorage: StorageService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe({
@@ -53,12 +53,12 @@ export class ProductDetail implements OnInit {
     this.isHidden = this.localStorage.getHiddenProductIds().includes(this.id || -1);
   }
 
-  renderProduct(id: number){
+  renderProduct(id: number) {
     this.pService.get(id).subscribe({
       next: prod => {
         this.product = prod;
       },
-      error:(e) =>{
+      error: (e) => {
         console.log(e);
         this.router.navigate(['/']);
       }
@@ -78,40 +78,71 @@ export class ProductDetail implements OnInit {
 
   onAddToCart(): void {
     if (!this.product) return;
-    if (!this.authService.isLogged){
-      return
-    }else{
-      
-    this.cartService.addToCart(this.product)
-    this.showCartSuccessToast(this.product.name)
+
+    if (!this.authService.isLogged) {
+      Swal.fire({
+        icon: "warning",
+        title: "Atención",
+        text: "Debes iniciar sesión para agregar productos al carrito"
+      }).then(() => {
+        this.router.navigate(['/auth/login']);
+      })
+    } else {
+
+      const userId = this.authService.user()!.id!;
+      this.cartService.addItem(userId, this.product.id!, 1).subscribe({
+        next: () => {
+          this.showCartSuccessToast(this.product.name);
+        },
+        error: (err) => {
+          console.error(err)
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "No se pudo agregar el producto al carrito"
+          })
+        }
+      })
     }
   }
 
   onBuyNow(): void {
-    if (!this.product) return;
-    if (!this.authService.isLogged){
-       return
-    }else {
-    this.cartService.addToCart(this.product);
-    this.router.navigate(['/cart']);
+    if (!this.authService.isLogged) {
+      Swal.fire({
+        icon: "warning",
+        title: "Atención",
+        text: "Debes iniciar sesión para comprar productos"
+      }).then(() => {
+        this.router.navigate(['/auth/login'])
+      })
+    } else {
+      const userId = this.authService.user()!.id!
+
+      this.cartService.addItem(userId, this.product.id!, 1).subscribe({
+        next: () => {
+          this.router.navigate(['/cart'])
+        },
+        error: err => console.error(err)
+      })
     }
   }
 
-  showCartSuccessToast = (productName: string) => {
-  Swal.fire({
 
-    toast: true,
-    position: 'bottom-end',
-    showConfirmButton: false,
-    
-    timer: 1500,
-    timerProgressBar: true,
-    
-    icon: 'success',
-    title: `"${productName}" agregado.`,
-    customClass: {
+  showCartSuccessToast = (productName: string) => {
+    Swal.fire({
+
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+
+      timer: 1500,
+      timerProgressBar: true,
+
+      icon: 'success',
+      title: `"${productName}" agregado.`,
+      customClass: {
         popup: 'swal2-toast-dark'
-    }
-  })
+      }
+    })
   }
 }
