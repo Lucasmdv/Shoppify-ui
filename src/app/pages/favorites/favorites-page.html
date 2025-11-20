@@ -1,3 +1,4 @@
+
 <section class="favorites-page">
   <header class="favorites-hero">
     <div class="favorites-hero__copy">
@@ -8,7 +9,7 @@
 
   </header>
 
-  @if (wishList.products === undefined) {
+  @if (wishList === undefined) {
     <section class="favorites-empty favorites-empty--loading">
       <div class="empty-icon">
         <span class="loader"></span>
@@ -17,7 +18,7 @@
       <p class="empty-text">Un segundo, estamos trayendo tu lista.</p>
     </section>
   }
-  @else if (wishList.products.length === 0) {
+  @else if (wishList.length === 0) {
     <section class="favorites-empty">
       <div class="empty-icon">
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -34,13 +35,13 @@
 
 
     <div class="favorites-list">
-      @for (p of wishList.products; track p.id) {
+      @for (p of wishList; track p.product.id) {
         
         <article class="favorite-item">
           <app-product-card
 
             layout="horizontal"
-            [product]="p"
+            [product]="p.product"
             [isMostrarDescuento]="true"
             [isMostrarCuotas]="true"
             [isMostrarStock]="true"
@@ -51,7 +52,7 @@
             <button
               type="button"
               class="btn btn-ghost"
-              (click)="deleteItem(p.id)">
+              (click)="deleteItem(p.product.id)">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M6 7h12M10 11v6M14 11v6M9 7l1-2h4l1 2m-7 0h8v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z" />
               </svg>

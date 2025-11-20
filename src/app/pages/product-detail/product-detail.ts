@@ -111,7 +111,7 @@ toggleFavorite() {
   }
   this.wishlistService.toggleItem(this.userId, this.product.id).subscribe({
     next: (response) => {
-      const isRemoved = response.action === 'removed';
+      const isRemoved = response === false;
       this.isFavorite = !isRemoved;
       const message = isRemoved 
         ? 'Producto eliminado de favoritos' 

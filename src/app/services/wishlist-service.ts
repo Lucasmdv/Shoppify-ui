@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Wishlist } from '../models/wishlist';
-import { WishlistToggleResponse } from '../models/wishlistToggleResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +23,7 @@ export class WishlistService {
   }
 
  toggleItem(userId: number, productId: number) {
-  return this.http.patch<WishlistToggleResponse>(`${this.API_URL}/${userId}/wishlist/products/`+productId+"/toggle",null);
+  return this.http.patch<boolean>(`${this.API_URL}/${userId}/wishlist/products/`+productId+"/toggle",null);
   }
 
   isFavorite(userId:number, productId:number){
