@@ -61,6 +61,32 @@ export class ProductsPage {
     private storageService: StorageService
   ) { }
 
+  get visiblePages(): number[] {
+    if (!this.productsPage) return [];
+
+    const total = this.productsPage.totalPages;
+    const current = this.productsPage.number;
+
+    const windowSize = 5;          
+    const half = Math.floor(windowSize / 2);
+
+    let start = current - half;
+    let end = current + half;
+
+    if (start < 0) {
+      end += -start;
+      start = 0;
+    }
+
+    if (end >= total) {
+      start -= (end - total + 1);
+      end = total - 1;
+    }
+
+    if (start < 0) start = 0;
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+}
+
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const filters = this.parseFilters(params);

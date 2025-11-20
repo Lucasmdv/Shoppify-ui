@@ -143,7 +143,7 @@
         </a>
       </li>
 
-      @for (page of pagesArray; track page) {
+      @for (page of visiblePages; track page) {
         <li cPageItem [class.active]="page === productsPage.number">
           <a cPageLink (click)="goToPage(page)">
             {{ page + 1 }}
