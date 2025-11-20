@@ -1,0 +1,71 @@
+<section class="favorites-page">
+  <header class="favorites-hero">
+    <div class="favorites-hero__copy">
+      <p class="eyebrow">Tu lista privada</p>
+      <h1>Favoritos</h1>
+      <p class="hero-subtitle">Guardá lo que te gusta para decidir con calma o seguir las novedades.</p>
+    </div>
+
+  </header>
+
+  @if (wishList.products === undefined) {
+    <section class="favorites-empty favorites-empty--loading">
+      <div class="empty-icon">
+        <span class="loader"></span>
+      </div>
+      <p class="empty-title">Cargando tus favoritos…</p>
+      <p class="empty-text">Un segundo, estamos trayendo tu lista.</p>
+    </section>
+  }
+  @else if (wishList.products.length === 0) {
+    <section class="favorites-empty">
+      <div class="empty-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.25 5.96a4.41 4.41 0 0 0-6.19 0L12 8.02l-2.06-2.06a4.41 4.41 0 0 0-6.19 0 4.44 4.44 0 0 0 0 6.25L5.81 14 12 20.69 18.19 14l2.06-2.06a4.44 4.44 0 0 0 0-6.25Z" />
+        </svg>
+      </div>
+      <p class="empty-title">Todavía no agregaste productos</p>
+      <p class="empty-text">Explorá el catálogo y guardá tus favoritos para verlos más tarde.</p>
+      <a class="btn btn-primary" href="/">Explorar productos</a>
+    </section>
+  }
+  @else {
+
+
+
+    <div class="favorites-list">
+      @for (p of wishList.products; track p.id) {
+        
+        <article class="favorite-item">
+          <app-product-card
+
+            layout="horizontal"
+            [product]="p"
+            [isMostrarDescuento]="true"
+            [isMostrarCuotas]="true"
+            [isMostrarStock]="true"
+            [isMostrarDescripcion]="true">
+          </app-product-card>
+
+          <div class="favorite-actions">
+            <button
+              type="button"
+              class="btn btn-ghost"
+              (click)="deleteItem(p.id)">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 7h12M10 11v6M14 11v6M9 7l1-2h4l1 2m-7 0h8v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z" />
+              </svg>
+              Quitar
+            </button>
+            <button type="button" class="btn btn-secondary">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              Añadir al carrito
+            </button>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>

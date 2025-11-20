@@ -5,7 +5,7 @@ import { UserAvatar } from '../user-avatar/user-avatar';
 import { User } from '../../models/auth/user';
 import { ImageFallbackDirective } from '../../core/directives/image-fallback';
 import { BadgeComponent, ButtonDirective } from '@coreui/angular';
-import { CartService } from '../../services/cart-service';
+import { CartService } from '../../services/cart-service-front';
 
 @Component({
   selector: 'app-header',

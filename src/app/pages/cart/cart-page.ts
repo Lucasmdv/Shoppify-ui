@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { TransactionService } from '../../services/transaction-service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CartService } from '../../services/cart-service';
+import { CartService } from '../../services/cart-service-front';
 import { ProductCard } from "../../components/product-card/product-card";
 import { Product } from '../../models/product';
 import Swal from 'sweetalert2';
