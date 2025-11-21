@@ -30,7 +30,7 @@ export class CartService {
   }
 
   updateItemQuantity(userId: number, itemId: number, quantity: number) {
-    return this.http.patch<Cart>(`${this.API_URL}/${userId}/cart/items/${itemId}`, { quantity });
+    return this.http.put<Cart>(`${this.API_URL}/${userId}/cart/items/${itemId}`, { quantity });
   }
 
   prepareSaleRequest(formValue: any, userId: number, items: any[]): any {

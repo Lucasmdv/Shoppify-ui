@@ -1,18 +1,18 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { TransactionService } from '../../services/transaction-service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Cart, DetailCart } from '../../models/cart/cartResponse';
 import { CartService } from '../../services/cart-service';
 import { ProductCard } from "../../components/product-card/product-card";
-import { Product } from '../../models/product';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { CommonModule, CurrencyPipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-cart-page',
-  imports: [ReactiveFormsModule, ProductCard],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './cart-page.html',
   styleUrl: './cart-page.css'
 })
@@ -27,7 +27,6 @@ export class CartPage implements OnInit {
   checkoutForm!: FormGroup
   permits = this.aService.permits()
   items: DetailCart[] = []
-  total = 0
   selectedItems = signal<Set<number>>(new Set())
 
   ngOnInit(): void {
@@ -42,7 +41,8 @@ export class CartPage implements OnInit {
     this.cartItems().subscribe({
       next: cart => {
         this.items = cart.items;
-        this.total = cart.total;
+        const allIds = this.items.map(item => item.id!);
+        this.selectedItems.set(new Set(allIds));
       },
       error: err => {
         console.error(err);
@@ -59,13 +59,25 @@ export class CartPage implements OnInit {
     return this.cService.getCart(this.aService.user()!.id!)
   }
 
-  selectedTotal = computed(() => {
+  selectedTotal() {
     const selected = this.selectedItems()
     return this.items.reduce((sum, item) => {
-      if (selected.has(item.id!)) sum += item.subtotal!
+      if (selected.has(item.id!)) sum += item.subtotal || 0
       return sum
     }, 0)
-  })
+  }
+
+  products() {
+    const selected = this.selectedItems()
+    return this.items.reduce((sum, item) => {
+      if (selected.has(item.id!)) sum += item.quantity || 0
+      return sum
+    }, 0)
+  }
+
+  get total(): number {
+    return this.selectedTotal();
+  }
 
   toggleSelection(id: number, checked: boolean) {
     const updated = new Set(this.selectedItems())
@@ -74,10 +86,28 @@ export class CartPage implements OnInit {
     this.selectedItems.set(updated)
   }
 
+  toggleAll(){
+    const isAllSelected = this.items.length > 0 && this.selectedItems().size === this.items.length;
+
+    if (isAllSelected) {
+      this.selectedItems.set(new Set()); 
+    } else {
+      const allIds = this.items.map(item => item.id!);
+      this.selectedItems.set(new Set(allIds));
+    }
+  }
+
+  get allSelected(): boolean {
+    return this.items.length > 0 && this.selectedItems().size === this.items.length;
+  }
+
   removeFromCart(id: number) {
     this.cService.removeItem(this.aService.user()!.id!, id).subscribe({
       next: () => {
         this.items = this.items.filter(item => item.id !== id)
+        const updated = new Set(this.selectedItems());
+        updated.delete(id);
+        this.selectedItems.set(updated);
       }
     })
   }
@@ -99,7 +129,6 @@ export class CartPage implements OnInit {
       .subscribe({
         next: updated => {
           this.items = updated.items;
-          this.total = updated.total;
         }
       })
   }
@@ -127,21 +156,19 @@ export class CartPage implements OnInit {
     }
   }
 
+  goToDetailProduct(id?:number){
+  this.router.navigate(["products/details/", id]);
+  }
+
   onSubmit() {
     const selectedIds = this.selectedItems()
-    let cartItemsToBuy: DetailCart[] = []
-
-    if (selectedIds.size > 0) {
-      cartItemsToBuy = this.items.filter(item => selectedIds.has(item.id!))
-    } else {
-      cartItemsToBuy = this.items.slice()
-    }
+    const cartItemsToBuy = this.items.filter(item => selectedIds.has(item.id!))
 
     if (!cartItemsToBuy.length) {
       Swal.fire({
         icon: "warning",
-        title: "Carrito Vacío",
-        text: "Debes tener al menos un producto en el carrito o seleccionado para comprar."
+        title: "Ningún producto seleccionado",
+        text: "Selecciona al menos un producto para continuar con la compra."
       });
       return
     }
@@ -172,6 +199,9 @@ export class CartPage implements OnInit {
               this.cService.removeItem(user.id!, ci.id).subscribe({
                 next: () => {
                   this.items = this.items.filter(item => item.id !== ci.id)
+                  const updated = new Set(this.selectedItems())
+                  updated.delete(ci.id!)
+                  this.selectedItems.set(updated)
                 },
                 error: err => console.error('Error removing item after purchase', err)
               })
