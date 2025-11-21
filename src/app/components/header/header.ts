@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, effect, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { SearchBar } from '../search-bar/search-bar';
 import { UserAvatar } from '../user-avatar/user-avatar';
 import { User } from '../../models/auth/user';
 import { ImageFallbackDirective } from '../../core/directives/image-fallback';
 import { BadgeComponent, ButtonDirective } from '@coreui/angular';
-import { CartService } from '../../services/cart-service';
 import { AuthService } from '../../services/auth-service';
+import { CartSignal } from '../../services/cart-signal';
 
 @Component({
   selector: 'app-header',
@@ -14,29 +14,30 @@ import { AuthService } from '../../services/auth-service';
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
-export class Header {
+export class Header implements OnInit {
 
   mostrarNav = false
   mostrarBusquedaMovil = false
 
   user!: User
-  itemsInCart = 0
+  itemsInCart = signal<number>(0)
 
   constructor(
     private router: Router,
-    private cartService: CartService,
-    private authService: AuthService
-  ) {
-    this.verifyCart()
-  }
+    private cSignalService: CartSignal,
+    private aService: AuthService
+  ) {}
 
-  verifyCart(){
-    if (this.authService.user()) {
-      this.user = this.authService.user()!
-      this.cartService.getCart(this.user.id!).subscribe({
-        next: (cart: any) => {
-          this.itemsInCart = cart.items.length
-        }
+  ngOnInit() {
+    const user = this.aService.user();
+    if (user) {
+      this.cSignalService.syncCart(user.id!);
+
+      effect(() => {
+        const cart = this.cSignalService.cartSignal();
+        this.itemsInCart.set(
+          cart ? cart.items.reduce((acc, item) => acc + (item.quantity || 0), 0) : 0
+        )
       })
     }
   }

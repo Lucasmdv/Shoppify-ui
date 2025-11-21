@@ -1,7 +1,7 @@
 <div class="cart-container">
 
 
-  @if (items.length > 0) {
+  @if (items().length > 0) {
     <div class="cart-layout">
       <section class="items-panel">
         <div class="panel-header">
@@ -20,7 +20,7 @@
         </div>
 
         <div class="cart-list">
-          @for (item of items; track item.id) {
+          @for (item of items(); track item.id) {
             <div class="cart-item">
               <label class="select-label">
                 <input type="checkbox"
@@ -33,7 +33,7 @@
                   <img
                     [src]="item.product?.imgURL"
                     [alt]="item.product?.name || 'Producto'"
-                    (click)="goToDetailProduct(item.product?.id)"
+                    (click)="goToDetailProduct(item.product?.id!)"
                     >
                 </div>
                 <div class="item-info">
@@ -84,7 +84,7 @@
           @if (products() > 0) {
             <div class="summary-row">
               <span>Productos ({{ products() }})</span>
-              <span>{{ total | currency }}</span>
+              <span>{{ selectedTotal() | currency }}</span>
             </div>
           }
         </div>
@@ -119,7 +119,7 @@
 
         <div class="summary-total">
           <span>Total</span>
-          <span class="total-amount">{{ total | currency }}</span>
+          <span class="total-amount">{{ selectedTotal() | currency }}</span>
         </div>
 
         <button (click)="onSubmit()" [disabled]="checkoutForm.invalid || selectedItems().size === 0" class="checkout-btn">

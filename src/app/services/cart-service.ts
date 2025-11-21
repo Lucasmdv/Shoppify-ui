@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Cart } from '../models/cart/cartResponse';
@@ -30,7 +30,7 @@ export class CartService {
   }
 
   updateItemQuantity(userId: number, itemId: number, quantity: number) {
-    return this.http.put<Cart>(`${this.API_URL}/${userId}/cart/items/${itemId}`, { quantity });
+    return this.http.patch<Cart>(`${this.API_URL}/${userId}/cart/items/${itemId}`, { quantity });
   }
 
   prepareSaleRequest(formValue: any, userId: number, items: any[]): any {

@@ -3,12 +3,12 @@ import { DecimalPipe } from '@angular/common';
 import { ProductService } from '../../services/product-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../models/product';
-import { CartService } from '../../services/cart-service';
 import { ProductCard } from '../../components/product-card/product-card';
 import Swal from 'sweetalert2';
 import { StorageService } from '../../services/storage-service';
 import { AuthService } from '../../services/auth-service';
 import { WishlistService } from '../../services/wishlist-service';
+import { CartSignal } from '../../services/cart-signal';
 
 @Component({
   selector: 'app-product-detail',
@@ -26,17 +26,17 @@ export class ProductDetail implements OnInit {
   relatedProducts: Product[] = [];
   isHidden: boolean = false;
   isFavorite: boolean = false;
-  
+
 
 
   constructor(
     private pService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
-    private cartService: CartService,
+    private cSignalService: CartSignal,
     private localStorage: StorageService,
-    private wishlistService:WishlistService
-  ) {}
+    private wishlistService: WishlistService
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe({
@@ -56,13 +56,13 @@ export class ProductDetail implements OnInit {
       },
       error: () => this.router.navigate(['/'])
 
-      
-    
+
+
     });
 
     this.localStorage.getHiddenProductIds();
     this.isHidden = this.localStorage.getHiddenProductIds().includes(this.id || -1);
-   
+
   }
 
   renderProduct(id: number) {
@@ -88,110 +88,84 @@ export class ProductDetail implements OnInit {
     });
   }
 
-//Wishlist button logic
+  //Wishlist button logic
 
-  checkFavorite(){
-  
-  if(!this.userId){
-   return
-  }
+  checkFavorite() {
 
-    this.wishlistService.isFavorite(this.userId,this.id!).subscribe({
-      next:(value) => {
+    if (!this.userId) {
+      return
+    }
+
+    this.wishlistService.isFavorite(this.userId, this.id!).subscribe({
+      next: (value) => {
         this.isFavorite = value
       },
     })
   }
 
-toggleFavorite() {
-  if (!this.userId) {
-    this.router.navigate(["auth/login"]);
-    return;
-  }
-  this.wishlistService.toggleItem(this.userId, this.product.id).subscribe({
-    next: (response) => {
-      const isRemoved = response === false;
-      this.isFavorite = !isRemoved;
-      const message = isRemoved 
-        ? 'Producto eliminado de favoritos' 
-        : 'Producto agregado a favoritos';
-      this.showToast(message, 'success');
-    },
-    error: (err) => {
-      console.error(err);
-      this.showToast('Error al actualizar favoritos', 'error');
+  toggleFavorite() {
+    if (!this.userId) {
+      this.router.navigate(["auth/login"]);
+      return;
     }
-  });
-}
+    this.wishlistService.toggleItem(this.userId, this.product.id).subscribe({
+      next: (response) => {
+        const isRemoved = response === false;
+        this.isFavorite = !isRemoved;
+        const message = isRemoved
+          ? 'Producto eliminado de favoritos'
+          : 'Producto agregado a favoritos';
+        this.showToast(message, 'success');
+      },
+      error: (err) => {
+        console.error(err);
+        this.showToast('Error al actualizar favoritos', 'error');
+      }
+    });
+  }
 
-private showToast(title: string, icon: 'success' | 'error' | 'info' = 'success') {
-  Swal.fire({
-    toast: true,
-    position: 'bottom-end',
-    showConfirmButton: false,
-    timer: 1500,
-    timerProgressBar: true,
-    icon: icon,
-    title: title
-  });
-}
+  private showToast(title: string, icon: 'success' | 'error' | 'info' = 'success') {
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true,
+      icon: icon,
+      title: title
+    });
+  }
 
+  async onAddToCart(productId: number, productName: string) {
+    const user = this.aService.user();
+    if (!user) return
 
- 
-
-  
-
-  onAddToCart(): void {
-    if (!this.product) return;
-
-    if (!this.aService.isLogged) {
-      Swal.fire({
-        icon: "warning",
-        title: "Atención",
-        text: "Debes iniciar sesión para agregar productos al carrito"
-      }).then(() => {
-        this.router.navigate(['/auth/login']);
+    try {
+      await this.cSignalService.addItem(user.id!, productId, 1);
+      Swal.fire({ icon: 'success', 
+        title: `${productName} agregado al carrito` 
       })
-    } else {
-
-      const userId = this.aService.user()!.id!;
-      this.cartService.addItem(userId, this.product.id!, 1).subscribe({
-        next: () => {
-          this.showCartSuccessToast(this.product.name);
-        },
-        error: (err) => {
-          console.error(err)
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "No se pudo agregar el producto al carrito"
-          })
-        }
+    } catch {
+      Swal.fire({ icon: 'error', 
+        title: 'No se pudo agregar el producto' 
       })
     }
   }
 
-  onBuyNow(): void {
-    if (!this.aService.isLogged) {
-      Swal.fire({
-        icon: "warning",
-        title: "Atención",
-        text: "Debes iniciar sesión para comprar productos"
-      }).then(() => {
-        this.router.navigate(['/auth/login'])
-      })
-    } else {
-      const userId = this.aService.user()!.id!
+  async onBuyNow(productId: number) {
+    const user = this.aService.user()
+    if (!user) return
 
-      this.cartService.addItem(userId, this.product.id!, 1).subscribe({
-        next: () => {
-          this.router.navigate(['/cart'])
-        },
-        error: err => console.error(err)
+    try {
+      await this.cSignalService.addItem(user.id!, productId, 1);
+      this.router.navigate(['/cart'])
+    } catch {
+      Swal.fire({ 
+        icon: 'error', 
+        title: 'No se pudo agregar el producto' 
       })
     }
   }
-
 
   showCartSuccessToast = (productName: string) => {
     Swal.fire({
