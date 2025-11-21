@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { SearchBar } from '../search-bar/search-bar';
 import { UserAvatar } from '../user-avatar/user-avatar';
@@ -16,6 +16,8 @@ import { AuthService } from '../../services/auth-service';
 })
 export class Header {
 
+ public cartService = inject(CartService)
+
   mostrarNav = false
   mostrarBusquedaMovil = false
 
@@ -24,7 +26,7 @@ export class Header {
 
   constructor(
     private router: Router,
-    private cartService: CartService,
+    
     private authService: AuthService
   ) {
     this.verifyCart()
