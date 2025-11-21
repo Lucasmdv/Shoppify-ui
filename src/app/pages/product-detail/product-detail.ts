@@ -3,14 +3,19 @@ import { DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
-// Models y Services
-import { Product, ProductParams } from '../../models/product';
+// Models
+import { Product } from '../../models/product';
+
+// Services
+import { ProductService } from '../../services/product-service';
 import { CartService } from '../../services/cart-service';
-import { ProductCard } from '../../components/product-card/product-card';
 import { StorageService } from '../../services/storage-service';
 import { AuthService } from '../../services/auth-service';
 import { WishlistService } from '../../services/wishlist-service';
-import { CartSignal } from '../../services/cart-signal.service'; // Asegúrate de importar esto bien
+
+// Components
+import { ProductCard } from '../../components/product-card/product-card';
+import { ProductParams } from '../../models/filters/productParams';
 
 @Component({
   selector: 'app-product-detail',
@@ -25,24 +30,23 @@ export class ProductDetail implements OnInit {
   product!: Product;
   id?: number;
   userId?: number = this.aService.user()?.id || undefined;
-  
-
   relatedProducts: Product[] = [];
+  
   isHidden: boolean = false;
   isFavorite: boolean = false;
-  
-
   isQuantityOpen = false;
+
+  // Quantity Logic
   selectedQuantity = 1;
-  maxAvailable: number = 1;      
+  maxAvailable: number = 1;     
   dropdownOptions: number[] = []; 
+  cartQuantity = 0;
 
   constructor(
     private pService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
     private cartService: CartService,
-    private cSignalService: CartSignal, 
     private localStorage: StorageService,
     private wishlistService: WishlistService
   ) {}
@@ -61,6 +65,7 @@ export class ProductDetail implements OnInit {
         this.id = parsedId;
         this.checkFavorite();
         this.renderProduct(parsedId);
+      
       },
       error: () => this.router.navigate(['/'])
     });
@@ -74,10 +79,15 @@ export class ProductDetail implements OnInit {
       next: prod => {
         this.product = prod;
         this.selectedQuantity = 1;
+        this.cartQuantity = 0;
+          this.loadRelatedProducts();
 
-
-        this.loadRelatedProducts();
-        this.calculateStockFromSignal();
+        if (this.userId) {
+          this.calculateRemainingStock();
+        } else {
+          this.updateDropdownLogic(this.product.stock);
+          this.cartQuantity = 0;
+        }
       },
       error: (e) => {
         console.log(e);
@@ -86,41 +96,11 @@ export class ProductDetail implements OnInit {
     });
   }
 
-
-  calculateStockFromSignal() {
-
-    if (!this.userId) {
-      this.updateDropdownLogic(this.product.stock);
-      return;
-    }
-
-    const cart = this.cSignalService.cart(); 
-    
-    const foundItem = cart?.items.find(item => item.product?.id === this.product.id);
-
-    const remaining = foundItem 
-      ? this.product.stock - foundItem.quantity 
-      : this.product.stock;
-
-    this.updateDropdownLogic(remaining);
-  }
-
-  private updateDropdownLogic(limit: number) {
-    this.maxAvailable = Math.max(0, limit);
-    const optionsToShow = Math.min(this.maxAvailable, 6);
-    this.dropdownOptions = Array.from({ length: optionsToShow }, (_, i) => i + 1);
-  
-    if (this.selectedQuantity > this.maxAvailable) {
-        this.selectedQuantity = 1;
-    }
-  }
-
   loadRelatedProducts(): void {
     const filters: ProductParams = {
       page: 0,
-      size: 5 
+      size: 4
     };
-
 
     if (this.product?.categories?.length) {
       filters.categories = this.product.categories.join(',');
@@ -130,18 +110,24 @@ export class ProductDetail implements OnInit {
       next: products => {
         this.relatedProducts = (products.data || [])
           .filter(item => item.id !== this.product.id)
-          .slice(0, 4); 
+          .slice(0, 3);
       },
-      error: (e) => console.error('Error loading related products:', e)
+      error: (e) => {
+        console.error('Error loading related products:', e);
+      }
     });
   }
 
-  // --- Lógica Wishlist ---
+  // --- Lógica de Favoritos ---
 
   checkFavorite() {
-    if (!this.userId) return;
+    if (!this.userId) {
+      return;
+    }
     this.wishlistService.isFavorite(this.userId, this.id!).subscribe({
-      next: (value) => this.isFavorite = value
+      next: (value) => {
+        this.isFavorite = value;
+      },
     });
   }
 
@@ -154,7 +140,9 @@ export class ProductDetail implements OnInit {
       next: (response) => {
         const isRemoved = response === false;
         this.isFavorite = !isRemoved;
-        const message = isRemoved ? 'Eliminado de favoritos' : 'Agregado a favoritos';
+        const message = isRemoved
+          ? 'Producto eliminado de favoritos'
+          : 'Producto agregado a favoritos';
         this.showToast(message, 'success');
       },
       error: (err) => {
@@ -164,7 +152,39 @@ export class ProductDetail implements OnInit {
     });
   }
 
-  // --- UI Helpers & Dropdown ---
+  // --- Lógica de Cantidad y Stock ---
+
+  calculateRemainingStock() {
+    const currentUserId = this.localStorage.getUser()?.id || this.userId;
+
+    this.cartService.getCart(currentUserId).subscribe({
+      next: (cart) => {
+        const foundItem = cart.items.find(item => item.product?.id === this.product.id);
+
+  
+        const remaining = foundItem
+          ? this.product.stock - foundItem.quantity!
+          : this.product.stock;
+
+        this.cartQuantity = foundItem?.quantity ?? 0;
+        this.updateDropdownLogic(remaining);
+      },
+      error: (err) => {
+        console.error("Error checking cart:", err);
+  
+        this.cartQuantity = 0;
+        this.updateDropdownLogic(this.product.stock);
+      }
+    });
+  }
+
+
+  private updateDropdownLogic(limit: number) {
+    this.maxAvailable = Math.max(0, limit);
+    
+    const optionsToShow = Math.min(this.maxAvailable, 4);
+        this.dropdownOptions = Array.from({ length: optionsToShow }, (_, i) => i + 1);
+  }
 
   toggleQuantityDropdown() {
     this.isQuantityOpen = !this.isQuantityOpen;
@@ -178,28 +198,21 @@ export class ProductDetail implements OnInit {
   async selectCustomQuantity() {
     const { value } = await Swal.fire({
       title: "Elegir cantidad",
-      text: `Ingresa un valor entre 1 y ${this.maxAvailable}`,
       input: "number",
       inputAttributes: {
         min: "1",
         step: "1",
         max: this.maxAvailable.toString()
       },
-      inputValue: this.selectedQuantity,
+      inputValue: Math.max(this.selectedQuantity, 5),
       showCancelButton: true,
       confirmButtonText: "Aplicar",
       cancelButtonText: "Cancelar"
     });
 
-    if (!value) return;
     const parsed = Number(value);
-
-    if (Number.isNaN(parsed) || parsed < 1) return;
-
-    if (parsed > this.maxAvailable) {
-        this.showToast(`Solo hay ${this.maxAvailable} unidades disponibles`, 'error');
-        return;
-    }
+    if (!value || Number.isNaN(parsed)) return;
+    if (parsed < 1) return;
 
     this.selectedQuantity = this.normalizeQuantity(parsed);
     this.isQuantityOpen = false;
@@ -209,7 +222,7 @@ export class ProductDetail implements OnInit {
     return Math.max(1, Math.min(qty, this.maxAvailable));
   }
 
-  // --- Acciones de Carrito ---
+  // --- Acciones de Compra ---
 
   onAddToCart(): void {
     if (!this.product) return;
@@ -218,39 +231,61 @@ export class ProductDetail implements OnInit {
       Swal.fire({
         icon: "warning",
         title: "Atención",
-        text: "Debes iniciar sesión para agregar productos"
-      }).then(() => this.router.navigate(['/auth/login']));
-      return;
-    } 
-
-    const userId = this.aService.user()!.id!;
-    
-    this.cartService.addItem(userId, this.product.id!, this.selectedQuantity).subscribe({
-      next: () => {
-        this.showCartSuccessToast(this.product.name);
-
-        this.calculateStockFromSignal(); 
-      },
-      error: (err) => {
-        console.error(err);
-        this.showToast('No se pudo agregar al carrito', 'error');
+        text: "Debes iniciar sesión para agregar productos al carrito"
+      }).then(() => {
+        this.router.navigate(['/auth/login']);
+      });
+    } else {
+      const userId = this.aService.user()!.id!;
+      
+      if (this.selectedQuantity > this.maxAvailable) {
+          this.showToast('No hay suficiente stock disponible', 'error');
+          return;
       }
-    });
+
+      this.cartService.addItem(userId, this.product.id!, this.selectedQuantity).subscribe({
+        next: () => {
+          this.showCartSuccessToast(this.product.name);
+          this.calculateRemainingStock(); 
+        },
+        error: (err) => {
+          console.error(err);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "No se pudo agregar el producto al carrito"
+          });
+        }
+      });
+    }
   }
 
   onBuyNow(): void {
     if (!this.aService.isLogged) {
-      Swal.fire({ icon: "warning", title: "Inicia sesión" })
-        .then(() => this.router.navigate(['/auth/login']));
-      return;
+      Swal.fire({
+        icon: "warning",
+        title: "Atención",
+        text: "Debes iniciar sesión para comprar productos"
+      }).then(() => {
+        this.router.navigate(['/auth/login']);
+      });
+    } else {
+      const userId = this.aService.user()!.id!;
+      
+      if(this.maxAvailable < 1){
+        this.router.navigate(['/cart']);
+        return
+      }
+      this.cartService.addItem(userId, this.product.id!, this.selectedQuantity).subscribe({
+        next: () => {
+          this.router.navigate(['/cart']);
+        },
+        error: err => console.error(err)
+      });
     }
-    
-    const userId = this.aService.user()!.id!;
-    this.cartService.addItem(userId, this.product.id!, this.selectedQuantity).subscribe({
-      next: () => this.router.navigate(['/cart']),
-      error: err => console.error(err)
-    });
   }
+
+  // --- Helpers UI ---
 
   private showToast(title: string, icon: 'success' | 'error' | 'info' = 'success') {
     Swal.fire({
@@ -273,7 +308,9 @@ export class ProductDetail implements OnInit {
       timerProgressBar: true,
       icon: 'success',
       title: `"${productName}" agregado.`,
-      customClass: { popup: 'swal2-toast-dark' }
+      customClass: {
+        popup: 'swal2-toast-dark'
+      }
     });
   }
 }
