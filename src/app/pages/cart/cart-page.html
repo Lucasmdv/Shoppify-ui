@@ -2,135 +2,128 @@
 
 
   @if (items.length > 0) {
-    <div class="cart-layout">
-      <section class="items-panel">
-        <div class="panel-header">
-          <div class="panel-title">
-           <input
-  id="allCheckbox" 
-  type="checkbox" 
-  [checked]="allSelected" 
-  (change)="toggleAll()" 
-/>
-            <div>
-              <span>Productos</span>
-            </div>
+  <div class="cart-layout">
+    <section class="items-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <input id="allCheckbox" type="checkbox" [checked]="allSelected" (change)="toggleAll()" />
+          <div>
+            <span>Productos</span>
           </div>
-          <span class="panel-hint">Selecciona los que quieras finalizar</span>
         </div>
+      </div>
 
-        <div class="cart-list">
-          @for (item of items; track item.id) {
-            <div class="cart-item">
-              <label class="select-label">
-                <input type="checkbox"
-                  [checked]="selectedItems().has(item.id!)"
-                  (change)="toggleSelection(item.id!, $any($event.target).checked)" />
-              </label>
-
-              <div class="item-body">
-                <div class="item-media">
-                  <img
-                    [src]="item.product?.imgURL"
-                    [alt]="item.product?.name || 'Producto'"
-                    (click)="goToDetailProduct(item.product?.id)"
-                    >
-                </div>
-                <div class="item-info">
-                  <div class="item-title">{{ item.product?.name }}</div>
-
-                  <div class="price-row">
-                    @if (item.product?.discountPercentage ) {
-                      <span class="price-original">{{ item.product?.price | currency}}</span>
-                      <span class="price-final">{{ item.product?.priceWithDiscount ?? item.product?.price | currency}}</span>
-                      <span class="discount-pill">-{{ item.product?.discountPercentage }}%</span>
-                    } @else {
-                      <span class="price-final">{{ item.product?.price | currency}}</span>
-                    }
-                  </div>
-                  
-                  @if (item.product) {
-                    <div class="installment">
-                    <button class="remove-btn" (click)="removeFromCart(item.id!)">Eliminar</button>
-                    </div>
-                  }
-                </div>
-              </div>
-
-              <div class="cart-controls">
-                <div class="quantity-control">
-                  <button type="button" [disabled]="item.quantity! == 1" (click)="changeQuantity(item, -1)">-</button>
-                  <input type="number" [value]="item.quantity" readonly />
-                  <button type="button" [disabled]="item.quantity! == item.product?.stock!" (click)="changeQuantity(item, 1)">+</button>
-                </div>
-                <span class="stock-note">{{ item.product?.stock}} disponibles</span>
-             
-              </div>
-
-              <div class="item-subtotal">
-                <strong>{{ item.subtotal | currency }}</strong>
-              </div>
-            </div>
-          }
-        </div>
-
-    
-      </section>
-
-      <aside class="summary-card">
-        <h3>Resumen de compra</h3>
-
-        <div class="summary-block">
-          @if (products() > 0) {
-            <div class="summary-row">
-              <span>Productos ({{ products() }})</span>
-              <span>{{ total | currency }}</span>
-            </div>
-          }
-        </div>
-
-        <form [formGroup]="checkoutForm" class="checkout-form">
-          <label>
-            Metodo de pago
-            <select formControlName="paymentMethod" required>
-              <option value="CASH">Efectivo</option>
-              <option value="CREDIT">Tarjeta</option>
-              <option value="DEBIT">Debito</option>
-              <option value="DIGITAL">Pago digital</option>
-            </select>
+      <div class="cart-list">
+        @for (item of items; track item.id) {
+        <div class="cart-item">
+          <label class="select-label">
+            <input type="checkbox" [checked]="selectedItems().has(item.id!)"
+              (change)="toggleSelection(item.id!, $any($event.target).checked)" />
           </label>
 
-          @if (permits.includes("ADMIN")) {
-            <label>
-              Tipo de transaccion
-              <select formControlName="type" required defaultValue="SALE">
-                <option value="PURCHASE">Compra</option>
-                <option value="SALE">Venta</option>
-       
-              </select>
-            </label>
+          <div class="item-body">
+            <div class="item-media">
+              <img [src]="item.product?.imgURL" [alt]="item.product?.name || 'Producto'"
+                (click)="goToDetailProduct(item.product?.id)">
+            </div>
+            <div class="item-info">
+              <div class="item-title">{{ item.product?.name }}</div>
 
-            <label class="description">
-              Descripcion
-              <textarea formControlName="description" rows="2" placeholder="Notas de la venta..."></textarea>
-            </label>
-          }
-        </form>
+              <div class="price-row">
+                @if (item.product?.discountPercentage ) {
+                <span class="price-original">{{ item.product?.price | currency}}</span>
+                <span class="price-final">{{ item.product?.priceWithDiscount ?? item.product?.price | currency}}</span>
+                <span class="discount-pill">-{{ item.product?.discountPercentage }}%</span>
+                } @else {
+                <span class="price-final">{{ item.product?.price | currency}}</span>
+                }
+              </div>
 
-        <div class="summary-total">
-          <span>Total</span>
-          <span class="total-amount">{{ total | currency }}</span>
+              @if (item.product) {
+              <div class="installment">
+                <button class="remove-btn" (click)="removeFromCart(item.id!)">Eliminar</button>
+              </div>
+              }
+            </div>
+          </div>
+
+          <div class="cart-controls">
+            <div class="quantity-control">
+              <button type="button" [disabled]="item.quantity! == 1" (click)="changeQuantity(item, -1)">-</button>
+              <input type="number" [value]="item.quantity" readonly />
+              <button type="button" [disabled]="item.quantity! == item.product?.stock!"
+                (click)="changeQuantity(item, 1)">+</button>
+            </div>
+            <span class="stock-note">{{ item.product?.stock}} disponibles</span>
+
+          </div>
+
+          <div class="item-subtotal">
+            <strong>{{ item.subtotal | currency }}</strong>
+          </div>
         </div>
+        }
+      </div>
 
-        <button (click)="onSubmit()" [disabled]="checkoutForm.invalid || selectedItems().size === 0" class="checkout-btn">
-          Continuar compra
-        </button>
-      </aside>
-    </div>
+
+    </section>
+
+    <aside class="summary-card">
+      <h3>Resumen de compra</h3>
+
+      <div class="summary-block">
+        @if (products() > 0) {
+        <div class="summary-row">
+          <span>Productos ({{ products() }})</span>
+          <span>{{ total | currency }}</span>
+        </div>
+        }
+      </div>
+
+      <form [formGroup]="checkoutForm" class="checkout-form">
+        <label>
+          Metodo de pago
+          <select formControlName="paymentMethod" required>
+            <option value="CASH">Efectivo</option>
+            <option value="CREDIT">Tarjeta</option>
+            <option value="DEBIT">Debito</option>
+            <option value="DIGITAL">Pago digital</option>
+          </select>
+        </label>
+
+        @if (permits.includes("ADMIN")) {
+        <label>
+          Tipo de transaccion
+          <select formControlName="type" required defaultValue="SALE">
+            <option value="PURCHASE">Compra</option>
+            <option value="SALE">Venta</option>
+
+          </select>
+        </label>
+
+        <label class="description">
+          Descripcion
+          <textarea formControlName="description" rows="2" placeholder="Notas de la venta..."></textarea>
+        </label>
+        }
+      </form>
+
+      <div class="summary-total">
+        <span>Total</span>
+        <span class="total-amount">{{ total | currency }}</span>
+      </div>
+
+      <button (click)="onSubmit()" [disabled]="checkoutForm.invalid || selectedItems().size === 0" class="checkout-btn">
+        Continuar compra
+      </button>
+
+      <app-mercadopago-button [cartItems]="items"></app-mercadopago-button>
+    </aside>
+  </div>
   } @else {
-    <div class="empty-cart">
-      <h3>Tu carrito esta vacio</h3>
-      <p>Agrega algunos productos para comenzar.</p>
-    </div>
+  <div class="empty-cart">
+    <h3>Tu carrito esta vacio</h3>
+    <p>Agrega algunos productos para comenzar.</p>
+  </div>
   }
 </div>

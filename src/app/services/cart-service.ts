@@ -57,7 +57,7 @@ export class CartService {
   }
 
   updateItemQuantity(userId: number, itemId: number, quantity: number) {
-    return this.http.put<Cart>(`${this.API_URL}/${userId}/cart/items/${itemId}`, { quantity }).pipe(
+    return this.http.patch<Cart>(`${this.API_URL}/${userId}/cart/items/${itemId}`, { quantity }).pipe(
       tap(updatedCart => this._cartState.set(updatedCart))
     );
   }

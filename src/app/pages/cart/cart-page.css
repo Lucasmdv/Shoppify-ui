@@ -500,6 +500,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    max-width: none;
   }
 
   .item-subtotal {
@@ -526,5 +527,53 @@
   .quantity-control {
     width: 100%;
     justify-content: space-between;
+  }
+}
+
+@media (max-width: 540px) {
+  .cart-container {
+    padding: 0.85rem;
+    margin: 0.5rem;
+  }
+
+  .cart-item {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "check product"
+      "controls controls"
+      "subtotal subtotal";
+    gap: 0.65rem;
+    padding: 0.85rem;
+  }
+
+  .item-body {
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 0.55rem;
+    align-items: flex-start;
+  }
+
+  .item-media {
+    width: 82px;
+    height: 82px;
+  }
+
+  .price-row {
+    flex-wrap: wrap;
+  }
+
+  .cart-controls {
+    max-width: none;
+    width: 100%;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .quantity-control {
+    width: 100%;
+  }
+
+  .item-subtotal {
+    white-space: normal;
+    justify-self: start;
   }
 }
