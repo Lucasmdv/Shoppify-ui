@@ -1,0 +1,75 @@
+<c-dropdown [autoClose]="'outside'" class="notification-dropdown">
+  <button
+    type="button"
+    cDropdownToggle
+    [caret]="false"
+    aria-label="Notifications"
+    class="notification-trigger">
+    @if (getUnreadNotifications() > 0) {
+      <c-badge color="danger" position="top-end" shape="rounded-pill" >{{ getUnreadNotifications() }}</c-badge>
+    }
+    <i class="material-icons">notifications_none</i>
+  </button>
+
+  <ul cDropdownMenu class="notification-menu">
+    <li class="menu-header">
+      <div class="title">
+        <p class="headline">Notificaciones</p>
+      </div>
+   
+    </li>
+
+    <li class="tab-row">
+      <button
+        type="button"
+        (click)="getGeneralNotifications()"
+        [class.active]="notificationType === 'general'">
+        Generales
+        <span class="material-icons tab-icon" aria-hidden="true">chat_bubble_outline</span>
+      </button>
+      <button
+        type="button"
+        (click)="getProductNotifications()"
+        [class.active]="notificationType === 'product'">
+        Tiendas que sigo
+        <span class="material-icons tab-icon" aria-hidden="true">campaign</span>
+      </button>
+    </li>
+
+    <li class="panel-body">
+      @if (selectedNotifications.length > 0) {
+        <ul class="notification-list">
+          @for (notification of selectedNotifications; track $index) {
+            <li [class.unread]="!notification.read">
+              <span class="indicator" aria-hidden="true"></span>
+              <div class="notification-copy">
+                <p class="message">{{ notification.message }}</p>
+                <span class="meta">Hace unos minutos</span>
+              </div>
+            </li>
+          }
+        </ul>
+      }
+      @else if (notificationType === 'product') {
+        <div class="empty-state">
+          <span class="empty-icon" aria-hidden="true">
+            <i class="material-icons">notifications_active</i>
+          </span>
+          <p class="empty-title">No tienes alertas de productos</p>
+          <p class="empty-copy">
+            Agrega productos a favoritos para recibir notificaciones de ofertas, stock y descuentos.
+          </p>
+        </div>
+      }
+      @else {
+        <div class="empty-state">
+          <span class="empty-icon" aria-hidden="true">
+            <i class="material-icons">notifications_none</i>
+          </span>
+          <p class="empty-title">No tienes notificaciones</p>
+          <p class="empty-copy">Aprovecha para descubrir productos increibles.</p>
+        </div>
+      }
+    </li>
+  </ul>
+</c-dropdown>

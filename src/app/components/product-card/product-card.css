@@ -227,11 +227,35 @@
 
 @media (max-width: 640px) {
   #card {
-    min-height: 280px;
+    min-height: 240px;
+    padding: 0.85rem;
+    border-radius: 1rem;
   }
 
   .card-media {
     border-radius: 0.9rem;
+    padding-top: 70%;
+  }
+
+  .product-name {
+    font-size: 0.95rem;
+    min-height: 2.1rem;
+  }
+
+  .price {
+    font-size: 1.2rem;
+  }
+
+  .installment {
+    font-size: 0.85rem;
+  }
+
+  .card-footer {
+    gap: 0.5rem;
+  }
+
+  .price-row {
+    gap: 0.35rem;
   }
 }
 

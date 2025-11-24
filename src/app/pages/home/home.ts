@@ -32,7 +32,7 @@ export class Home implements OnInit {
   carouselItems:Carouselitem[] = [];
   params : globalParams = {
       page:0,
-      size:5,
+      size:6,
     }
   
 
