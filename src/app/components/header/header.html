@@ -40,7 +40,7 @@
 
       <button type="button" class="icon-button" aria-label="Carrito" routerLink="/cart" cButton color="primary" class="position-relative m-1">
         <img src="image/carrito.png" alt="">
-        @if(itemsInCart() != 0){<c-badge color="danger" position="top-end" shape="rounded-pill">{{ itemsInCart() }}</c-badge>
+        @if(cartService.totalItems() > 0){<c-badge color="danger" position="top-end" shape="rounded-pill">{{ cartService.totalItems() }}</c-badge>
         <span class="visually-hidden">Products in cart</span>}
       </button>
     </div>

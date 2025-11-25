@@ -35,10 +35,31 @@
           </div>
         }
 
+        @if (userId && cartQuantity > 0) {
+          <div class="cart-quantity-note">
+         
+              Tienes {{ cartQuantity }} unidad{{ cartQuantity !== 1 ? 'es' : '' }} en tu carrito
+            
+            
+          </div>
+        }
+
   
       </div>
 
       <div class="product-purchase-section">
+        <button
+          type="button"
+          class="favorite-icon-button"
+          [class.is-active]="isFavorite"
+          (click)="toggleFavorite()"
+          [attr.aria-pressed]="isFavorite"
+          [attr.aria-label]="isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'">
+          <svg class="favorite-heart" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20.25 5.96a4.41 4.41 0 0 0-6.19 0L12 8.02l-2.06-2.06a4.41 4.41 0 0 0-6.19 0 4.44 4.44 0 0 0 0 6.25l2.06 2.06L12 21l6.19-6.69 2.06-2.06a4.44 4.44 0 0 0 0-6.25Z" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
         @if (isHidden) {
         <div class="hidden-product-message">
           <span>Este producto no se encuentra disponible en este momento.</span>
@@ -73,6 +94,38 @@
           <span class="stock-available">Stock disponible ({{ product.stock }} unidades)</span>
         </div>
 
+        @if (maxAvailable > 0) {
+                  <div class="quantity-selector">
+          <button class="quantity-trigger" type="button" (click)="toggleQuantityDropdown()">
+            <span class="qty-label">Cantidad:</span>
+            <span class="qty-value">{{ selectedQuantity }} unidad{{ selectedQuantity > 1 ? 'es' : '' }}</span>
+            <span class="chevron" [class.open]="isQuantityOpen">&#9656;</span>
+            <span class="qty-stock">{{maxAvailable }} disponibles</span>
+          </button>
+
+        
+          @if (isQuantityOpen) {
+            <div class="quantity-menu">
+              @for (opt of dropdownOptions; track opt) {
+                <button type="button" class="quantity-option" (click)="selectQuantity(opt)">
+                  {{ opt }} unidad{{ opt > 1 ? 'es' : '' }}
+                </button>
+              }
+              
+             
+            @if (maxAvailable > 4) {
+               <div class="menu-divider"></div>
+  <button type="button" class="quantity-option custom" (click)="selectCustomQuantity()">
+                Mas de {{ dropdownOptions.length ? dropdownOptions[dropdownOptions.length - 1] : 6 }} unidades
+              </button>
+              }
+            </div>
+          }
+        </div>
+        }
+
+
+
         <div class="actions">
           <button class="btn btn-buy" (click)="onBuyNow()">
             <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -82,6 +135,7 @@
             </svg>
             Comprar ahora
           </button>
+          @if (maxAvailable > 0) {
           <button class="btn btn-cart" (click)="onAddToCart()">
             <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"></path>
@@ -90,6 +144,7 @@
             </svg>
             Agregar al carrito
           </button>
+        }
         </div>
       }
       </div>
@@ -98,11 +153,20 @@
 
     <!-- Related Products Section -->
     @if (relatedProducts.length > 0) {
-      <div class="related-products-section">
-        <h2 class="section-title">Productos relacionados</h2>
-        <div class="products-grid">
+      <div class="related-products-strip">
+        <div class="related-header">
+          <div>
+            <h2 class="related-title">Productos relacionados</h2>
+          </div>
+        </div>
+        <div class="related-grid">
           @for (relatedProduct of relatedProducts; track relatedProduct.id) {
-            <app-product-card [product]="relatedProduct"></app-product-card>
+            <app-product-card
+              [product]="relatedProduct"
+              [isMostrarCuotas]="true"
+              [isMostrarDescuento]="true"
+              [isMostrarStock]="false"
+              [isMostrarDescripcion]="false"></app-product-card>
           }
         </div>
       </div>

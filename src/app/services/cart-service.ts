@@ -1,123 +1,83 @@
-import { Injectable, signal, computed } from '@angular/core';
-import { Product } from '../models/product';
-import { ProductService } from './product-service';
-import Swal from 'sweetalert2';
-import { SaleRequest } from '../models/sale';
+import { inject, Injectable, signal, computed } from '@angular/core';
+import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Cart } from '../models/cart/cartResponse';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  cartItems = signal<Product[]>([])
-  itemsInCart = computed(() => this.cartItems().length)
+  private http = inject(HttpClient);
+  readonly API_URL = `${environment.apiUrl}/user`;
 
-  total = computed(() =>
-    this.cartItems().reduce((sum, item) => sum + item.priceWithDiscount! * item.stock, 0)
-  )
-
-  constructor(private productService: ProductService) { }
+  private _cartState = signal<Cart | null>(null);
 
 
-  addToCart(product: Product) {
-    this.productService.get(product.id).subscribe({
-      next: updatedProduct => {
-        if (updatedProduct.stock > 0) {
-          const items = [...this.cartItems()];
-          const existing = items.find(i => i.id === product.id)
+  public cart = this._cartState.asReadonly();
 
-          if (existing) {
-            if (updatedProduct.stock > existing.stock) {
-              existing.stock++
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "El producto no tiene stock disponible"
-              });
-            }
-          } else {
-            items.push({ ...product, stock: 1 })
-          }
+  public totalItems = computed(() => {
+    const currentCart = this._cartState();
+    if (!currentCart || !currentCart.items) return 0;
+    return currentCart.items.reduce((acc, item) => acc + item.quantity!, 0);
+  });
 
-          this.cartItems.set(items)
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "El producto no tiene stock disponible"
-          });
-        }
-      },
-      error: err => console.error('Error verificando stock:', err)
-    })
+
+  public totalPrice = computed(() => {
+    const currentCart = this._cartState();
+    return currentCart?.total || 0;
+  });
+
+
+
+  getCart(userId: number) {
+    return this.http.get<Cart>(`${this.API_URL}/${userId}/cart`).pipe(
+      tap(cartData => this._cartState.set(cartData)) 
+    );
   }
 
-  updateQuantity(item: Product, newQty: number): Promise<Product[]> {
-    return new Promise((resolve, reject) => {
-      const quantity = Number(newQty)
-
-      if (quantity < 1) {
-        reject(new Error("La cantidad mínima es 1"))
-        return
-      }
-
-      this.productService.get(item.id).subscribe({
-        next: (updatedProduct) => {
-          if (quantity > updatedProduct.stock) {
-            reject(new Error("Solo hay " + updatedProduct.stock + " unidades disponibles"))
-          } else {
-            const updatedCart = this.cartItems().map((i) =>
-              i.id === item.id ? { ...i, stock: quantity } : i
-            )
-            this.cartItems.set(updatedCart)
-            resolve(updatedCart)
-          }
-        },
-        error: (err) => {
-          console.error("Error verificando stock:", err)
-          reject(new Error("No se pudo verificar el stock del producto"))
-        },
-      })
-    })
+  clearCart(userId: number) {
+    return this.http.delete<Cart>(`${this.API_URL}/${userId}/cart/items`).pipe(
+      tap(emptyCart => this._cartState.set(emptyCart))
+    );
   }
 
-  removeFromCart(productId: number) {
-    this.cartItems.set(this.cartItems().filter(i => i.id !== productId))
+  addItem(userId: number, productId: number, quantity: number) {
+    const cartRequest = { productId, quantity };
+    return this.http.post<Cart>(`${this.API_URL}/${userId}/cart/items`, cartRequest).pipe(
+      tap(updatedCart => this._cartState.set(updatedCart)) 
+    );
   }
 
-  removeItemsByIds(productIds: number[]) {
-    const idsToRemove = new Set(productIds)
-    this.cartItems.update(items => items.filter(i => !idsToRemove.has(i.id)))
+  removeItem(userId: number, itemId: number) {
+    return this.http.delete<Cart>(`${this.API_URL}/${userId}/cart/items/${itemId}`).pipe(
+      tap(updatedCart => this._cartState.set(updatedCart))
+    );
   }
 
-  clearCart() {
-    this.cartItems.set([])
+  updateItemQuantity(userId: number, itemId: number, quantity: number) {
+    return this.http.put<Cart>(`${this.API_URL}/${userId}/cart/items/${itemId}`, { quantity }).pipe(
+      tap(updatedCart => this._cartState.set(updatedCart))
+    );
   }
 
-  prepareSaleRequest(formValue: any, userId: number | undefined, products: Product[]): SaleRequest | null {
-    if (!userId) {
-      console.error('❌ No hay usuario logueado. No se puede preparar la venta.');
-      return null;
-    }
 
-    if (!products || !products.length) {
-      console.warn('⚠️ No hay productos para la venta.');
-      return null;
-    }
+  prepareSaleRequest(formValue: any, userId: number, items: any[]): any {
+    if (!items || items.length === 0) return null;
 
-    const detailTransactions = products.map(item => ({
-      productID: item.id,
-      quantity: item.stock
-    }))
+    const detailTransactions = items.map(i => ({
+      productID: i.product?.id ?? i.productId ?? i.id,
+      quantity: i.quantity || 1
+    }));
 
     return {
       clientId: userId,
       transaction: {
-        paymentMethod: formValue.paymentMethod || "CASH",
+        paymentMethod: formValue.paymentMethod || 'CASH',
         detailTransactions,
-        description: formValue.description || "Sin descripción"
+        description: formValue.description || ''
       }
-    }
+    };
   }
 }

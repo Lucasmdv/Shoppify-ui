@@ -1,16 +1,25 @@
 @if (product) {
-  <article id="card" (click)="getDetails(product.id)">
-    @if (product.imgURL) {
-      <img [src]="product.imgURL" [alt]="product.name || 'Producto'">
-    }
-    @else {
-      <img
-        [src]="'https://placehold.co/600x400?text=' + (product.name || 'Producto')"
-        [alt]="product.name || 'Producto'">
-    }
+  <article
+    id="card"
+    (click)="getDetails(product.id)"
+    [class.is-horizontal]="isHorizontal">
+
+    <div class="card-media">
+      @if (product.imgURL) {
+        <img [src]="product.imgURL" [alt]="product.name || 'Producto'">
+      }
+      @else {
+        <img
+          [src]="'https://placehold.co/600x400?text=' + (product.name || 'Producto')"
+          [alt]="product.name || 'Producto'">
+      }
+    </div>
 
     <div class="card-body">
       <h3 class="product-name">{{ product.name }}</h3>
+      @if (isHorizontal && isMostrarDescripcion && product.description) {
+        <p class="product-description">{{ product.description }}</p>
+      }
 
       <div class="card-footer">
         <div class="pricing">

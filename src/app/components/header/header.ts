@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { SearchBar } from '../search-bar/search-bar';
 import { UserAvatar } from '../user-avatar/user-avatar';
@@ -6,6 +6,7 @@ import { User } from '../../models/auth/user';
 import { ImageFallbackDirective } from '../../core/directives/image-fallback';
 import { BadgeComponent, ButtonDirective } from '@coreui/angular';
 import { CartService } from '../../services/cart-service';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-header',
@@ -13,17 +14,34 @@ import { CartService } from '../../services/cart-service';
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
-export class Header{
+export class Header {
 
+ public cartService = inject(CartService)
 
-   constructor(private router:Router){}
- 
-  private cService = inject(CartService)
+  mostrarNav = false
+  mostrarBusquedaMovil = false
 
-  mostrarNav = false;
-  mostrarBusquedaMovil = false;
-  user! : User
-  itemsInCart = this.cService.itemsInCart
+  user!: User
+  itemsInCart = 0
+
+  constructor(
+    private router: Router,
+    
+    private authService: AuthService
+  ) {
+    this.verifyCart()
+  }
+
+  verifyCart(){
+    if (this.authService.user()) {
+      this.user = this.authService.user()!
+      this.cartService.getCart(this.user.id!).subscribe({
+        next: (cart: any) => {
+          this.itemsInCart = cart.items.length
+        }
+      })
+    }
+  }
 
   toggleNav() {
     this.mostrarNav = !this.mostrarNav;
@@ -48,12 +66,4 @@ export class Header{
       },
     })
   }
-
-
-
-
-
-  
 }
-
-

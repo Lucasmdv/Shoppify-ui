@@ -81,6 +81,7 @@
                 [isMostrarCuotas]="true"
                 [isMostrarStock]="true"
                 [isMostrarDescuento]="true"
+              
               ></app-product-card>
 
               @if (auth.permits().includes('ADMIN') && editMode) {
