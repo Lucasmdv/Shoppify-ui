@@ -1,7 +1,7 @@
 
 export interface SalesParams {
   saleId?: string;
-  clientId?: string;
+  userId?: string;
   transactionId?: string;
   page?: number;
   size?: number;

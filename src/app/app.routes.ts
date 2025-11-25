@@ -45,6 +45,7 @@ export const routes: Routes = [
     children: [
       { path: 'home', component: Home },
       { path: 'products', component: ProductsPage },
+      { path: 'products/page/:page', component: ProductsPage },
       { path: 'products/details/:id', component: ProductDetail },
       { path: 'products/search/:q', component: ProductsPage },
       { path: 'categories', component: CategoriesPage },

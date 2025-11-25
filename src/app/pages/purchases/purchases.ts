@@ -41,7 +41,7 @@ export class Purchases implements OnInit {
     paymentMethod: '',
     minPrice: undefined,
     maxPrice: undefined,
-    clientId: this.user()?.id?.toString() ?? '',
+    userId: this.user()?.id?.toString() ?? '',
     page: this.currentPage,
     size: this.purchasesXPage
   }
@@ -52,7 +52,7 @@ export class Purchases implements OnInit {
 
   toggleAdminView(): void {
     this.adminView = !this.adminView
-    this.filters.clientId = this.adminView ? '' : this.user()?.id?.toString() ?? ''
+    this.filters.userId = this.adminView ? '' : this.user()?.id?.toString() ?? ''
     this.currentPage = 0
     this.loadTransactions()
   }
@@ -163,7 +163,7 @@ export class Purchases implements OnInit {
       paymentMethod: '',
       minPrice: undefined,
       maxPrice: undefined,
-      clientId: this.adminView ? '' : this.user()?.id?.toString() ?? '',
+      userId: this.adminView ? '' : this.user()?.id?.toString() ?? '',
       page: 0,
       size: this.purchasesXPage
     }

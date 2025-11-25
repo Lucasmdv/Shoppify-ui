@@ -18,6 +18,8 @@ import { Page } from '../../models/hal/page';
 import { PaginationModule } from '@coreui/angular';
 import { CreateProduct } from '../../services/create-product';
 import { StorageService } from '../../services/storage-service';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-products-page',
@@ -62,8 +64,10 @@ export class ProductsPage {
   ) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const filters = this.parseFilters(params);
+    combineLatest([this.route.params, this.route.queryParams]).pipe(
+      map(([params, queryParams]) => ({...params, ...queryParams}))
+    ).subscribe(allParams => {
+      const filters = this.parseFilters(allParams);
       this.currentFilters = filters;
 
       this.loadHiddenIdsFromStorage();
@@ -202,9 +206,29 @@ export class ProductsPage {
 
 
   private navigateWithFilters(filters: ProductParams): void {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: this.cleanParams(filters)
+    const isSearchRoute = this.route.snapshot.paramMap.has('q');
+
+    if (isSearchRoute) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: this.cleanParams(filters)
+      });
+      return;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { page, size, ...queryParams } = this.cleanParams(filters);
+    const pageNumber = Number(page);
+
+    let path: any[];
+    if (pageNumber > 0) {
+      path = ['/products', 'page', pageNumber];
+    } else {
+      path = ['/products'];
+    }
+
+    this.router.navigate(path, {
+      queryParams
     });
   }
 
@@ -251,25 +275,25 @@ export class ProductsPage {
   }
 
 
- nextPage(){
+  nextPage() {
     if (this.productsPage && this.productsPage.number < (this.productsPage.totalPages - 1)) {
-      
       this.currentFilters.page = this.productsPage.number + 1;
       this.navigateWithFilters(this.currentFilters);
     }
   }
 
-  prevPage(){
+  prevPage() {
     if (this.productsPage && this.productsPage.number > 0) {
-      
       this.currentFilters.page = this.productsPage.number - 1;
       this.navigateWithFilters(this.currentFilters);
     }
   }
 
-  goToPage(page: number){
-    this.currentFilters.page = page
-    this.navigateWithFilters(this.currentFilters)
+  goToPage(page: number) {
+    if (page >= 0 && page < this.productsPage.totalPages) {
+      this.currentFilters.page = page;
+      this.navigateWithFilters(this.currentFilters);
+    }
   }
 
 
