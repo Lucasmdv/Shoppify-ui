@@ -165,41 +165,6 @@
   
 }
 
-.buyer-info-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.buy-info-header {
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 2px solid rgba(91, 77, 238, 0.2);
-}
-
-.view-client-btn{
-  background: none;
-  border: 1px solid rgba(0,0,0,0.08);
-  padding: 6px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: all 0.2s ease;
-}
-
-.view-client-btn:hover {
-  background-color: rgba(91, 77, 238, 0.1);
-  border-color: #5b4dee;
-}
-
-.client-details{
-  margin-top: 8px;
-  padding: 10px;
-  background: #fbfbff;
-  border-radius: 8px;
-  border: 1px solid rgba(91,77,238,0.06);
-}
-
 @media (max-width: 800px) {
   .purchases-container {
     max-width: 100vw; /* ocupa todo el ancho */
