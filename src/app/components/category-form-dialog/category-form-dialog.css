@@ -16,6 +16,13 @@
     padding: 1rem;
 }
 
+:host ::ng-deep app-category-form .form-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
 .dialog-footer {
     width: 100%;
     padding: 1rem;

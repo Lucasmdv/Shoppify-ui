@@ -1,171 +1,168 @@
 <section class="form-wrapper">
     <article class="product-preview">
-             <app-product-card 
-             [product]="previewProduct"  
-             [isMostrarCuotas]="true" 
-             [isMostrarDescuento]="true" 
-             [isMostrarStock]="true" 
-             [isNavegar]="false">
-            </app-product-card>
+        <app-product-card [product]="previewProduct" [isMostrarCuotas]="true" [isMostrarDescuento]="true"
+            [isMostrarStock]="true" [isNavegar]="false">
+        </app-product-card>
     </article>
 
-    <form [formGroup]="form" id="product-form" >
-    <!-- Name -->
-    <fieldset>
-        <label for="name-input">Nombre*</label>
-        <input type="text" id="name-input" formControlName="name">
+    <form [formGroup]="form" id="product-form">
+        <!-- Name -->
+        <fieldset>
+            <label for="name-input">Nombre*</label>
+            <input type="text" id="name-input" formControlName="name">
 
-        @if(controls['name'].dirty) {
+            @if(controls['name'].dirty) {
             @if (controls['name'].hasError("required") || controls['name'].hasError("pattern")) {
-                <h5>El nombre es obligatorio</h5>
+            <h5>El nombre es obligatorio</h5>
             }@else if (controls['name'].hasError("minlength") || controls['name'].hasError("maxlength")) {
-                <h5>El nombre debe tener entre 2 y 50 caracteres</h5>
+            <h5>El nombre debe tener entre 2 y 50 caracteres</h5>
             }
-        }
-    </fieldset>
+            }
+        </fieldset>
 
-    <!-- SKU -->
-    <fieldset>
-        <label for="sku-input">SKU*</label>
-        <input type="text" id="sku-input" formControlName="sku">
+        <!-- SKU -->
+        <fieldset>
+            <label for="sku-input">SKU*</label>
+            <input type="text" id="sku-input" formControlName="sku">
 
-        @if(controls['sku'].dirty) {
+            @if(controls['sku'].dirty) {
             @if (controls['sku'].hasError("required") || controls['sku'].hasError("pattern")) {
-                <h5>El SKU es obligatorio</h5>
+            <h5>El SKU es obligatorio</h5>
             }@else if (controls['sku'].hasError("minlength") || controls['sku'].hasError("maxlength")) {
-                <h5>El SKU debe tener entre 6 y 12 caracteres</h5>
+            <h5>El SKU debe tener entre 6 y 12 caracteres</h5>
             }
-        }
-    </fieldset>
+            }
+        </fieldset>
 
-    <!-- Bar Code -->
-    <fieldset>
-        <label for="barcode-input">Codigo de Barras*</label>
-        <input type="text" id="barcode-input" formControlName="barcode">
+        <!-- Bar Code -->
+        <fieldset>
+            <label for="barcode-input">Codigo de Barras*</label>
+            <input type="text" id="barcode-input" formControlName="barcode">
 
-        @if(controls['barcode'].dirty) {
+            @if(controls['barcode'].dirty) {
             @if (controls['barcode'].hasError("required") || controls['barcode'].hasError("pattern")) {
-                <h5>El barcode es obligatorio</h5>
+            <h5>El barcode es obligatorio</h5>
             }@else if (controls['barcode'].hasError("minlength") || controls['barcode'].hasError("maxlength")) {
-                <h5>El barcode debe tener 12 caracteres</h5>
+            <h5>El barcode debe tener 12 caracteres</h5>
             }
-        }
-    </fieldset>
+            }
+        </fieldset>
 
-    <!-- Brand -->
-    <fieldset>
-        <label for="brand-input">Marca*</label>
-        <input type="text" id="brand-input" formControlName="brand">
+        <!-- Brand -->
+        <fieldset>
+            <label for="brand-input">Marca*</label>
+            <input type="text" id="brand-input" formControlName="brand">
 
-        @if(controls['brand'].dirty) {
+            @if(controls['brand'].dirty) {
             @if (controls['brand'].hasError("required") || controls['brand'].hasError("pattern")) {
-                <h5>La marca es obligatoria</h5>
+            <h5>La marca es obligatoria</h5>
             }@else if (controls['brand'].hasError("minlength") || controls['brand'].hasError("maxlength")) {
-                <h5>La marca debe tener entre 2 y 50 caracteres</h5>
+            <h5>La marca debe tener entre 2 y 50 caracteres</h5>
             }
-        }
-    </fieldset>
+            }
+        </fieldset>
 
-    <!-- Stock -->
-    <fieldset>
-        <label for="stock-input">Stock*</label>
-        <input type="number" id="stock-input" formControlName="stock">
+        <!-- Stock -->
+        <fieldset>
+            <label for="stock-input">Stock*</label>
+            <input type="number" id="stock-input" formControlName="stock">
 
-        @if(controls['stock'].dirty) {
+            @if(controls['stock'].dirty) {
             @if (controls['stock'].hasError("required")) {
-                <h5>El stock es obligatorio</h5>
+            <h5>El stock es obligatorio</h5>
             }@else if (controls['stock'].hasError("max") || controls['stock'].hasError("min")) {
-                <h5>El stock tiene que tener un valor entre 0 y 100.000</h5>
+            <h5>El stock tiene que tener un valor entre 0 y 100.000</h5>
             }
-        }
-    </fieldset>
+            }
+        </fieldset>
 
-    <!-- Price -->
-    <fieldset>
-        <label for="price-input">Precio*</label>
-        <input type="number" id="price-input" formControlName="price">
+        <!-- Price -->
+        <fieldset>
+            <label for="price-input">Precio*</label>
+            <input type="number" id="price-input" formControlName="price">
 
-        @if(controls['price'].dirty) {
+            @if(controls['price'].dirty) {
             @if (controls['price'].hasError("required")) {
-                <h5>El precio es obligatorio</h5>
+            <h5>El precio es obligatorio</h5>
             }@else if (controls['price'].hasError("max") || controls['price'].hasError("min")) {
-                <h5>El precio debe tener un valor entre $0 y $100.000.000</h5>
+            <h5>El precio debe tener un valor entre $0 y $100.000.000</h5>
             }
-        }
-    </fieldset>
+            }
+        </fieldset>
 
-    <!-- Discount Percentage -->
-    <fieldset>
-        <label for="discount-input">Descuento (%)</label>
-        <input type="number" id="discount-input" formControlName="discountPercentage" min="0" max="100">
+        <!-- Discount Percentage -->
+        <fieldset>
+            <label for="discount-input">Descuento (%)</label>
+            <input type="number" id="discount-input" formControlName="discountPercentage" min="0" max="100">
 
-        @if(controls['discountPercentage'].dirty) {
+            @if(controls['discountPercentage'].dirty) {
             @if (controls['discountPercentage'].hasError("min") || controls['discountPercentage'].hasError("max")) {
-                <h5>El descuento debe estar entre 0 y 100</h5>
+            <h5>El descuento debe estar entre 0 y 100</h5>
             }
-        }
-    </fieldset>
+            }
+        </fieldset>
 
 
-    <!-- Unit Price -->
-    <fieldset>
-        <label for="unit-price-input">Precio Unitario*</label>
-        <input type="number" id="unit-price-input" formControlName="unitPrice">
+        <!-- Unit Price -->
+        <fieldset>
+            <label for="unit-price-input">Precio Unitario*</label>
+            <input type="number" id="unit-price-input" formControlName="unitPrice">
 
-        @if(controls['unitPrice'].dirty) {
+            @if(controls['unitPrice'].dirty) {
             @if (controls['unitPrice'].hasError("required")) {
-                <h5>El precio unitario es obligatorio</h5>
+            <h5>El precio unitario es obligatorio</h5>
             }@else if (controls['unitPrice'].hasError("max") || controls['unitPrice'].hasError("min")) {
-                <h5>El precio unitario debe tener un valor entre $0 y $100.000.000</h5>
+            <h5>El precio unitario debe tener un valor entre $0 y $100.000.000</h5>
             }
-        }
-    </fieldset>
+            }
+        </fieldset>
 
-    <!-- Image -->
-    <fieldset>
-        <label for="image-input">Image URL</label>
-        <input type="text" id="image-input" formControlName="imgURL"
-            placeholder="Ingrese la url de la imagen del producto">
-    </fieldset>
+        <!-- Image -->
+        <fieldset>
+            <label for="image-input">Image URL</label>
+            <input type="text" id="image-input" formControlName="imgURL"
+                placeholder="Ingrese la url de la imagen del producto">
+        </fieldset>
 
-    <!-- Description -->
-    <fieldset>
-        <label for="description-input">Descripcion</label>
-        <textarea id="description-input" formControlName="description" (input)="DynamicDescription($event)"></textarea>
-        <h6 [class.over-limit]="controls['description'].value.length > 500">
-            {{controls['description'].value.length}}/500
-        </h6>
+        <!-- Description -->
+        <fieldset>
+            <label for="description-input">Descripcion</label>
+            <textarea id="description-input" formControlName="description"
+                (input)="DynamicDescription($event)"></textarea>
+            <h6 [class.over-limit]="controls['description'].value.length > 500">
+                {{controls['description'].value.length}}/500
+            </h6>
 
-        @if(controls['description'].dirty && controls['description'].hasError("maxlength")) {
+            @if(controls['description'].dirty && controls['description'].hasError("maxlength")) {
             <h5>La descripcion debe tener un maximo de 500 caracteres</h5>
-        }
-    </fieldset>
+            }
+        </fieldset>
 
-    <!-- Categories -->
-    <fieldset class="categories-fieldset">
-        <label for="description-input">Categorias</label>
-        <mat-form-field appearance="fill">
-            <mat-label>Categorias</mat-label>
-            <mat-select multiple formControlName="categories" panelClass="custom-select-panel">
-                @if (categories) {
-                @for (category of categories; track $index) {
-                    <mat-option [value]="category.name"> 
-                        {{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}} 
+        <!-- Categories -->
+        <fieldset class="categories-fieldset">
+            <label for="description-input">Categorias</label>
+            <mat-form-field appearance="fill">
+                <mat-label>Categorias</mat-label>
+                <mat-select multiple formControlName="categories" panelClass="custom-select-panel">
+                    @if (categories) {
+                    @for (category of categories; track $index) {
+                    <mat-option [value]="category.name">
+                        {{category.name.charAt(0).toUpperCase() + category.name.slice(1).toLowerCase()}}
                     </mat-option>
-                }
-                }
-            </mat-select>
-        </mat-form-field>
+                    }
+                    }
+                </mat-select>
+            </mat-form-field>
 
-        <button  class="btn-categoria" (click)="openCategoryDialog()">
-            Agregar Categoria
-        </button>
+            <button class="btn-categoria" (click)="openCategoryDialog()">
+                Agregar Categoria
+            </button>
 
-        @if (controls['categories'].dirty && controls['categories'].hasError('required')){
+            @if (controls['categories'].dirty && controls['categories'].hasError('required')){
             <h5>Se debe elegir al menos una categoria</h5>
-        }
-    </fieldset>
+            }
+        </fieldset>
 
-    <input type="button" id="submit-button" value="Enviar" [disabled]="form.invalid" (click)="submitForm()">
-</form>
+        <input type="button" id="submit-button" value="Enviar" [disabled]="form.invalid" (click)="submitForm()">
+    </form>
 </section>

@@ -6,6 +6,7 @@ import { ProductForm } from '../product-form/product-form';
 
 @Component({
   selector: 'app-product-form-dialog',
+  standalone: true,
   imports: [ProductForm],
   templateUrl: './product-form-dialog.html',
   styleUrl: './product-form-dialog.css'

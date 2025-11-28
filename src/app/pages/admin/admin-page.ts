@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { type ChartData } from 'chart.js';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { ProductService } from '../../services/product-service';
 import { ProductParams } from '../../models/filters/productParams';
 import { CreateProduct } from '../../services/create-product';
+import { ScreenSizeService } from '../../services/screen-size-service';
 
 @Component({
   selector: 'app-admin-page',
@@ -16,10 +17,12 @@ import { CreateProduct } from '../../services/create-product';
 })
 export class AdminPage implements OnInit {
 
+  screenSizeService = inject(ScreenSizeService)
   
   constructor(
   private productService: ProductService,
-  private createProductService: CreateProduct
+  private createProductService: CreateProduct,
+  private router: Router
   ){}
 
   data?: ChartData
@@ -62,9 +65,13 @@ getData() {
   }
 
 
-createProduct(){
-  this.createProductService.openDialog([],[],{},()=>{})
-}
+  createProduct() {
+    if (this.screenSizeService.isScreenSmall()) {
+      this.createProductService.setData([], []);
+      this.router.navigate(['/product-form']);
+    } else {
+      this.createProductService.openDialog([], [], {}, () => { })
+    }
+  }
 
 }
-

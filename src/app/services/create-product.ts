@@ -1,18 +1,25 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { SwalService } from './swal-service';
 import { ProductFormDialog } from '../components/product-form-dialog/product-form-dialog';
+import { Product } from '../models/product';
+import { Category } from '../models/category';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CreateProduct {
+  products: Product[] = []
+  categories: Category[] = []
 
   constructor(
     private dialog: MatDialog,
-    private swal: SwalService
   ) {
     dialog
+  }
+
+  setData(products: Product[], categories: Category[]) {
+    this.products = products
+    this.categories = categories
   }
 
   openDialog(refinedProducts: any[], categories: any[], currentFilters: any, renderRefinedProducts: (filters: any) => void) {

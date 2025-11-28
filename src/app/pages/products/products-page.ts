@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import Swal from 'sweetalert2';
 import { Product } from '../../models/product';
 import { Category } from '../../models/category';
@@ -20,6 +20,7 @@ import { CreateProduct } from '../../services/create-product';
 import { StorageService } from '../../services/storage-service';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ScreenSizeService } from '../../services/screen-size-service';
 
 @Component({
   selector: 'app-products-page',
@@ -50,6 +51,7 @@ export class ProductsPage {
   // ids de productos ocultos por acción de borrar
   hiddenIds: Set<number> = new Set<number>();
  
+  screenSizeService = inject(ScreenSizeService);
 
   constructor(
     private productService: ProductService,
@@ -259,12 +261,17 @@ export class ProductsPage {
 
 
   createProduct() {
-    this.createProductService.openDialog(
-      this.refinedProducts,
-      this.categories,
-      this.currentFilters,
-      (filters: any) => this.renderRefinedProducts(filters)
-    )
+    if (this.screenSizeService.isScreenSmall()) {
+      this.createProductService.setData(this.refinedProducts, this.categories);
+      this.router.navigate(['/product-form']);
+    } else {
+      this.createProductService.openDialog(
+        this.refinedProducts,
+        this.categories,
+        this.currentFilters,
+        (filters: any) => this.renderRefinedProducts(filters)
+      )
+    }
   }
 
   private parseFilters(params: Params): ProductParams {

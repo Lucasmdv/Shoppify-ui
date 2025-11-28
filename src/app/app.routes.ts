@@ -22,6 +22,8 @@ import { Privacy } from './pages/privacy/privacy';
 import { CredentialsForm } from './pages/credentials-form/credentials-form';
 import { hasPermitsGuard } from './core/guards/has-permits-guard';
 import { FavoritesPage } from './pages/favorites/favorites-page';
+import { CategoryFormPage } from './pages/category-form/category-form-page';
+import { ProductForm } from './components/product-form/product-form';
 
 export const routes: Routes = [
   {
@@ -49,9 +51,11 @@ export const routes: Routes = [
       { path: 'products/details/:id', component: ProductDetail },
       { path: 'products/search/:q', component: ProductsPage },
       { path: 'categories', component: CategoriesPage },
-      {path: 'favorites',component:FavoritesPage},
+      { path: 'favorites',component:FavoritesPage },
       { path: 'cart', component: CartPage, canActivate: [authGuard] },
       { path: 'purchases', component: Purchases, canActivate: [authGuard]},
+      { path: 'product-form', component: ProductForm, canActivate: [authGuard] },
+      { path: 'category-form', component: CategoryFormPage, canActivate: [authGuard] },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
 
 

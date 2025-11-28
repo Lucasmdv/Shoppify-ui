@@ -14,6 +14,9 @@ import { ProductCard } from '../product-card/product-card';
 import { Optional } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { CreateCategory } from '../../services/create-category';
+import { CreateProduct } from '../../services/create-product';
+import { Router } from '@angular/router';
+import { ScreenSizeService } from '../../services/screen-size-service';
 
 @Component({
   selector: 'app-product-form',
@@ -44,6 +47,9 @@ export class ProductForm implements OnInit {
     private swal: SwalService,
     private categoryService: CategoryService,
     private createCategoryService: CreateCategory,
+    private createProductService: CreateProduct,
+    private router: Router,
+    private screenSizeService: ScreenSizeService,
     @Optional() private dialogRef?: MatDialogRef<any>
   ) { }
 
@@ -105,6 +111,7 @@ export class ProductForm implements OnInit {
   }
 
   ngOnInit(): void {
+    this.categories = this.createProductService.categories
 
     this.form = this.fb.group({
       id: [this.product?.id || ''],
@@ -132,7 +139,9 @@ export class ProductForm implements OnInit {
       this.updatePreview();
     });
 
-    this.getCategories()
+    if (!this.categories || this.categories.length === 0) {
+      this.getCategories()
+    }
   }
 
   DynamicDescription(event: Event) {
@@ -202,7 +211,10 @@ export class ProductForm implements OnInit {
   }
 
   openCategoryDialog() {
-    this.createCategoryService.openDialog(() => { }, {}).afterClosed().subscribe({
+    if (this.screenSizeService.isScreenSmall()) {
+      this.router.navigate(['/category-form'])
+    } else {
+    this.createCategoryService.openDialog().afterClosed().subscribe({
       next: (result) => {
         if (result) {
           this.swal.success("La categoría se agregó correctamente!")
@@ -210,5 +222,5 @@ export class ProductForm implements OnInit {
         }
       }
     })
-  }
+  }}
 }

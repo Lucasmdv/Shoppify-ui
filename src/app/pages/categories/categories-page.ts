@@ -12,6 +12,7 @@ import { CategoryFormDialog } from '../../components/category-form-dialog/catego
 import { AuthService } from '../../services/auth-service';
 import { CommonModule } from '@angular/common'; 
 import { CreateCategory } from '../../services/create-category';
+import { ScreenSizeService } from '../../services/screen-size-service';
 
 @Component({
   selector: 'app-categories-page',
@@ -32,7 +33,8 @@ export class CategoriesPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private createCategoryService: CreateCategory
+    private createCategoryService: CreateCategory,
+    private screenSizeService: ScreenSizeService
   ) { }
 
   ngOnInit(): void {
@@ -108,8 +110,16 @@ export class CategoriesPage implements OnInit {
   }
 
 
-  createCategory() { 
-    this.createCategoryService.openDialog(this.renderCategoriesWithFilters.bind(this), this.currentFilters);
+  createCategory() {
+    if (this.screenSizeService.isScreenSmall()) {
+      this.router.navigate(['/category-form'])
+    } else {
+      this.createCategoryService.openDialog().afterClosed().subscribe(result => {
+        if (result) {
+          this.renderCategoriesWithFilters(this.currentFilters)
+        }
+      })
+    }
   }
 
   private parseFilters(params: Params): CategoryParams {
