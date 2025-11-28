@@ -19,11 +19,10 @@ import { ProductParams } from '../../models/filters/productParams';
 import { IconDirective } from '@coreui/icons-angular';
 import { cilBell } from '@coreui/icons';
 
-import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-product-detail',
-  imports: [ProductCard, DecimalPipe, IconDirective, MatIcon],
+  imports: [ProductCard, DecimalPipe],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.css'
 })
