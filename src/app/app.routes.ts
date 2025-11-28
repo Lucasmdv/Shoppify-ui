@@ -23,6 +23,7 @@ import { CredentialsForm } from './pages/credentials-form/credentials-form';
 import { hasPermitsGuard } from './core/guards/has-permits-guard';
 import { FavoritesPage } from './pages/favorites/favorites-page';
 import { MercadopagoButton } from './components/mercadopago-button/mercadopago-button';
+import { Shipments } from './pages/shipments/shipments';
 
 export const routes: Routes = [
   {
@@ -55,7 +56,7 @@ export const routes: Routes = [
       { path: 'cart', component: CartPage, canActivate: [authGuard] },
       { path: 'purchases', component: Purchases, canActivate: [authGuard] },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-
+      { path: 'shipments', component: Shipments},
 
     ]
   },

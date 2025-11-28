@@ -1,3 +1,5 @@
+import { Transaction } from "./transaction";
+
 export interface SaleRequest {
   userId: number;
   transaction: TransactionRequest;
@@ -12,4 +14,12 @@ export interface TransactionRequest {
 export interface DetailTransactionRequest {
   productID: number;
   quantity: number;
+}
+
+export interface Sale {
+  id: number
+  userId: number
+  transaction: Transaction
+  shipmentId: number
+  userDni: number
 }

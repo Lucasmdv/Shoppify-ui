@@ -1,0 +1,43 @@
+<div class="shipment-card">
+    <div class="shipment-details">
+        @if (isAdmin) {
+            <select 
+                class="status-dropdown"
+                [ngClass]="getStatusClass(shipment.status)"
+                [(ngModel)]="shipment.status"
+                (ngModelChange)="updateStatus(shipment.status)">
+
+                <option value="PROCESSING">Procesando</option>
+                <option value="SHIPPED">Enviado</option>
+                <option value="DELIVERED">Entregado</option>
+                <option value="CANCELLED">Cancelado</option>
+                <option value="RETURNED">Devuelto</option>
+            </select>
+        }@else {
+            <div [ngClass]="getStatusClass(shipment.status)">
+                <p>{{ getStatusLabel(shipment.status) }}</p>
+            </div>
+
+            <!--
+            <div class="action-buttons">
+                <button id="cancel-button" (click)="cancelShipment()">Cancelar</button>
+                <button id="return-button" (click)="returnShipment()">Devolver</button>
+            </div>
+            !-->
+        }
+
+        <p>Fecha de inicio: {{shipment.startDate}} </p>
+        <p>Fecha de finalización: {{shipment.endDate}} </p>
+    </div>
+
+
+    @if (sale) {
+        <div class="sale-wrapper">
+        <app-purchase-card
+        [purchase]="sale.transaction"
+        [i]="sale.transaction.id!"
+        [isAdmin]="isAdmin"
+        ></app-purchase-card>
+    </div>
+    }
+</div>

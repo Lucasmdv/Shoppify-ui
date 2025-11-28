@@ -1,0 +1,11 @@
+<section class="shipments-wrapper">
+    @if (this.shipments.length > 0) {
+        @for (shipment of shipments; let i = $index; track shipment.id;) {
+            <app-shipment-card
+            [shipment]="shipment"
+            [isAdmin]="isAdmin"
+            (changeStatus)="getShipments()"
+            ></app-shipment-card>
+        }
+    }
+</section>

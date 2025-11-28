@@ -1,0 +1,10 @@
+.shipments-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    justify-content: center;
+}
+
+.shipments-wrapper app-shipment-card {
+    flex: 1 1 450px;
+}
