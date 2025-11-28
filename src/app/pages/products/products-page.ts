@@ -1,5 +1,4 @@
 import { Component, ElementRef, ViewChild, ViewEncapsulation, inject } from '@angular/core';
-import Swal from 'sweetalert2';
 import { Product } from '../../models/product';
 import { Category } from '../../models/category';
 import { ProductService } from '../../services/product-service';
@@ -17,10 +16,9 @@ import { CommonModule } from '@angular/common';
 import { Page } from '../../models/hal/page';
 import { PaginationModule } from '@coreui/angular';
 import { CreateProduct } from '../../services/create-product';
-import { StorageService } from '../../services/storage-service';
-import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { ScreenSizeService } from '../../services/screen-size-service';
+import { map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-products-page',
@@ -48,8 +46,6 @@ export class ProductsPage {
   //Toggles
   editMode = false;
   adminView = false;
-  // ids de productos ocultos por acción de borrar
-  hiddenIds: Set<number> = new Set<number>();
  
   screenSizeService = inject(ScreenSizeService);
 
@@ -62,7 +58,6 @@ export class ProductsPage {
     private router: Router,
     private dialog: MatDialog,
     private createProductService: CreateProduct,
-    private storageService: StorageService
   ) { }
 
   get visiblePages(): number[] {
@@ -97,9 +92,6 @@ export class ProductsPage {
     ).subscribe(allParams => {
       const filters = this.parseFilters(allParams);
       this.currentFilters = filters;
-
-      this.loadHiddenIdsFromStorage();
-
       this.renderRefinedProducts(filters);
       this.renderCategories();
     });
@@ -124,16 +116,9 @@ export class ProductsPage {
       next: (data) => {
         let items = data.data;
         if (!this.auth.permits().includes('ADMIN')) {
-          const hiddenInPage = items.filter(p => this.hiddenIds.has(p.id)).length;
-          items = items.filter(p => !this.hiddenIds.has(p.id));
-          this.productsPage = data.page;
-          if (this.productsPage && typeof this.productsPage.totalElements === 'number') {
-            this.productsPage.totalElements = Math.max(0, (data.page.totalElements || 0) - hiddenInPage);
-          }
-        } else {
-          this.productsPage = data.page;
+          items = items.filter(p => !p.inactive);
         }
-
+        this.productsPage = data.page;
         this.refinedProducts = items;
       },
       error: (err) => {
@@ -166,46 +151,32 @@ export class ProductsPage {
     });
   }
 
-  // Ocultar localmente (persistente) sin tocar el servidor. Mostrado pálido sólo para admins.
-  hideProduct(id: number): void {
-    this.hiddenIds.add(id);
-    this.saveHiddenIdsToStorage();
-
-    if (!this.auth.permits().includes('ADMIN')) {
-      this.refinedProducts = this.refinedProducts.filter(p => p.id !== id);
-      if (this.productsPage && typeof this.productsPage.totalElements === 'number') {
-        this.productsPage.totalElements = Math.max(0, this.productsPage.totalElements - 1);
+  hideProduct(product: Product): void {
+    const updatedProduct = { ...product, inactive: true };
+    this.productService.patch(updatedProduct).subscribe({
+      next: () => {
+        this.swal.success('El producto ahora se encuentra oculto.');
+        this.renderRefinedProducts(this.currentFilters);
+      },
+      error: (err) => {
+        console.error('Error al ocultar el producto:', err);
+        this.swal.error('No se pudo ocultar el producto.');
       }
-    }
-
-    this.swal.success('Producto ocultado localmente. Sólo administradores lo verán pálido.');
+    });
   }
 
-  unhideProduct(id: number): void {
-    if (this.hiddenIds.has(id)) {
-      this.hiddenIds.delete(id);
-      this.saveHiddenIdsToStorage();
-      this.renderRefinedProducts(this.currentFilters);
-      this.swal.success('Producto dejado de ocultar');
-    }
-  }
-
-  private loadHiddenIdsFromStorage(): void {
-    try {
-      const arr = this.storageService.getHiddenProductIds() || [];
-      this.hiddenIds = new Set<number>(arr);
-    } catch (e) {
-      console.error('No se pudo cargar hiddenProductIds:', e);
-      this.hiddenIds = new Set<number>();
-    }
-  }
-
-  private saveHiddenIdsToStorage(): void {
-    try {
-      this.storageService.setHiddenProductIds(Array.from(this.hiddenIds));
-    } catch (e) {
-      console.error('No se pudo guardar hiddenProductIds:', e);
-    }
+  unhideProduct(product: Product): void {
+    const updatedProduct = { ...product, inactive: false };
+    this.productService.patch(updatedProduct).subscribe({
+      next: () => {
+        this.swal.success('Producto ahora visible con éxito.');
+        this.renderRefinedProducts(this.currentFilters);
+      },
+      error: (err) => {
+        console.error('Error al mostrar el producto:', err);
+        this.swal.error('No se pudo mostrar el producto.');
+      }
+    });
   }
 
   onDelete() {

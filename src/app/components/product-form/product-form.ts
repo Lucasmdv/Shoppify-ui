@@ -75,7 +75,8 @@ export class ProductForm implements OnInit {
         imgURL: this.product?.imgURL ?? '',
         soldQuantity: this.product?.soldQuantity ?? 0,
         categories: this.product?.categories ?? [],
-        _links: this.product?._links
+        _links: this.product?._links,
+        inactive: this.product?.inactive ?? false
       };
       return;
     }
@@ -97,7 +98,8 @@ export class ProductForm implements OnInit {
       imgURL: values['imgURL'] || '',
       soldQuantity: this.product?.soldQuantity ?? 0,
       categories: Array.isArray(values['categories']) ? values['categories'] : [],
-      _links: this.product?._links
+      _links: this.product?._links,
+      inactive: this.product?.inactive ?? false
     };
   }
 

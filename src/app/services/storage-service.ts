@@ -48,25 +48,4 @@ export class StorageService{
     }
     localStorage.setItem('user', JSON.stringify(user))
   }
-
-  getHiddenProductIds(): number[] {
-    try {
-      return JSON.parse(localStorage.getItem('hiddenProductIds') || '[]') as number[]
-    } catch (e) {
-      return []
-    }
-  }
-
-  setHiddenProductIds(ids: number[]) {
-    try {
-      localStorage.setItem('hiddenProductIds', JSON.stringify(ids))
-    } catch (e) { /* ignorar */ }
-  }
-
-  removeHiddenProductIds() {
-    try {
-      localStorage.removeItem('hiddenProductIds')
-    } catch (e) { /* ignorar */ }
-  }
-
 }
