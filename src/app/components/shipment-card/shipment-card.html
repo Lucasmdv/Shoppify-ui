@@ -28,6 +28,11 @@
 
         <p>Fecha de inicio: {{shipment.startDate}} </p>
         <p>Fecha de finalización: {{shipment.endDate}} </p>
+        <p>Direccion: {{shipment.adress}} </p>
+
+        @if (shipment.pickup) {
+            <p>Se retira en local</p>
+        }
     </div>
 
 
