@@ -69,18 +69,28 @@ export class ProductDetail implements OnInit {
       },
       error: () => this.router.navigate(['/'])
     });
-
-    this.localStorage.getHiddenProductIds();
-    this.isHidden = this.localStorage.getHiddenProductIds().includes(this.id || -1);
   }
 
   renderProduct(id: number) {
     this.pService.get(id).subscribe({
       next: prod => {
+        if (prod.inactive) {
+          Swal.fire({
+            title: 'Producto no disponible',
+            text: 'Este producto no se encuentra disponible momentaneamente.',
+            icon: 'info',
+            confirmButtonText: 'Volver al catálogo'
+          }).then(() => {
+            this.router.navigate(['/products']);
+          });
+          return;
+        }
+        
         this.product = prod;
+        this.isHidden = prod.inactive;
         this.selectedQuantity = 1;
         this.cartQuantity = 0;
-          this.loadRelatedProducts();
+        this.loadRelatedProducts();
 
         if (this.userId) {
           this.calculateRemainingStock();
@@ -227,6 +237,15 @@ export class ProductDetail implements OnInit {
   onAddToCart(): void {
     if (!this.product) return;
 
+    if(this.product.inactive){
+      Swal.fire({
+        icon: "warning",
+        title: "Atención",
+        text: "Este producto no está disponible para agregar al carrito"
+      });
+      return;
+    }
+
     if (!this.aService.isLogged) {
       Swal.fire({
         icon: "warning",
@@ -261,6 +280,16 @@ export class ProductDetail implements OnInit {
   }
 
   onBuyNow(): void {
+
+    if(this.product.inactive){
+      Swal.fire({
+        icon: "warning",
+        title: "Atención",
+        text: "Este producto no está disponible para agregar al carrito"
+      });
+      return;
+    }
+    
     if (!this.aService.isLogged) {
       Swal.fire({
         icon: "warning",
