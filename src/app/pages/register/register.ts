@@ -83,7 +83,7 @@ export class Register implements OnInit {
           color: 'black'
         })
 
-        this.authService.setSession(res.token, Array.from(res.permits), res.user)
+        this.authService.setSession(res.token, Array.from(res.permits), Array.from(res.roles), res.user)
         this.router.navigate(['/'])
       },
       error(err) {

@@ -8,7 +8,7 @@
       <p class="panel-helper">Ajustá los resultados</p>
     </div>
     @if (hasActiveFilters) {
-      <button type="button" class="clear-button" (click)="resetFilters()">Limpiar</button>
+    <button type="button" class="clear-button" (click)="resetFilters()">Limpiar</button>
     }
   </header>
 
@@ -69,7 +69,7 @@
       </div>
     </section>
 
-     <section class="filter-group" aria-labelledby="group-discount">
+    <section class="filter-group" aria-labelledby="group-discount">
       <h3 id="group-discount" class="group-title">Descuento</h3>
 
       <div class="discount-range">
@@ -107,9 +107,9 @@
           multiple
           panelClass="custom-select-panel">
           @for (category of categories; track category.id) {
-            <mat-option [value]="category.name">
-              {{ category.name }}
-            </mat-option>
+          <mat-option [value]="category.name">
+            {{ category.name }}
+          </mat-option>
           }
         </mat-select>
       </mat-form-field>
@@ -122,13 +122,13 @@
           <span class="field-label">Alfabético</span>
           <select id="name-order" class="field-select" formControlName="namePriceSort">
             <option value="">Sin orden</option>
-            <option value="nameAsc">A → Z</option>
-            <option value="nameDesc">Z → A</option>
-            <option value="priceAsc">Menor a mayor</option>
-            <option value="priceDesc">Mayor a menor</option>
+            <option value="nameAsc">Alfabético: A → Z</option>
+            <option value="nameDesc">Alfabético: Z → A</option>
+            <option value="priceAsc">Precio: Menor a mayor</option>
+            <option value="priceDesc">Precio: Mayor a menor</option>
           </select>
         </label>
-      
+
       </div>
     </section>
   </div>
@@ -137,5 +137,3 @@
     <button type="submit" class="apply-button">Aplicar filtros</button>
   </footer>
 </form>
-
-

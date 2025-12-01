@@ -20,7 +20,6 @@ import { Terms } from './pages/terms/terms';
 import { ConfigPages } from './layouts/config-pages/config-pages';
 import { Privacy } from './pages/privacy/privacy';
 import { CredentialsForm } from './pages/credentials-form/credentials-form';
-import { hasPermitsGuard } from './core/guards/has-permits-guard';
 import { FavoritesPage } from './pages/favorites/favorites-page';
 import { CategoryFormPage } from './pages/category-form/category-form-page';
 import { ProductForm } from './components/product-form/product-form';
@@ -34,9 +33,9 @@ export const routes: Routes = [
       { path: 'register', component: Register, canActivate: [publicGuard] },
       { path: 'settings', component:CredentialsForm, canActivate: [authGuard] },
       { path: 'admin', component: AdminPage, canActivate: [authGuard] },
-      { path: 'admin/edit/store',component:StoreForm, canActivate: [authGuard,hasPermitsGuard]}, 
-      { path: 'admin/edit/carousel',component:CarouselForm , canActivate: [authGuard,hasPermitsGuard]},
-      { path: 'admin/edit/carousel/:id',component:CarouselForm , canActivate: [authGuard,hasPermitsGuard]},
+      { path: 'admin/edit/store',component:StoreForm, canActivate: [authGuard], data: { permissions: ['ADMIN'] }},
+      { path: 'admin/edit/carousel',component:CarouselForm , canActivate: [authGuard], data: { permissions: ['ADMIN'] }},
+      { path: 'admin/edit/carousel/:id',component:CarouselForm , canActivate: [authGuard], data: { permissions: ['ADMIN'] }},
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: '**', redirectTo: 'login' }
     ]

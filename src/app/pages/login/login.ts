@@ -36,7 +36,7 @@ export class Login implements OnInit {
   login() {
     this.authService.login(this.fg.value).subscribe({
       next: (res) => {
-        this.authService.setSession(res.token, Array.from(res.permits), res.user)
+        this.authService.setSession(res.token, Array.from(res.permits), Array.from(res.roles), res.user)
         Swal.fire({
           title: "Bienvenido, " + this.authService.user()?.firstName,
           text: "Has iniciado sesión correctamente.",

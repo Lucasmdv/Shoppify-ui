@@ -4,38 +4,46 @@ import { User } from '../models/auth/user';
 @Injectable({
   providedIn: 'root'
 })
-export class StorageService{
+export class StorageService {
 
 
-  setSession(token:string,permits:string[],user:User){
+  setSession(token: string, permits: string[], roles: string[], user: User) {
     try {
-      localStorage.setItem('token',token)
-      localStorage.setItem('permits',JSON.stringify(permits))
-      localStorage.setItem('user',JSON.stringify(user))
+      localStorage.setItem('token', token)
+      localStorage.setItem('permits', JSON.stringify(permits))
+      localStorage.setItem('roles', JSON.stringify(roles))
+      localStorage.setItem('user', JSON.stringify(user))
     } catch (e) {/* almacenamiento no soportado/bloqueado */}
   }
 
-  clearSession(){
+  clearSession() {
     try {
       localStorage.removeItem('token')
       localStorage.removeItem('permits')
+      localStorage.removeItem('roles')
       localStorage.removeItem('user')
     } catch (e) {/* nada que limpiar o acceso denegado */}
   }
 
-  getToken(){
+  getToken() {
     try {
       return localStorage.getItem('token') || ''
     } catch (e) { return '' }
   }
 
-  getPermits(){
+  getPermits() {
     try {
-      return JSON.parse(localStorage.getItem('permits') || '[]') 
+      return JSON.parse(localStorage.getItem('permits') || '[]')
     } catch (e) { return [] }
   }
 
-  getUser(){
+  getRoles() {
+    try {
+      return JSON.parse(localStorage.getItem('roles') || '[]')
+    } catch (e) { return [] }
+  }
+
+  getUser() {
     try {
       return JSON.parse(localStorage.getItem('user') || 'null')
     } catch (e) { return null }

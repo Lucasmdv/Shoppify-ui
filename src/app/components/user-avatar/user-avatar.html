@@ -21,9 +21,8 @@
         </button>
       <ul cDropdownMenu class="ua-menu" role="menu">
         <li><a routerLink="/profile" cDropdownItem>Mi cuenta</a></li>
-        @if (auth.permits().includes('ADMIN')) {
+        @if (auth.hasPermission('ADMIN')) {
                 <li><a routerLink="/auth/admin" cDropdownItem>Administrar</a></li>
-  
         }
         <li><a routerLink="/purchases" cDropdownItem>Compras</a></li>
         <li><a routerLink="/favorites" cDropdownItem>Favoritos</a></li>

@@ -2,14 +2,14 @@
   <div class="footer-inner">
     <div class="footer-content">
       <p class="footer-info">
-        (C) 2025-{{ getCurrYear() }} <strong>{{store.storeName}} S.R.L.</strong><br />
-        {{ store.address }}
+        (C) 2025-{{ getCurrYear() }} <strong>{{store?.storeName}} S.R.L.</strong><br />
+        {{ store?.address }}
       </p>
 
       <nav class="footer-links" aria-label="Enlaces legales y de contacto">
 
-        @if (store.phone) {
-           <a href="https://wa.me/{{store.phone}}" target="_blank" rel="noopener noreferrer" aria-label="Contacto">
+        @if (store?.phone) {
+           <a href="https://wa.me/{{store?.phone}}" target="_blank" rel="noopener noreferrer" aria-label="Contacto">
           Contacto
         </a>
         }
@@ -22,24 +22,24 @@
     </div>
 
     <div class="footer-social">
-      @if (store.facebook) {
+      @if (store?.facebook) {
 
-      <a [href]="store.facebook" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+      <a [href]="store?.facebook" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
         <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/facebook.svg" alt="Facebook" />
       </a>
     }
-       @if (store.instagram) {
-      <a [href]="store.instagram" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+       @if (store?.instagram) {
+      <a [href]="store?.instagram" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
         <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg" alt="Instagram" />
       </a>
     }
-      @if (store.twitter) {
-      <a [href]="store.twitter" target="_blank" rel="noopener noreferrer" aria-label="X">
+      @if (store?.twitter) {
+      <a [href]="store?.twitter" target="_blank" rel="noopener noreferrer" aria-label="X">
         <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/x.svg" alt="X" />
       </a>
     }
-      @if (store.youtube) {
-    <a [href]="store.youtube" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+      @if (store?.youtube) {
+    <a [href]="store?.youtube" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
         <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg" alt="YouTube" />
       </a>
       }
