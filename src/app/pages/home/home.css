@@ -137,7 +137,7 @@
 .category-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
- 
+  gap: 1.25rem;
 }
 
 .empty-state {
@@ -196,8 +196,12 @@
     align-items: stretch;
   }
 
-  .product-grid,
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+   
+  }
+
   .category-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

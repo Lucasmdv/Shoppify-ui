@@ -105,7 +105,7 @@ export class ProductsPage {
         this.refinedProducts = items;
       },
       error: (err) => {
-        this.swal.error("Ocurrio un error al filtrar los productos")
+        console.log("Ocurrio un error al filtrar los productos")
       }
     });
   }

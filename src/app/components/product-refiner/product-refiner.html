@@ -98,7 +98,9 @@
       </div>
     </section>
 
+ 
     <section class="filter-group" aria-labelledby="group-categorias">
+         @if(categories.length > 0){
       <h3 id="group-categorias" class="group-title">Categorías</h3>
       <mat-form-field appearance="fill">
         <mat-label>Seleccioná una o más</mat-label>
@@ -113,7 +115,9 @@
           }
         </mat-select>
       </mat-form-field>
+       }
     </section>
+ 
 
     <section class="filter-group" aria-labelledby="group-orden">
       <h3 id="group-orden" class="group-title">Ordenar por</h3>

@@ -1,0 +1,160 @@
+import { Component, OnInit, OnDestroy, inject, effect } from '@angular/core';
+import { DropdownComponent, DropdownMenuDirective, DropdownToggleDirective, BadgeComponent } from '@coreui/angular';
+import { NotificationService } from '../../services/notification-service';
+import { AuthService } from '../../services/auth-service';
+import { NotificationResponse } from '../../models/notification/notification';
+import Swal from 'sweetalert2';
+import { Subject, takeUntil } from 'rxjs';
+import { DatePipe } from '@angular/common';
+
+@Component({
+  selector: 'app-notification-dropdown',
+  standalone: true,
+  imports: [DropdownComponent, DropdownMenuDirective, BadgeComponent, DropdownToggleDirective, DatePipe],
+  templateUrl: './notification-dropdown.html',
+  styleUrl: './notification-dropdown.css'
+})
+export class NotificationDropdown implements OnInit, OnDestroy {
+
+  private notificationService = inject(NotificationService);
+  private authService = inject(AuthService);
+  private destroy$ = new Subject<void>();
+  private currentUserId?: number;
+
+  notificationType: string = 'general';
+  notifications: NotificationResponse[] = [];
+  selectedNotifications: NotificationResponse[] = [];
+
+  constructor() {
+    effect(() => {
+      const user = this.authService.user();
+      console.log('NotificationDropdown: User state changed', user);
+      if (user && user.id) {
+        console.log('NotificationDropdown: Connecting for user', user.id);
+        if (this.currentUserId !== user.id) {
+          this.currentUserId = user.id;
+          this.loadNotificationsForUser(user.id);
+        }
+        this.notificationService.connect(user.id);
+      } else {
+        console.log('NotificationDropdown: Disconnecting');
+        this.currentUserId = undefined;
+        this.clearNotifications();
+        this.notificationService.disconnect();
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.notificationService.getNotifications()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((notification) => {
+        console.log('NotificationDropdown: Received notification', notification);
+        this.handleNewNotification(notification);
+      });
+
+    this.updateSelectedNotifications();
+  }
+
+  ngOnDestroy() {
+    this.notificationService.disconnect();
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  handleNewNotification(notification: NotificationResponse) {
+    this.addNotification(notification);
+    this.updateSelectedNotifications();
+
+    Swal.fire({
+      title: notification.title,
+      text: notification.message,
+      icon: 'info',
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: () => {
+    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
+    audio.play()
+
+    }});
+  }
+
+  updateSelectedNotifications() {
+    if (this.notificationType === 'general') {
+      this.getGeneralNotifications();
+    } else {
+      this.getProductNotifications();
+    }
+  }
+
+  getGeneralNotifications() {
+    this.notificationType = 'general';
+    this.selectedNotifications = this.notifications.filter((n) => n.type === 'general' || !n.type);
+  }
+
+  getProductNotifications() {
+    this.notificationType = 'product';
+    this.selectedNotifications = this.notifications.filter((n) => n.type === 'product');
+  }
+
+  getUnreadNotifications() {
+    return this.notifications.filter((n) => !n.isRead).length;
+  }
+
+  markNotificationAsRead(notification: NotificationResponse) {
+    if (!notification) return;
+
+    // Optimistic update
+    this.notifications = this.notifications.map((n) =>
+      n === notification || n.id === notification.id ? { ...n, isRead: true, read: true } : n
+    );
+    this.updateSelectedNotifications();
+
+    if (!this.currentUserId || !notification.id) return;
+
+    this.notificationService.markAsRead(this.currentUserId, notification.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (updated) => {
+          this.notifications = this.notifications.map((n) =>
+            n.id === updated.id ? { ...n, isRead: updated.isRead, read: updated.read } : n
+          );
+          this.updateSelectedNotifications();
+        },
+        error: (error) => {
+          console.error('NotificationDropdown: Error marking notification as read', error);
+        }
+      });
+  }
+
+  private loadNotificationsForUser(userId: number) {
+    this.notificationService.loadUserNotifications(userId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (notifications) => {
+          this.notifications = notifications;
+          this.updateSelectedNotifications();
+        },
+        error: (error) => console.error('NotificationDropdown: Error loading notifications', error)
+      });
+  }
+
+  private addNotification(notification: NotificationResponse) {
+    const alreadyExists = notification.id
+      ? this.notifications.some((n) => n.id === notification.id)
+      : false;
+
+    if (!alreadyExists) {
+      this.notifications.unshift(notification);
+    }
+  }
+
+  private clearNotifications() {
+    this.notifications = [];
+    this.selectedNotifications = [];
+    this.notificationType = 'general';
+  }
+}
