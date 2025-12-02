@@ -6,6 +6,10 @@
   transition: box-shadow 0.2s ease;
 }
 
+app-shipment-card {
+  margin: 1em;
+}
+
 .purchase-card:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
