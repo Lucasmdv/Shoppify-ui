@@ -6,10 +6,11 @@ import { AuthService } from '../../services/auth-service';
 import { ShipmentsParams } from '../../models/filters/shipmentsParams';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ShipmentWrapper } from '../../components/shipment-wrapper/shipment-wrapper';
 
 @Component({
   selector: 'app-shipments',
-  imports: [ShipmentCard, FormsModule, CommonModule],
+  imports: [ShipmentWrapper, FormsModule, CommonModule],
   templateUrl: './shipments.html',
   styleUrl: './shipments.css'
 })

@@ -3,6 +3,7 @@
     flex-wrap: wrap;
     padding: 20px;
     justify-content: center;
+    gap: 20px;
 }
 
 .shipments-wrapper app-shipment-card {

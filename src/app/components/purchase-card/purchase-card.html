@@ -49,6 +49,18 @@
             }
           </ul>
 
+          @if (shipment) {
+            <div class="shipment-card">
+              <h4>Envío</h4>
+
+              <app-shipment-card
+                [shipment]="shipment"
+                [isAdmin]="isAdmin"
+                [showPurchaseCard]="false"
+                ></app-shipment-card>
+            </div>
+          }
+
           <div class="purchase-extra">
             <p><strong>Método de pago:</strong> {{ purchase.paymentMethod }}</p>
             <p><strong>Descripción:</strong> {{ purchase.description || 'Sin descripción' }}</p>

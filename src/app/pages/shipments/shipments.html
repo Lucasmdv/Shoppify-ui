@@ -43,11 +43,11 @@
 <section class="shipments-wrapper">
     @if (this.shipments.length > 0) {
         @for (shipment of shipments; let i = $index; track shipment.id;) {
-            <app-shipment-card
+            <app-shipment-wrapper
             [shipment]="shipment"
-            [isAdmin]="isAdmin"
-            (changeStatus)="getShipments()"
-            ></app-shipment-card>
+            [index]="i"
+            [isAdmin]="isAdmin">
+            </app-shipment-wrapper>
         }
     }@else {
         <div class="empty-purchases">

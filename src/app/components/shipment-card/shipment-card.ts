@@ -11,12 +11,13 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-shipment-card',
-  imports: [PurchaseCard, BgColorDirective, ButtonDirective, CommonModule, FormsModule],
+  imports: [BgColorDirective, ButtonDirective, CommonModule, FormsModule],
   templateUrl: './shipment-card.html',
-  styleUrl: './shipment-card.css'
+  styleUrl: './shipment-card.css',
+  standalone: true
 })
-export class ShipmentCard implements OnInit{
-  sale!: Sale
+export class ShipmentCard {
+  @Input() showPurchaseCard!: boolean
 
   statusLabels: Record<string, string> = {
     PROCESSING: "Procesando",
@@ -40,21 +41,7 @@ export class ShipmentCard implements OnInit{
   changeStatus = output<void>()
 
   shipmentService = inject(ShipmentService)
-  saleService = inject(SaleService)
   swal = inject(SwalService)
-
-  ngOnInit(): void {
-    this.getSale()
-  }
-
-  getSale() {
-    this.saleService.get(this.shipment.saleId).subscribe({
-      next: data => {
-        this.sale = data, 
-        this.sale.transaction.userId = this.sale.userId},
-      error: error => this.swal.error("Ocurrio un problema al obtener la venta")
-    })
-  }
 
   updateStatus(status: string) {
     this.shipmentService.updateStatus(status, this.shipment.id).subscribe({

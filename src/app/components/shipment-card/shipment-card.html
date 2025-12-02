@@ -26,23 +26,15 @@
             !-->
         }
 
-        <p>Fecha de inicio: {{shipment.startDate}} </p>
-        <p>Fecha de finalización: {{shipment.endDate}} </p>
-        <p>Direccion: {{shipment.adress}} </p>
+        <div class="data-container">
+            <p>Fecha de inicio: {{shipment.startDate}} </p>
+            <p>Fecha de finalización: {{shipment.endDate}} </p>
+            <p>Direccion: {{shipment.adress}} </p>
 
-        @if (shipment.pickup) {
-            <p>Se retira en local</p>
-        }
+            @if (shipment.pickup) {
+                <p>Se retira en local</p>
+            }
+        </div>
     </div>
 
-
-    @if (sale) {
-        <div class="sale-wrapper">
-        <app-purchase-card
-        [purchase]="sale.transaction"
-        [i]="sale.transaction.id!"
-        [isAdmin]="isAdmin"
-        ></app-purchase-card>
-    </div>
-    }
 </div>

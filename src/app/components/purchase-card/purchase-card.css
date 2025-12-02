@@ -1,7 +1,7 @@
 .purchase-card {
   border: 1px solid #5b4dee;
   border-radius: 45px;
-  padding: 16px;
+  padding: 10px 16px;
   background-color: #fdfdfd;
   transition: box-shadow 0.2s ease;
 }

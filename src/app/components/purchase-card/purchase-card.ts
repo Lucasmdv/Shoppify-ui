@@ -1,26 +1,39 @@
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
 import { Transaction } from '../../models/transaction';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user-service';
+import { Shipment } from '../../models/shipment';
+import { ShipmentService } from '../../services/shipment-service';
+import { ShipmentCard } from '../shipment-card/shipment-card';
 
 @Component({
   selector: 'app-purchase-card',
-  imports: [DatePipe, DecimalPipe],
+  imports: [DatePipe, DecimalPipe, ShipmentCard],
   templateUrl: './purchase-card.html',
   styleUrl: './purchase-card.css'
 })
-export class PurchaseCard {
+export class PurchaseCard implements OnInit{
+  shipment!: Shipment
+
   @Input() purchase!: Transaction
   @Input() i!: number
   @Input() isAdmin!: boolean
+  @Input() showShipment!: boolean
 
   activePurchase = signal<number | null>(null)
   clientsExpanded = signal<Set<number>>(new Set())
   clientsCache = signal<Map<number, any>>(new Map())
 
   uService = inject(UserService)
+  sService = inject(ShipmentService)
   router = inject(Router)
+
+  ngOnInit(): void {
+    if(this.showShipment) {
+      this.getShipment()
+    }
+  }
 
   gotoDetailsProduct(id?:number){
    this.router.navigate(["/products/details", id]);
@@ -55,6 +68,13 @@ export class PurchaseCard {
     })
 
     return cache.get(clientId as number)
+  }
+
+  getShipment() {
+    this.sService.get(this.purchase.id!).subscribe({
+      next: data => this.shipment = data,
+      error: () => console.error('Error al obtener info del envio')
+    })
   }
 
   toggleDetails(i: number): void {

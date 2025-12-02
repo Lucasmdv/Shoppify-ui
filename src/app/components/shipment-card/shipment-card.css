@@ -1,19 +1,22 @@
 .shipment-card {
-    border: 2px solid #a78bfa;
-    border-radius: 20px;
-    padding: 20px;
-    margin: 20px auto;
-    background: #faf8ff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    width: 30em;
+    padding: 0 20px;
+    margin: 10px auto;
+    width: 100%;
 }
-
 
 .shipment-details {
     display: flex;
     flex-direction: column;
     gap: 12px;
     margin-bottom: 20px;
+}
+
+.data-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+    min-height: 10em;
 }
 
 .status-dropdown {
@@ -120,13 +123,6 @@
 #cancel-button:hover {
     background: #cac6f1;
 }
-
-.sale-wrapper {
-    margin-top: 20px;
-    border-top: 1px solid #e5e0ff;
-    padding-top: 20px;
-}
-
 
 .shipment-details p {
     margin: 0;
