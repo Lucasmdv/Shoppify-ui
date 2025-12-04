@@ -6,8 +6,8 @@ import Swal from 'sweetalert2';
 export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   const authService = inject(AuthService);
   const router = inject(Router);
-
-  if (!authService.isLogged()) {
+  if (!authService.isTokenValid()) {
+    console.log('Token inválido o expirado');
     router.navigate(['/auth/login']);
     return false;
   }

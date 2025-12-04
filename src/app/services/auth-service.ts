@@ -149,5 +149,21 @@ export class AuthService {
 
     return this.http.patch<AuthResponse>(`${this.API_URL}/update`, payload, { headers })
   }
+
+  isTokenValid(): boolean {
+    const token = this.token();
+    if (!token) {
+      return false;
+    }
+
+    try {
+      const decoded: any = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+      return decoded.exp > currentTime;
+    } catch (error) {
+      console.error('Error verificando token:', error);
+      return false;
+    }
+  }
 }
 
