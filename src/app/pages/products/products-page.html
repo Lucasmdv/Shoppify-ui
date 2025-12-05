@@ -1,11 +1,26 @@
 <div class="products-page">
   <section class="products-content">
     <aside class="products-sidebar" aria-label="Filtros">
-      <app-products-refiner
-        [categories]="categories"
-        [initialFilters]="currentFilters"
-        (filterChange)="onFilterChange($event)">
-      </app-products-refiner>
+      @if (screenSizeService.isScreenSmall()) {
+      <button type="button" class="filter-toggle" [class.is-active]="filtersVisible" (click)="toggleFilters()">
+        <span class="filter-toggle__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </span>
+        <span class="filter-toggle__label">
+          {{ filtersVisible ? 'Ocultar filtros' : 'Mostrar filtros' }}
+        </span>
+      </button>
+      }
+
+      @if (!screenSizeService.isScreenSmall() || filtersVisible) {
+      <div class="filters-container">
+        <app-products-refiner [categories]="categories" [initialFilters]="currentFilters"
+          (filterChange)="onFilterChange($event)">
+        </app-products-refiner>
+      </div>
+      }
     </aside>
 
     <div class="products-main">
@@ -17,10 +32,7 @@
 
         @if (auth.permits().includes('ADMIN')) {
         <div class="admin-actions admin-actions--toolbar">
-            <button
-              type="button"
-              class="edit-toggle edit-toggle--compact"
-              [class.is-active]="editMode"
+          <button type="button" class="edit-toggle edit-toggle--compact" [class.is-active]="editMode"
             (click)="editToggle()">
             <span class="edit-toggle__icon" aria-hidden="true"></span>
             <span class="edit-toggle__label">
@@ -28,10 +40,7 @@
             </span>
           </button>
 
-            <button
-              type="button"
-              class="view-toggle view-toggle--compact"
-              [class.is-active]="adminView"
+          <button type="button" class="view-toggle view-toggle--compact" [class.is-active]="adminView"
             (click)="viewToggle()">
             <span class="view-toggle__icon" aria-hidden="true"></span>
             <span class="view-toggle__label">
@@ -79,13 +88,8 @@
           @if (p.inactive) {
           <div class="product-hidden-badge" aria-hidden="true">Oculto</div>
           }
-              <app-product-card class="cardDetails"
-                [product]="p"
-                [isMostrarCuotas]="true"
-                [isMostrarStock]="true"
-                [isMostrarDescuento]="true"
-              
-              ></app-product-card>
+          <app-product-card class="cardDetails" [product]="p" [isMostrarCuotas]="true" [isMostrarStock]="true"
+            [isMostrarDescuento]="true"></app-product-card>
 
           @if (auth.permits().includes('ADMIN') && editMode) {
           <div class="product-admin-actions">
@@ -152,3 +156,6 @@
         </c-pagination>
       </div>
       }
+    </div>
+  </section>
+</div>

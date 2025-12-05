@@ -46,6 +46,7 @@ export class ProductsPage {
   //Toggles
   editMode = false;
   adminView = false;
+  filtersVisible = false;
 
   screenSizeService = inject(ScreenSizeService);
 
@@ -59,6 +60,10 @@ export class ProductsPage {
     private dialog: MatDialog,
     private createProductService: CreateProduct,
   ) { }
+
+  toggleFilters(): void {
+    this.filtersVisible = !this.filtersVisible;
+  }
 
   get visiblePages(): number[] {
     if (!this.productsPage) return [];
