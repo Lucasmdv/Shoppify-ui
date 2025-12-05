@@ -16,66 +16,69 @@
         </div>
 
         @if (auth.permits().includes('ADMIN')) {
-          <div class="admin-actions admin-actions--toolbar">
+        <div class="admin-actions admin-actions--toolbar">
             <button
               type="button"
               class="edit-toggle edit-toggle--compact"
               [class.is-active]="editMode"
-              (click)="editToggle()">
-              <span class="edit-toggle__icon" aria-hidden="true"></span>
-              <span class="edit-toggle__label">
-                {{ editMode ? 'Edición activa' : 'Editar catálogo' }}
-              </span>
-            </button>
+            (click)="editToggle()">
+            <span class="edit-toggle__icon" aria-hidden="true"></span>
+            <span class="edit-toggle__label">
+              {{ editMode ? 'Edición activa' : 'Editar catálogo' }}
+            </span>
+          </button>
 
             <button
               type="button"
               class="view-toggle view-toggle--compact"
               [class.is-active]="adminView"
-              (click)="viewToggle()">
-              <span class="view-toggle__icon" aria-hidden="true"></span>
-              <span class="view-toggle__label">
-                {{ adminView ? 'Vista admin' : 'Vista cliente' }}
-              </span>
-            </button>
-          </div>
+            (click)="viewToggle()">
+            <span class="view-toggle__icon" aria-hidden="true"></span>
+            <span class="view-toggle__label">
+              {{ adminView ? 'Vista admin' : 'Vista cliente' }}
+            </span>
+          </button>
+        </div>
         }
       </header>
 
       @if (refinedProducts.length > 0) {
-        <section class="products-grid" aria-label="Listado de productos">
-          @if (auth.permits().includes('ADMIN') && editMode) {
-            <article class="product-card product-card--create">
-              <button 
-                type="button"
-                class="create-product-button"
-                (click)="createProduct()">
-                <span class="create-product-button__icon" aria-hidden="true">+</span>
-                <span class="create-product-button__content">
-                  <span class="create-product-button__title">Crear nuevo producto</span>
-                  <span class="create-product-button__helper">Abrí el formulario para agregar un producto al catálogo.</span>
-                </span>
-              </button>
-            </article>
-          }
+      <section class="products-grid" aria-label="Listado de productos">
+        @if (auth.permits().includes('ADMIN') && editMode) {
+        <article class="product-card product-card--create">
+          <button type="button" class="create-product-button" (click)="createProduct()">
+            <span class="create-product-button__icon" aria-hidden="true">+</span>
+            <span class="create-product-button__content">
+              <span class="create-product-button__title">Crear nuevo producto</span>
+              <span class="create-product-button__helper">Abrí el formulario para agregar un producto al
+                catálogo.</span>
+            </span>
+          </button>
+        </article>
 
-          @if (adminView) {
-            <app-product-table 
-              [isEditMode]="editMode"
-              [products]="refinedProducts" 
-              (deleteEvent)="onDelete()"
-              (editEvent)="editProduct($event)">
-            </app-product-table>
-          }@else {
-            @for (p of refinedProducts; track p.id) {
-            <article
-              class="product-card"
-              [class.product-card--editing]="auth.permits().includes('ADMIN') && editMode"
-              [class.product-card--admin]="auth.permits().includes('ADMIN') && adminView"
-              [class.product-card--hidden]="p.inactive">
-              @if (p.inactive) {
-                <div class="product-hidden-badge" aria-hidden="true">Oculto</div>
-              }
+        <article class="product-card product-card--create">
+          <button type="button" class="create-product-button" (click)="goToImport()">
+            <span class="create-product-button__icon" aria-hidden="true">+</span>
+            <span class="create-product-button__content">
+              <span class="create-product-button__title">Crear productos mediante archivo</span>
+              <span class="create-product-button__helper">Carga masiva desde CSV o Excel.</span>
+            </span>
+          </button>
+        </article>
+        }
+
+        @if (adminView) {
+        <app-product-table [isEditMode]="editMode" [products]="refinedProducts" (deleteEvent)="onDelete()"
+          (editEvent)="editProduct($event)">
+        </app-product-table>
+        }@else {
+        @for (p of refinedProducts; track p.id) {
+        <article class="product-card" [class.product-card--editing]="auth.permits().includes('ADMIN') && editMode"
+          [class.product-card--admin]="auth.permits().includes('ADMIN') && adminView"
+          [class.product-card--hidden]="p.inactive">
+          @if (p.inactive) {
+          <div class="product-hidden-badge" aria-hidden="true">Oculto</div>
+          }
               <app-product-card class="cardDetails"
                 [product]="p"
                 [isMostrarCuotas]="true"
@@ -84,79 +87,68 @@
               
               ></app-product-card>
 
-              @if (auth.permits().includes('ADMIN') && editMode) {
-                <div class="product-admin-actions">
-                    @if (p.inactive) {
-                      <button
-                        class="admin-action admin-action--unhide"
-                        type="button"
-                        (click)="unhideProduct(p)">
-                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" fill="none"/>
-                        </svg>
-                        <span>Dejar de ocultar</span>
-                      </button>
-                    } @else {
-                      <button
-                        class="admin-action admin-action--delete"
-                        type="button"
-                        (click)="hideProduct(p)">
-                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                          <path
-                            d="M9 3h6l1 2h4v2h-1v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7H4V5h4l1-2Zm-1 4v11h2V7H8Zm4 0v11h2V7h-2Zm4 0v11h2V7h-2Z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                        <span>Ocultar</span>
-                      </button>
-                    }
+          @if (auth.permits().includes('ADMIN') && editMode) {
+          <div class="product-admin-actions">
+            @if (p.inactive) {
+            <button class="admin-action admin-action--unhide" type="button" (click)="unhideProduct(p)">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" fill="none" />
+              </svg>
+              <span>Dejar de ocultar</span>
+            </button>
+            } @else {
+            <button class="admin-action admin-action--delete" type="button" (click)="hideProduct(p)">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M9 3h6l1 2h4v2h-1v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7H4V5h4l1-2Zm-1 4v11h2V7H8Zm4 0v11h2V7h-2Zm4 0v11h2V7h-2Z"
+                  fill="currentColor" />
+              </svg>
+              <span>Ocultar</span>
+            </button>
+            }
 
-                  <button
-                    class="admin-action admin-action--edit"
-                    type="button"
-                    (click)="editProduct(p)">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                      <path
-                        d="M4 17.25V20h2.75L17.81 8.94l-2.75-2.75L4 17.25ZM19.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                    <span>Editar</span>
-                  </button>
-                </div>
-              }
-            </article>
+            <button class="admin-action admin-action--edit" type="button" (click)="editProduct(p)">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M4 17.25V20h2.75L17.81 8.94l-2.75-2.75L4 17.25ZM19.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83Z"
+                  fill="currentColor" />
+              </svg>
+              <span>Editar</span>
+            </button>
+          </div>
           }
-          }
-        </section>
+        </article>
+        }
+        }
+      </section>
       } @else {
-        <div class="products-empty">
-          <h3>No se encontraron resultados</h3>
-          <p>Probá ajustando los filtros o restableciendo el catálogo completo.</p>
-        </div>
+      <div class="products-empty">
+        <h3>No se encontraron resultados</h3>
+        <p>Probá ajustando los filtros o restableciendo el catálogo completo.</p>
+      </div>
       }
       @if (productsPage && productsPage.totalPages > 1) {
-  <div class="products-pagination">
-    <c-pagination>
-      <li cPageItem [class.disabled]="!productsPage || productsPage.number === 0">
-        <a cPageLink (click)="prevPage()" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
+      <div class="products-pagination">
+        <c-pagination>
+          <li cPageItem [class.disabled]="!productsPage || productsPage.number === 0">
+            <a cPageLink (click)="prevPage()" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
 
-      @for (page of visiblePages; track page) {
-        <li cPageItem [class.active]="page === productsPage.number">
-          <a cPageLink (click)="goToPage(page)">
-            {{ page + 1 }}
-          </a>
-        </li>
+          @for (page of visiblePages; track page) {
+          <li cPageItem [class.active]="page === productsPage.number">
+            <a cPageLink (click)="goToPage(page)">
+              {{ page + 1 }}
+            </a>
+          </li>
+          }
+
+          <li cPageItem [class.disabled]="!productsPage || productsPage.number === (productsPage.totalPages - 1)">
+            <a cPageLink (click)="nextPage()" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </c-pagination>
+      </div>
       }
-
-      <li cPageItem [class.disabled]="!productsPage || productsPage.number === (productsPage.totalPages - 1)">
-        <a cPageLink (click)="nextPage()" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    </c-pagination>
-  </div>
-}

@@ -23,6 +23,7 @@ import { CredentialsForm } from './pages/credentials-form/credentials-form';
 import { FavoritesPage } from './pages/favorites/favorites-page';
 import { CategoryFormPage } from './pages/category-form/category-form-page';
 import { ProductForm } from './components/product-form/product-form';
+import { ProductsFileForm } from './pages/products-file-form/products-file-form.component';
 
 export const routes: Routes = [
   {
@@ -31,11 +32,11 @@ export const routes: Routes = [
     children: [
       { path: 'login', component: Login, canActivate: [publicGuard] },
       { path: 'register', component: Register, canActivate: [publicGuard] },
-      { path: 'settings', component:CredentialsForm, canActivate: [authGuard] },
+      { path: 'settings', component: CredentialsForm, canActivate: [authGuard] },
       { path: 'admin', component: AdminPage, canActivate: [authGuard] },
-      { path: 'admin/edit/store',component:StoreForm, canActivate: [authGuard], data: { permissions: ['ADMIN'] }},
-      { path: 'admin/edit/carousel',component:CarouselForm , canActivate: [authGuard], data: { permissions: ['ADMIN'] }},
-      { path: 'admin/edit/carousel/:id',component:CarouselForm , canActivate: [authGuard], data: { permissions: ['ADMIN'] }},
+      { path: 'admin/edit/store', component: StoreForm, canActivate: [authGuard], data: { permissions: ['ADMIN'] } },
+      { path: 'admin/edit/carousel', component: CarouselForm, canActivate: [authGuard], data: { permissions: ['ADMIN'] } },
+      { path: 'admin/edit/carousel/:id', component: CarouselForm, canActivate: [authGuard], data: { permissions: ['ADMIN'] } },
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: '**', redirectTo: 'login' }
     ]
@@ -50,10 +51,11 @@ export const routes: Routes = [
       { path: 'products/details/:id', component: ProductDetail },
       { path: 'products/search/:q', component: ProductsPage },
       { path: 'categories', component: CategoriesPage },
-      { path: 'favorites',component:FavoritesPage },
+      { path: 'favorites', component: FavoritesPage },
       { path: 'cart', component: CartPage, canActivate: [authGuard] },
-      { path: 'purchases', component: Purchases, canActivate: [authGuard]},
+      { path: 'purchases', component: Purchases, canActivate: [authGuard] },
       { path: 'product-form', component: ProductForm, canActivate: [authGuard] },
+      { path: 'product-import', component: ProductsFileForm, canActivate: [authGuard], data: { permissions: ['ADMIN'] } },
       { path: 'category-form', component: CategoryFormPage, canActivate: [authGuard] },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
 
@@ -72,7 +74,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: Help },
       { path: 'terms', component: Terms },
-      { path: 'privacy', component: Privacy},
+      { path: 'privacy', component: Privacy },
     ]
   },
   { path: '**', redirectTo: 'home', pathMatch: 'full' }

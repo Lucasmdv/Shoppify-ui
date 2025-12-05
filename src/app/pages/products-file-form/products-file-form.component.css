@@ -1,0 +1,205 @@
+.file-form-page {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    background-color: var(--bg-page-gradient-start);
+    min-height: 100vh;
+}
+
+.file-form-container {
+    background: var(--bg-card);
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 25px var(--shadow-color);
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.form-header h2 {
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+}
+
+.form-header p {
+    color: var(--text-muted);
+}
+
+.file-input-wrapper {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    border: 2px dashed var(--border-color);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease;
+}
+
+.file-input-wrapper:hover {
+    border-color: var(--primary-color);
+}
+
+.file-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    pointer-events: none;
+    text-align: center;
+}
+
+.create-product-button__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(2rem, 5vw, 3.5rem);
+    height: clamp(2rem, 5vw, 3.5rem);
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-light) 100%);
+    color: var(--bg-card);
+    font-size: clamp(1rem, 3.5vw, 2.3rem);
+    font-weight: 600;
+    box-shadow: 0 18px 36px rgba(79, 70, 229, 0.25);
+    line-height: 1;
+    padding: 0;
+}
+
+.preview-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.preview-section h3 {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.preview-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.preview-table th,
+.preview-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.preview-table th {
+    background-color: var(--bg-page-gradient-end);
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.preview-table td {
+    color: var(--text-secondary);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: auto;
+}
+
+.btn-cancel {
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background: var(--bg-page-gradient-end);
+}
+
+.btn-upload {
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    border: none;
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-upload:hover:not(:disabled) {
+    background: var(--primary-hover);
+}
+
+.btn-upload:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.preview-count {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn-page {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-page:hover:not(:disabled) {
+    background: var(--bg-page-gradient-end);
+    border-color: var(--primary-color);
+}
+
+.btn-page:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.page-info {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}

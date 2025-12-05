@@ -37,16 +37,16 @@ import { combineLatest } from 'rxjs';
 export class ProductsPage {
   //Paginacion
   productsPage!: Page
-  defaultSize:number = 8
+  defaultSize: number = 8
   //Arreglos
   refinedProducts: Product[] = [];
   categories: Category[] = [];
   //Filtros
-  currentFilters: ProductParams = { page: 0, size: this.defaultSize};
+  currentFilters: ProductParams = { page: 0, size: this.defaultSize };
   //Toggles
   editMode = false;
   adminView = false;
- 
+
   screenSizeService = inject(ScreenSizeService);
 
   constructor(
@@ -66,7 +66,7 @@ export class ProductsPage {
     const total = this.productsPage.totalPages;
     const current = this.productsPage.number;
 
-    const windowSize = 5;          
+    const windowSize = 5;
     const half = Math.floor(windowSize / 2);
 
     let start = current - half;
@@ -84,11 +84,11 @@ export class ProductsPage {
 
     if (start < 0) start = 0;
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-}
+  }
 
   ngOnInit(): void {
     combineLatest([this.route.params, this.route.queryParams]).pipe(
-      map(([params, queryParams]) => ({...params, ...queryParams}))
+      map(([params, queryParams]) => ({ ...params, ...queryParams }))
     ).subscribe(allParams => {
       const filters = this.parseFilters(allParams);
       this.currentFilters = filters;
@@ -190,14 +190,14 @@ export class ProductsPage {
       height: '90vh',
       data: {
         product: product,
-        products: this.refinedProducts, 
+        products: this.refinedProducts,
         categories: this.categories
       },
       disableClose: true,
       panelClass: 'product-dialog-panel'
     }).afterClosed().subscribe(result => {
       if (result) {
-        this.renderRefinedProducts(this.currentFilters); 
+        this.renderRefinedProducts(this.currentFilters);
       }
     })
   }
@@ -243,6 +243,10 @@ export class ProductsPage {
         (filters: any) => this.renderRefinedProducts(filters)
       )
     }
+  }
+
+  goToImport() {
+    this.router.navigate(['/product-import']);
   }
 
   private parseFilters(params: Params): ProductParams {
@@ -304,13 +308,13 @@ export class ProductsPage {
     if (!this.productsPage) {
       return [];
     }
-    return Array(this.productsPage.totalPages).fill(0).map((x,i) => i);
+    return Array(this.productsPage.totalPages).fill(0).map((x, i) => i);
   }
 
-  get totalResults():number{
-  if(!this.productsPage){
-    return 0
-  }
-  return this.productsPage.totalElements;
+  get totalResults(): number {
+    if (!this.productsPage) {
+      return 0
+    }
+    return this.productsPage.totalElements;
   }
 }
