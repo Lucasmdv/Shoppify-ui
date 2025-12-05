@@ -2,7 +2,7 @@
   max-width: 60vw;
   margin: 40px auto;
   padding: 20px;
-  background-color: #fff;
+  background-color: var(--bg-card);
   border-radius: 16px;
   box-shadow: 0 4px 7px #5b4dee;
   font-family: 'Inter', system-ui, sans-serif;
@@ -53,7 +53,7 @@
 }
 
 .filters button {
-  color: #4f46e5;
+  color: var(--primary-color);
   border: 1px solid rgba(79, 70, 229, 0.2);
   background: rgba(79, 70, 229, 0.08);
   padding: 8px 14px;
@@ -64,8 +64,8 @@
 }
 
 .filters button:hover {
-  background-color: #3c36b1;
-  color: #ffffff;
+  background-color: var(--primary-hover);
+  color: var(--bg-card);
   transform: translateY(-2px);
   box-shadow: 0 20px 36px rgba(99, 102, 241, 0.45);
   outline: none;
@@ -125,7 +125,7 @@
 }
 
 .toggle-details:hover {
-  color: #ffff;
+  color: var(--bg-card);
   background-color: #5b4dee;
 }
 
@@ -179,7 +179,7 @@ li:last-child {
   align-items: center;
   gap: 12px;
   margin-bottom: 8px;
-  
+
 }
 
 .item-info img {
@@ -220,7 +220,7 @@ li:last-child {
 .pagination button {
   padding: 6px 12px;
   border: 1px solid #ccc;
-  background-color: #fff;
+  background-color: var(--bg-card);
   color: #333;
   border-radius: 6px;
   cursor: pointer;
@@ -229,7 +229,7 @@ li:last-child {
 
 .pagination button:hover:not(:disabled) {
   background-color: #5b4dee;
-  color: #fff;
+  color: var(--bg-card);
   border-color: #5b4dee;
 }
 
@@ -243,7 +243,8 @@ li:last-child {
   color: #555;
 }
 
-.empty-purchases, .no-results {
+.empty-purchases,
+.no-results {
   text-align: center;
   padding: 40px 0;
   color: #777;
@@ -253,7 +254,7 @@ li:last-child {
 }
 
 #admin-toggle {
-  color: #4f46e5;
+  color: var(--primary-color);
   border: 1px solid rgba(79, 70, 229, 0.2);
   background: rgba(79, 70, 229, 0.08);
   padding: 8px 14px;
@@ -264,16 +265,16 @@ li:last-child {
 }
 
 #admin-toggle.active {
-  background: linear-gradient(135deg, #4338ca 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-gradient-end) 100%);
   border-color: transparent;
   cursor: pointer;
   box-shadow: 0 20px 38px rgba(79, 70, 229, 0.35);
-  color: #ffffff;
+  color: var(--bg-card);
 }
 
 #admin-toggle:hover {
-  background-color: #3c36b1;
-  color: #ffffff;
+  background-color: var(--primary-hover);
+  color: var(--bg-card);
 }
 
 .filters .clear-filters {
@@ -282,7 +283,7 @@ li:last-child {
   border-radius: 999px;
   cursor: pointer;
   font-weight: 600;
-  
+
 }
 
 .buyer-info-row {
@@ -297,9 +298,9 @@ li:last-child {
   border-bottom: 2px solid rgba(91, 77, 238, 0.2);
 }
 
-.view-client-btn{
+.view-client-btn {
   background: none;
-  border: 1px solid rgba(0,0,0,0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   padding: 6px 10px;
   border-radius: 8px;
   cursor: pointer;
@@ -312,22 +313,23 @@ li:last-child {
   border-color: #5b4dee;
 }
 
-.client-details{
+.client-details {
   margin-top: 8px;
   padding: 10px;
   background: #fbfbff;
   border-radius: 8px;
-  border: 1px solid rgba(91,77,238,0.06);
+  border: 1px solid rgba(91, 77, 238, 0.06);
 }
 
 @media (max-width: 800px) {
   .purchases-container {
-    max-width: 100vw; /* ocupa todo el ancho */
+    max-width: 100vw;
+    /* ocupa todo el ancho */
     margin: 0;
     border-radius: 0;
     box-shadow: none;
     padding: 12px;
-    background-color: #ffffff;
+    background-color: var(--bg-card);
   }
 
   .purchase-card {

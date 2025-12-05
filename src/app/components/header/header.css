@@ -10,9 +10,9 @@ header {
   z-index: 1000;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
-  color: #0f172a;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 18px 40px var(--shadow-color);
+  color: var(--text-main);
   font-family: 'Poppins', sans-serif;
 }
 
@@ -39,7 +39,7 @@ header {
   border-radius: 50%;
   border: 1px solid rgba(79, 70, 229, 0.2);
   background: rgba(99, 102, 241, 0.08);
-  color: #4f46e5;
+  color: var(--primary-color);
   transition: all 0.2s ease;
 }
 
@@ -188,8 +188,8 @@ header button:focus-visible img {
   overflow: hidden;
   opacity: 0;
   transition: max-height 0.35s ease, opacity 0.35s ease;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-  color: #0f172a;
+  background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-page-gradient-start) 100%);
+  color: var(--text-main);
   border-top: 1px solid rgba(148, 163, 184, 0.16);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
@@ -218,14 +218,14 @@ header button:focus-visible img {
 
 .header-bottom li {
   display: flex;
-  cursor :pointer;
+  cursor: pointer;
 }
 
 .header-bottom a {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  color: #475569;
+  color: var(--text-muted);
   text-decoration: none;
   padding: 0.65rem 1.2rem;
   border-radius: 999px;
@@ -236,7 +236,7 @@ header button:focus-visible img {
 
 .header-bottom a:hover,
 .header-bottom a:focus-visible {
-  color: #4338ca;
+  color: var(--primary-hover);
   background: rgba(99, 102, 241, 0.16);
   box-shadow: 0 12px 24px rgba(99, 102, 241, 0.2);
 }

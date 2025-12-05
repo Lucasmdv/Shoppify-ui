@@ -2,7 +2,7 @@
   display: block;
 }
 
-.cardDetails{
+.cardDetails {
   min-height: 24em;
 }
 
@@ -13,7 +13,7 @@
   flex-direction: column;
   gap: clamp(2rem, 4vw, 3.5rem);
   font-family: 'Poppins', sans-serif;
-  color: #0f172a;
+  color: var(--text-main);
 }
 
 .products-hero {
@@ -24,7 +24,7 @@
   padding: clamp(2rem, 4vw, 3rem);
   background: linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(224, 231, 255, 0.92) 100%);
   border-radius: 2rem;
-  border: 1px solid rgba(148, 163, 184, 0.18);
+  border: 1px solid var(--border-color);
   box-shadow: 0 20px 48px rgba(15, 23, 42, 0.1);
 }
 
@@ -42,7 +42,7 @@
   padding: 0.45rem 1.1rem;
   border-radius: 999px;
   background: rgba(79, 70, 229, 0.12);
-  color: #4338ca;
+  color: var(--primary-hover);
   font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.05em;
@@ -54,14 +54,14 @@
   margin: 0;
   font-size: clamp(2.1rem, 3.5vw, 2.8rem);
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text-main);
 }
 
 .products-hero p {
   margin: 0;
   font-size: 1rem;
   line-height: 1.6;
-  color: #475569;
+  color: var(--text-muted);
 }
 
 .admin-actions {
@@ -84,7 +84,7 @@
   border-radius: 999px;
   border: 1px solid rgba(79, 70, 229, 0.2);
   background: rgba(79, 70, 229, 0.08);
-  color: #4338ca;
+  color: var(--primary-hover);
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
@@ -102,9 +102,9 @@
 
 .edit-toggle.is-active,
 .view-toggle.is-active {
-  background: linear-gradient(135deg, #4338ca 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-gradient-end) 100%);
   border-color: transparent;
-  color: #ffffff;
+  color: var(--bg-card);
   box-shadow: 0 20px 38px rgba(79, 70, 229, 0.35);
 }
 
@@ -152,7 +152,7 @@
   display: grid;
   grid-template-columns: 320px 1fr;
   gap: clamp(1.5rem, 3vw, 2.5rem);
-  align-items: stretch; 
+  align-items: stretch;
   width: 100%;
 }
 
@@ -188,7 +188,7 @@
   border-radius: 1.6rem;
   background: rgba(248, 250, 252, 0.92);
   border: 1px solid rgba(203, 213, 225, 0.6);
-  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 24px var(--shadow-color);
 }
 
 .toolbar-details {
@@ -218,8 +218,8 @@
   padding: clamp(1.2rem, 2.4vw, 1.8rem);
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.95) 0%, rgba(226, 232, 240, 0.9) 100%);
   border-radius: 1.75rem;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 18px 42px var(--shadow-color);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -254,10 +254,10 @@
   gap: 2rem;
   width: 100%;
   height: 100%;
-  padding: clamp(1.6rem, 3vw, 2.2rem) clamp(1.6rem, 30vw, 30rem) ;
+  padding: clamp(1.6rem, 3vw, 2.2rem) clamp(1.6rem, 30vw, 30rem);
   cursor: pointer;
   text-align: center;
-  color: #4338ca;
+  color: var(--primary-hover);
   font-weight: 600;
 }
 
@@ -273,8 +273,8 @@
   width: clamp(2rem, 5vw, 3.5rem);
   height: clamp(2rem, 5vw, 3.5rem);
   border-radius: 50%;
-  background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-light) 100%);
+  color: var(--bg-card);
   font-size: clamp(1rem, 3.5vw, 2.3rem);
   font-weight: 600;
   box-shadow: 0 18px 36px rgba(79, 70, 229, 0.25);
@@ -294,7 +294,7 @@
 .create-product-button__helper {
   font-size: clamp(10px, 1vw, 20px);
   font-weight: 500;
-  color: #4f46e5;
+  color: var(--primary-color);
 }
 
 .product-card--editing {
@@ -351,7 +351,7 @@
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   background: rgba(255, 255, 255, 0.9);
-  color: #0f172a;
+  color: var(--text-main);
 }
 
 .admin-action svg {
@@ -366,7 +366,7 @@
 }
 
 .admin-action--edit {
-  color: #4f46e5;
+  color: var(--primary-color);
   border-color: rgba(79, 70, 229, 0.3);
   background: rgba(224, 231, 255, 0.35);
 }
@@ -399,7 +399,7 @@
 
 .products-empty p {
   margin: 0;
-  color: #475569;
+  color: var(--text-muted);
   font-weight: 500;
 }
 
@@ -414,7 +414,7 @@
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.88) 100%);
   border-radius: 2rem;
   border: 1px solid rgba(148, 163, 184, 0.2);
-  box-shadow: 0 22px 54px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 22px 54px var(--shadow-color);
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
@@ -483,7 +483,7 @@
 
   .product-admin-actions {
     flex-direction: column;
-  } 
+  }
 }
 
 /* === Personalización del contenedor del MatDialog === */
@@ -491,7 +491,7 @@
   border-radius: 24px !important;
   overflow: auto !important;
   max-height: calc(100vh - 3rem) !important;
-  background: #fff !important;
+  background: var(--bg-card) !important;
   box-shadow: 0 24px 48px rgba(79, 70, 229, 0.25) !important;
   padding: 0 !important;
   animation: dialogFadeIn 0.25s ease-out;
@@ -503,6 +503,7 @@
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);

@@ -13,9 +13,9 @@
   padding: clamp(1rem, 2vw, 1.4rem);
   border-radius: 1.25rem;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.85) 100%);
-  border: 1px solid rgba(148, 163, 184, 0.18);
+  border: 1px solid var(--border-card-product);
   backdrop-filter: blur(14px);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 18px 40px var(--shadow-color);
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   cursor: pointer;
   position: relative;
@@ -36,7 +36,7 @@
   border-radius: 1rem;
   overflow: hidden;
   background: linear-gradient(135deg, rgba(241, 245, 249, 0.85) 0%, rgba(226, 232, 240, 0.7) 100%);
-  border: 1px solid rgba(148, 163, 184, 0.18);
+  border: 1px solid var(--border-color);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
@@ -61,7 +61,7 @@
   display: -webkit-box;
   font-size: 1rem;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--text-main);
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;
@@ -71,7 +71,7 @@
 
 .product-description {
   margin: 0;
-  color: #475569;
+  color: var(--text-muted);
   font-size: 0.92rem;
   line-height: 1.5;
   display: -webkit-box;
@@ -96,7 +96,7 @@
 .price {
   font-size: clamp(1.35rem, 2.2vw, 1.6rem);
   font-weight: 700;
-  color: #4f46e5;
+  color: var(--primary-color);
   line-height: 1.1;
   letter-spacing: -0.01em;
 }
@@ -110,12 +110,12 @@
 .price-original {
   font-size: 0.95rem;
   font-weight: 500;
-  color: #64748b;
+  color: var(--text-muted);
   text-decoration: line-through;
 }
 
 .price-final {
-  color: #312e81;
+  color: var(--primary-hover);
 }
 
 .discount-badge {
@@ -132,7 +132,7 @@
 .installment {
   font-size: 0.95rem;
   font-weight: 500;
-  color: #4338ca;
+  color: var(--primary-hover);
   background: rgba(79, 70, 229, 0.12);
   padding: 0.35rem 0.6rem;
   border-radius: 999px;

@@ -11,7 +11,7 @@
 
 .collection-table-head {
   color: #bffff6;
-  background: linear-gradient(90deg, #4f46e5, #6366f1);
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
   box-shadow: 0 0 6px 1px #004346;
   text-align: center;
 }
@@ -60,7 +60,7 @@
   font-weight: 600;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.85);
-  color: #0f172a;
+  color: var(--text-main);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   font-size: clamp(5px, 1vw, 10px);
 }
@@ -78,7 +78,7 @@
 }
 
 .action-button--edit {
-  color: #4f46e5;
+  color: var(--primary-color);
   border-color: rgba(79, 70, 229, 0.2);
   background: rgba(99, 102, 241, 0.12);
 }
@@ -111,6 +111,6 @@
 
 .products-empty p {
   margin: 0;
-  color: #475569;
+  color: var(--text-muted);
   font-weight: 500;
 }
