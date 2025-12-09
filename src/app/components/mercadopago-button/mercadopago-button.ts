@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, Input, input } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { TransactionService } from '../../services/transaction-service';
@@ -14,21 +14,34 @@ import { DetailCart } from '../../models/cart/cartResponse';
   templateUrl: './mercadopago-button.html',
   styleUrl: './mercadopago-button.css'
 })
-export class MercadopagoButton implements AfterViewInit {
+export class MercadopagoButton implements AfterViewInit, OnChanges {
   private tService = inject(TransactionService);
   private cartService = inject(CartService);
   private authService = inject(AuthService);
   private mpService = inject(MercadoPagoService);
+  private viewReady = false;
 
 
   @Input() cartItems: DetailCart[] = [];
 
   async ngAfterViewInit(): Promise<void> {
     await this.mpService.loadSdk();
-    await this.renderWalletFromBackend();
+    this.viewReady = true;
+
+    if (this.cartItems.length) {
+      await this.renderWalletFromBackend();
+    }
+  }
+
+  async ngOnChanges(changes: SimpleChanges): Promise<void> {
+    if(changes['cartItems'] && this.cartItems.length > 0 && this.viewReady) {
+      await this.renderWalletFromBackend();
+    }
   }
 
   private async renderWalletFromBackend() {
+    await this.mpService.loadSdk();
+
     const user = this.authService.user();
     if (!user?.id) {
       console.warn('Usuario no logueado. No se puede crear la preferencia.');
@@ -41,7 +54,6 @@ export class MercadopagoButton implements AfterViewInit {
     }
 
     const salePayload = this.cartService.prepareSaleRequest(
-      { paymentMethod: 'DIGITAL', description: 'Mercado Pago checkout' },
       user.id,
       this.cartItems
     );
@@ -59,6 +71,9 @@ export class MercadopagoButton implements AfterViewInit {
 
     try {
       const mp = this.mpService.initialize();
+      const container = document.getElementById('walletBrick_container');
+      if (container) container.innerHTML = ''; // Clear previous button if any
+      
       await mp.bricks().create('wallet', 'walletBrick_container', {
         initialization: { preferenceId: pref.preferenceId }
       });

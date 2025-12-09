@@ -391,8 +391,6 @@ header button:focus-visible img {
     justify-content: space-between;
     padding: 0.85rem 1rem;
   }
-
-
 }
 
 @media (max-width: 600px) {

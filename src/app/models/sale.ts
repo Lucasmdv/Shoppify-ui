@@ -6,7 +6,7 @@ export interface SaleRequest {
 }
 
 export interface TransactionRequest {
-  paymentMethod: string;
+  paymentMethod?: string;
   detailTransactions: DetailTransactionRequest[];
   description: string;
 }

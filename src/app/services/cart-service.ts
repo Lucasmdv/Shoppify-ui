@@ -1,8 +1,10 @@
 import { inject, Injectable, signal, computed } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Cart } from '../models/cart/cartResponse';
+import { Cart, DetailCart } from '../models/cart/cartResponse';
+import { SaleRequest } from '../models/sale';
 import { tap } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,7 @@ export class CartService {
   readonly API_URL = `${environment.apiUrl}/user`;
 
   private _cartState = signal<Cart | null>(null);
+  public selected = signal<Set<number>>(new Set());
 
 
   public cart = this._cartState.asReadonly();
@@ -62,21 +65,31 @@ export class CartService {
     );
   }
 
+  removeSelected(userId: number) {
+    const selectedIds = this.selected();
+    const deleteRequests = Array.from(selectedIds).map(id => this.removeItem(userId, id));
+    return forkJoin(deleteRequests).pipe(
+      tap(() => this.selected.set(new Set()))
+    );
+  }
 
-  prepareSaleRequest(formValue: any, userId: number, items: any[]): any {
+  prepareSaleRequest(userId: number, items: DetailCart[]): SaleRequest | null {
     if (!items || items.length === 0) return null;
 
-    const detailTransactions = items.map(i => ({
-      productID: i.product?.id ?? i.productId ?? i.id,
-      quantity: i.quantity || 1
-    }));
+    const detailTransactions = items
+      .filter(i => i.product?.id !== undefined)
+      .map(i => ({
+        productID: i.product!.id!,
+        quantity: i.quantity || 1
+      }));
+
+    if (detailTransactions.length === 0) return null;
 
     return {
-      clientId: userId,
+      userId,
       transaction: {
-        paymentMethod: formValue.paymentMethod || 'CASH',
         detailTransactions,
-        description: formValue.description || ''
+        description: 'Mercado Pago checkout'
       }
     };
   }
