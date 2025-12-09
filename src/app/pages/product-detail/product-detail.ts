@@ -16,7 +16,6 @@ import { WishlistService } from '../../services/wishlist-service';
 // Components
 import { ProductCard } from '../../components/product-card/product-card';
 import { ProductParams } from '../../models/filters/productParams';
-import { IconDirective } from '@coreui/icons-angular';
 import { cilBell } from '@coreui/icons';
 
 

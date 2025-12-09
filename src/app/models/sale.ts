@@ -1,10 +1,10 @@
 export interface SaleRequest {
-  clientId: number;
+  userId: number;
   transaction: TransactionRequest;
 }
 
 export interface TransactionRequest {
-  paymentMethod: string;
+  paymentMethod?: string;
   detailTransactions: DetailTransactionRequest[];
   description: string;
 }

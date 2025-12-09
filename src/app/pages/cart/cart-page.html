@@ -17,7 +17,7 @@
         @for (item of items; track item.id) {
         <div class="cart-item">
           <label class="select-label">
-            <input type="checkbox" [checked]="selectedItems().has(item.id!)"
+            <input type="checkbox" [checked]="cService.selected().has(item.id!)"
               (change)="toggleSelection(item.id!, $any($event.target).checked)" />
           </label>
 
@@ -70,54 +70,28 @@
 
     <aside class="summary-card">
       <h3>Resumen de compra</h3>
-
+      @for (item of items; track item.id) {
+          @if (cService.selected().has(item.id!)) {
       <div class="summary-block">
-        @if (products() > 0) {
         <div class="summary-row">
-          <span>Productos ({{ products() }})</span>
-          <span>{{ total | currency }}</span>
+          <span>
+            {{ item.product?.name }}
+            {{ item.quantity! > 1 ? '(' + item.quantity + ')' : '' }}
+          </span>
+          <span>{{ item.subtotal | currency }}</span>
         </div>
-        }
       </div>
-
-      <form [formGroup]="checkoutForm" class="checkout-form">
-        <label>
-          Metodo de pago
-          <select formControlName="paymentMethod" required>
-            <option value="CASH">Efectivo</option>
-            <option value="CREDIT">Tarjeta</option>
-            <option value="DEBIT">Debito</option>
-            <option value="DIGITAL">Pago digital</option>
-          </select>
-        </label>
-
-        @if (permits.includes("ADMIN")) {
-        <label>
-          Tipo de transaccion
-          <select formControlName="type" required defaultValue="SALE">
-            <option value="PURCHASE">Compra</option>
-            <option value="SALE">Venta</option>
-
-          </select>
-        </label>
-
-        <label class="description">
-          Descripcion
-          <textarea formControlName="description" rows="2" placeholder="Notas de la venta..."></textarea>
-        </label>
-        }
-      </form>
+    }
+    }
 
       <div class="summary-total">
         <span>Total</span>
         <span class="total-amount">{{ total | currency }}</span>
       </div>
 
-      <button (click)="onSubmit()" [disabled]="checkoutForm.invalid || selectedItems().size === 0" class="checkout-btn">
+      <button (click)="router.navigate(['/cart/checkout'])" [disabled]="cService.selected().size === 0" class="checkout-btn">
         Continuar compra
       </button>
-
-      <app-mercadopago-button [cartItems]="items"></app-mercadopago-button>
     </aside>
   </div>
   } @else {
