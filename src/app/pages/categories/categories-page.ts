@@ -10,20 +10,20 @@ import { SwalService } from '../../services/swal-service';
 import { MatDialog } from '@angular/material/dialog';
 import { CategoryFormDialog } from '../../components/category-form-dialog/category-form-dialog';
 import { AuthService } from '../../services/auth-service';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 import { CreateCategory } from '../../services/create-category';
 import { ScreenSizeService } from '../../services/screen-size-service';
 
 @Component({
   selector: 'app-categories-page',
-  imports: [CategoryCard, CategoryRefiner, CommonModule], 
+  imports: [CategoryCard, CategoryRefiner, CommonModule],
   templateUrl: './categories-page.html',
   styleUrl: './categories-page.css',
 })
 export class CategoriesPage implements OnInit {
-  categories: Category[] = [] 
+  categories: Category[] = []
 
-  currentFilters: CategoryParams = { page: 0, size: 8 } 
+  currentFilters: CategoryParams = { page: 0, size: 8 }
   editMode = false;
 
   constructor(
@@ -51,19 +51,19 @@ export class CategoriesPage implements OnInit {
 
   onFilterChange(filters: CategoryParams): void {
 
-    const merged: CategoryParams = { page: 0, size: 6, ...filters }; 
+    const merged: CategoryParams = { page: 0, size: 6, ...filters };
     this.currentFilters = merged;
     this.navigateWithFilters(merged);
   }
 
 
   renderCategoriesWithFilters(filters: CategoryParams): void {
-    this.categoryService.getList(filters).subscribe({ 
+    this.categoryService.getList(filters).subscribe({
       next: (data) => {
-        this.categories = data.data; 
+        this.categories = data.data;
       },
       error: (err) => {
-        this.swal.error("Ocurrió un error al buscar/filtrar las categorías"); 
+        console.error("Ocurrió un error al buscar/filtrar las categorías");
       }
     });
   }
@@ -72,7 +72,7 @@ export class CategoriesPage implements OnInit {
     this.categoryService.delete(id).subscribe({
       next: () => {
         this.swal.success('Categoria eliminada con éxito!')
-        this.renderCategoriesWithFilters(this.currentFilters); 
+        this.renderCategoriesWithFilters(this.currentFilters);
       },
       error: () => {
         this.swal.error('Error al eliminar la categoria')
@@ -81,7 +81,7 @@ export class CategoriesPage implements OnInit {
   }
 
   onDelete() {
-    this.renderCategoriesWithFilters(this.currentFilters) 
+    this.renderCategoriesWithFilters(this.currentFilters)
   }
 
   editCategory(category: Category): void {
@@ -96,7 +96,7 @@ export class CategoriesPage implements OnInit {
     }).afterClosed().subscribe(result => {
       if (result) {
         this.swal.success("La categoría se editó correctamente!")
-        this.renderCategoriesWithFilters(this.currentFilters) 
+        this.renderCategoriesWithFilters(this.currentFilters)
       }
     })
   }

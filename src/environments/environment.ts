@@ -1,5 +1,8 @@
+import { Secrets } from "./secrets";
+
 export const environment = {
   production: false,
-  apiUrl: "http://localhost:8080/api",
+  apiUrl: Secrets.apiUrl,
+  mpPk: Secrets.mpPk,
   appName: 'Shoppify-UI'
 };

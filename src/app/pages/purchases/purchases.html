@@ -47,64 +47,12 @@
 
   <div class="purchases-list">
     @for (purchase of purchases(); let i = $index; track purchase.id) {
-    <div class="purchase-card">
-      <div class="purchase-header">
-        <div class="purchase-summary">
-          <p>Fecha: {{ purchase.dateTime | date:'short' }}</p>
-          <p>Total: <strong>${{ purchase.total | number:'1.2-2' }}</strong></p>
-        </div>
-        <button class="toggle-details" (click)="toggleDetails(i)">
-          {{ activePurchase() === i ? 'Ocultar detalles ↑' : 'Mostrar detalles ↓' }}
-        </button>
-      </div>
-
-      <div class="purchase-details-wrapper" [class.show]="activePurchase() === i">
-        <div class="purchase-details">
-          @if (isAdmin && purchase.clientId) {
-            <div class="buy-info-header">
-              <div class="buyer-info-row">
-                <p class="buyer-info"><strong>Comprador:</strong> ID: {{ purchase.clientId }}</p>
-                <button class="view-client-btn" type="button" (click)="toggleClientInfo(purchase.clientId)">
-                  {{ clientsExpanded().has(purchase.clientId) ? 'Ocultar comprador' : 'Ver comprador' }}
-                </button>
-              </div>
-
-              @if (clientsExpanded().has(purchase.clientId)) {
-                <div class="client-details">
-                  <p><strong>Nombre:</strong> {{ clientsCache().get(purchase.clientId)?.firstName }} {{ clientsCache().get(purchase.clientId)?.lastName }}</p>
-                  <p><strong>Email:</strong> {{ clientsCache().get(purchase.clientId)?.email }}</p>
-                  <p><strong>Teléfono:</strong> {{ clientsCache().get(purchase.clientId)?.phone }}</p>
-                  <p><strong>DNI:</strong> {{ clientsCache().get(purchase.clientId)?.dni }}</p>
-                </div>
-              }
-            </div>
-          }
-
-          <h4>Productos</h4>
-          <ul>
-            @for (item of purchase.detailTransactions; track item.id) {
-            <li>
-              <div class="item-info">
-                <img (click)="gotoDetailsProduct(item.product?.id)" [src]="item.product?.imgURL"
-                  alt="{{ item.product?.name }}" />
-                <div class="item-text">
-                  <p><strong>{{ item.product?.name }}</strong></p>
-                  <p>Cantidad: {{ item.quantity }}</p>
-                  <p>Precio: ${{ item.product?.priceWithDiscount | number:'1.2-2' }}</p>
-                  <p>Subtotal: <strong>${{ item.subtotal | number:'1.2-2' }}</strong></p>
-                </div>
-              </div>
-            </li>
-            }
-          </ul>
-
-          <div class="purchase-extra">
-            <p><strong>Método de pago:</strong> {{ purchase.paymentMethod }}</p>
-            <p><strong>Descripción:</strong> {{ purchase.description || 'Sin descripción' }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
+      <app-purchase-card
+        [purchase]="purchase"
+        [i]="i"
+        [isAdmin]="isAdmin"
+        [showShipment]="true"
+      ></app-purchase-card>
     }
   </div>
 

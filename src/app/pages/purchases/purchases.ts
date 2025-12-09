@@ -9,10 +9,11 @@ import Swal from 'sweetalert2';
 import { ImageFallbackDirective } from '../../core/directives/image-fallback';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user-service';
+import { PurchaseCard } from '../../components/purchase-card/purchase-card';
 
 @Component({
   selector: 'app-purchases',
-  imports: [CommonModule, FormsModule,ImageFallbackDirective],
+  imports: [CommonModule, FormsModule,ImageFallbackDirective, PurchaseCard],
   templateUrl: './purchases.html',
   styleUrl: './purchases.css'
 })
@@ -21,7 +22,6 @@ export class Purchases implements OnInit {
   AService = inject(AuditService)
   aService = inject(AuthService)
   uService = inject(UserService)
-  router = inject(Router)
   user = this.aService.user
   isAdmin = this.aService.permits().includes('ADMIN')
 
@@ -72,10 +72,6 @@ export class Purchases implements OnInit {
     this.loadTransactions()
   }
 
-  toggleDetails(i: number): void {
-    this.activePurchase.set(this.activePurchase() === i ? null : i)
-  }
-
   loadTransactions(): void {
     this.filters.page = this.currentPage
     this.filters.size = this.purchasesXPage
@@ -91,10 +87,10 @@ export class Purchases implements OnInit {
           description: s.transaction?.description,
           type: s.transaction?.type,
           storeName: s.transaction?.storeName,
-          clientId: s.transaction?.clientId || s.clientId,
-          detailTransactions: s.transaction?.detailTransactions || []
+          userId: s.transaction?.userId || s.userId,
+          detailTransactions: s.transaction?.detailTransactions || [],
         })))
-
+        console.log(this.purchases())
         this.totalPages = data.page?.totalPages || 1
       },
       error: (err) => {
@@ -106,54 +102,6 @@ export class Purchases implements OnInit {
         })
       }
     })
-  }
-
-  gotoDetailsProduct(id?:number){
-   this.router.navigate(["/products/details", id]);
-  }
-
-  getClientInfo(clientId?: number){
-    if (!clientId && clientId !== 0) return null
-
-    const cache = this.clientsCache();
-
-    if (cache.has(clientId as number)) {
-      return cache.get(clientId as number);
-    }
-
-    this.uService.get(clientId as number).subscribe({
-      next: (data) => {
-        const clientData = {
-          firstName: data.firstName,
-          lastName: data.lastName,
-          dni: data.dni,
-          phone: data.phone,
-          email: data.email,
-          img: data.img,
-          dateOfRegistration: data.dateOfRegistration,
-        }
-        cache.set(clientId as number, clientData);
-        this.clientsCache.set(new Map(cache))
-      },
-      error: (err) => {
-        console.error('Error al obtener info del cliente:', err)
-      }
-    })
-
-    return cache.get(clientId as number)
-  }
-
-  toggleClientInfo(clientId?: number){
-    if (!clientId && clientId !== 0) return
-
-    const set = new Set(this.clientsExpanded())
-    if (set.has(clientId)){
-      set.delete(clientId)
-    } else {
-      set.add(clientId)
-      this.getClientInfo(clientId)
-    }
-    this.clientsExpanded.set(set)
   }
 
   clearFilters(): void {

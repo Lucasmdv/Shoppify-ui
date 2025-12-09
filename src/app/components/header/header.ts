@@ -4,13 +4,14 @@ import { SearchBar } from '../search-bar/search-bar';
 import { UserAvatar } from '../user-avatar/user-avatar';
 import { User } from '../../models/auth/user';
 import { ImageFallbackDirective } from '../../core/directives/image-fallback';
-import { BadgeComponent, ButtonDirective } from '@coreui/angular';
+import { BadgeComponent } from '@coreui/angular';
 import { CartService } from '../../services/cart-service';
 import { AuthService } from '../../services/auth-service';
+import { NotificationDropdown } from '../notification-dropdown/notification-dropdown';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, SearchBar, UserAvatar, ImageFallbackDirective, ButtonDirective, BadgeComponent],
+  imports: [RouterLink, SearchBar, UserAvatar, ImageFallbackDirective, BadgeComponent, NotificationDropdown],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })

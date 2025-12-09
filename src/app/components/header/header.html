@@ -1,60 +1,80 @@
-<header>
+  <header>
 
-  <div class="header-top">
-    <div class="brand-block">
-      <button
-        class="menu-button"
-        type="button"
-        [attr.aria-label]="mostrarNav ? 'Cerrar menu' : 'Abrir menu'"
-        [attr.aria-expanded]="mostrarNav"
-        aria-controls="main-nav"
-        (click)="toggleNav()">
-        <span class="menu-icon" aria-hidden="true"></span>
-      </button>
+    <div class="header-top">
+      
+      <div class="brand-block">
+        <button
+          class="menu-button"
+          type="button"
+          [attr.aria-label]="mostrarNav ? 'Cerrar menu' : 'Abrir menu'"
+          [attr.aria-expanded]="mostrarNav"
+          aria-controls="main-nav"
+          (click)="toggleNav()">
+          <span class="menu-icon" aria-hidden="true"></span>
+        </button>
 
-      <a class="brand" routerLink="/home" aria-label="Ir al inicio">
-        <img id="logo" class="logo-desktop" src="image/logo.png" alt="Shoppify">
-      </a>
+        <a class="brand"  routerLink="/home" aria-label="Ir al inicio">
+          <img id="logo" class="logo-desktop" src="image/logo.png" alt="Shoppify">
+          <img id="logo-mobile" class="logo-mobile" src="image/mobile-logo.png" alt="Shoppify">
+        </a>
+
+       
+      </div>
+
+      <app-search-bar
+        id="header-search"
+        class="header-search"
+        [class.is-open]="mostrarBusquedaMovil"></app-search-bar>
+
+      <div class="header-icons" aria-label="Acciones de usuario">
+        <button
+          type="button"
+          class="icon-button search-trigger"
+          [class.is-open]="mostrarBusquedaMovil"
+          aria-label="Buscar"
+          aria-controls="header-search"
+          [attr.aria-expanded]="mostrarBusquedaMovil"
+          (click)="toggleBusquedaMovil()">
+          <i class="material-icons" style="color: #4338ca;" aria-hidden="true">search</i>
+        </button>
+
+
+    
+
+        <app-notification-dropdown></app-notification-dropdown>
+
+
+        <button
+          type="button"
+          class="cart-button"
+          aria-label="Carrito"
+          routerLink="/cart">
+          <i class="material-icons" aria-hidden="true">shopping_cart_checkout</i>
+          @if(cartService.totalItems() > 0){
+            <c-badge color="danger" position="top-end" shape="rounded-pill">{{ cartService.totalItems() }}</c-badge>
+          <span class="visually-hidden">Products in cart</span>}
+        </button>
+              <app-user-avatar></app-user-avatar>
+              
+      </div>
+    
     </div>
 
-    <app-search-bar
-      id="header-search"
-      class="header-search"
-      [class.is-open]="mostrarBusquedaMovil"></app-search-bar>
-
-    <div class="header-icons" aria-label="Acciones de usuario">
-      <button
-        type="button"
-        class="icon-button search-trigger"
-        [class.is-open]="mostrarBusquedaMovil"
-        aria-label="Buscar"
-        aria-controls="header-search"
-        [attr.aria-expanded]="mostrarBusquedaMovil"
-        (click)="toggleBusquedaMovil()">
-        <img src="image/lupa.png" alt="">
-      </button>
-
-
-      <app-user-avatar></app-user-avatar>
-
-
-      <button type="button" class="icon-button" aria-label="Carrito" routerLink="/cart" cButton color="primary" class="position-relative m-1">
-        <img src="image/carrito.png" alt="">
-        @if(cartService.totalItems() > 0){<c-badge color="danger" position="top-end" shape="rounded-pill">{{ cartService.totalItems() }}</c-badge>
-        <span class="visually-hidden">Products in cart</span>}
-      </button>
-    </div>
-  </div>
-
+    
   <div class="header-desplegable" [class.show]="mostrarNav">
-    <nav id="main-nav" class="header-bottom" aria-label="Navegacion principal">
-      <ul>
-        <li id="productos-button"><a routerLink="/products">Productos</a></li>
-        <li id="categorias-button"><a routerLink="/categories">Categorias</a></li>
-        <li (click)="gotoHot()" id="hot-button"><a>🔥Hot Sales</a></li>
-        <li id="ayuda-button"><a routerLink="/help">Ayuda</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
+    
+  <nav id="main-nav" class="header-bottom" aria-label="Navegacion principal">
+    <ul>
+      
+     
 
+      <li id="productos-button"><a routerLink="/products">Productos</a></li>
+      <li id="categorias-button"><a routerLink="/categories">Categorias</a></li>
+      <li (click)="gotoHot()" id="hot-button"><a>Hot Sales</a></li>
+      <li id="ayuda-button"><a routerLink="/help">Ayuda</a></li>
+    </ul>
+  </nav>
+</div>
+  </header>
+
+  

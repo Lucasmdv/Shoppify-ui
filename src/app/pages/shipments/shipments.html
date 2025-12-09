@@ -1,0 +1,57 @@
+<div class="filters">
+    <label>Desde: <input type="date" [(ngModel)]="filters.startDate"></label>
+    <label>Hasta: <input type="date" [(ngModel)]="filters.endDate"></label>
+
+    <label>Mínimo: <input type="number" [(ngModel)]="filters.minPrice"></label>
+    <label>Máximo: <input type="number" [(ngModel)]="filters.maxPrice"></label>
+    
+    <label>Estado:
+      <select [(ngModel)]="filters.status">
+        <option value="PROCESSING">Procesando</option>
+        <option value="SHIPPED">Enviado</option>
+        <option value="DELIVERED">Entregado</option>
+        <option value="CANCELLED">Cancelado</option>
+        <option value="RETURNED">Devuelto</option>
+      </select>
+    </label>
+
+    <label>Direccion: <input type="text" [(ngModel)]="filters.adress"></label>
+
+    <label class="show-per-page">Mostrar:
+      <select [(ngModel)]="purchasesXPage" (change)="getShipments()">
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+        <option [value]="25">25</option>
+        <option [value]="50">50</option>
+      </select>
+      por página
+    </label>
+
+    <div class="action-wrapper">
+        <button class="clear-filters" type="button" (click)="clearFilters()">Limpiar filtros</button>
+        <button (click)="applyFilters()">Filtrar</button>
+
+        @if (isAdmin) {
+            <button type="button" (click)="toggleAdminView()" class="admin-toggle" id="admin-toggle"
+            [ngClass]="{ 'active': adminView }">
+            Ver todos los envios
+            </button>
+        }    
+    </div>
+  </div>
+
+<section class="shipments-wrapper">
+    @if (this.shipments.length > 0) {
+        @for (shipment of shipments; let i = $index; track shipment.id;) {
+            <app-shipment-wrapper
+            [shipment]="shipment"
+            [index]="i"
+            [isAdmin]="isAdmin">
+            </app-shipment-wrapper>
+        }
+    }@else {
+        <div class="empty-purchases">
+            <p>No tenés pedidos registrados todavía 😕</p>
+        </div>
+    }
+</section>

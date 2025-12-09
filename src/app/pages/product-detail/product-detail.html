@@ -48,6 +48,7 @@
       </div>
 
       <div class="product-purchase-section">
+        @if (product.stock > 0) {
         <button
           type="button"
           class="favorite-icon-button"
@@ -59,7 +60,7 @@
             <path d="M20.25 5.96a4.41 4.41 0 0 0-6.19 0L12 8.02l-2.06-2.06a4.41 4.41 0 0 0-6.19 0 4.44 4.44 0 0 0 0 6.25l2.06 2.06L12 21l6.19-6.69 2.06-2.06a4.44 4.44 0 0 0 0-6.25Z" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
-
+        }
         @if (isHidden) {
         <div class="hidden-product-message">
           <span>Este producto no se encuentra disponible en este momento.</span>
@@ -81,18 +82,27 @@
             <span class="product-price">$ {{ product.price | number:'1.0-2' }}</span>
           }
 
-          @if (product.priceWithDiscount) {
-          @if (product.priceWithDiscount > 1000) {
+         
+          @if (product.priceWithDiscount! > 1000) {
             <span class="installment">
-              6 cuotas de $ {{ (product.priceWithDiscount / 6) | number:'1.0-2' }}
+              6 cuotas de $ {{ (product.priceWithDiscount! / 6) | number:'1.0-2' }}
             </span>
           }
+        </div>
+        @if (product.stock > 1) {
+          <div class="stock-status ok">
+            Stock disponible ({{ product.stock }} unidades)
+          </div>
+        } @else {
+          <div class="stock-status empty">
+            Este producto se encuentra sin stock.
+          </div>
         }
-        </div>
-
-        <div class="stock-info">
-          <span class="stock-available">Stock disponible ({{ product.stock }} unidades)</span>
-        </div>
+            
+        
+         
+         
+     
 
         @if (maxAvailable > 0) {
                   <div class="quantity-selector">
@@ -127,6 +137,8 @@
 
 
         <div class="actions">
+
+          @if (product.stock > 1) {
           <button class="btn btn-buy" (click)="onBuyNow()">
             <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="9" cy="21" r="1"></circle>
@@ -135,7 +147,15 @@
             </svg>
             Comprar ahora
           </button>
-          @if (maxAvailable > 0) {
+            }
+            @else {
+           <button class="btn btn-buy" (click)="toggleFavorite()">
+
+           {{isFavorite ? 'Dejar de notificarme' : 'Notificarme cuando esté disponible'}}
+                       <i class="material-icons">{{isFavorite ? 'notifications_off' : 'notifications'}}</i>
+          </button>
+        }
+          @if (product.stock > 1) {
           <button class="btn btn-cart" (click)="onAddToCart()">
             <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"></path>
@@ -143,6 +163,7 @@
               <path d="M1 10.6L12 2l11 8.6"></path>
             </svg>
             Agregar al carrito
+         
           </button>
         }
         </div>

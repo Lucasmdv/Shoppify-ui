@@ -2,7 +2,7 @@ import { DetailTransaction } from "./detailTransaction";
 
 export interface Transaction {
   id?: number
-  clientId?: number
+  userId?: number
   total: number
   dateTime: string
   paymentMethod: string

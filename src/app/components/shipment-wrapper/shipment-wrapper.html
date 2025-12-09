@@ -1,0 +1,22 @@
+<div class="shipment-wrapper">
+
+  <div class="shipment-card">
+    @if (shipment) {
+      <app-shipment-card
+        [shipment]="shipment"
+        [isAdmin]="isAdmin">
+      </app-shipment-card>
+    }
+  </div>
+
+    <div class="sale-card">
+      @if (sale.transaction) {
+        <app-purchase-card
+            [purchase]="sale.transaction"
+            [i]="index"
+            [isAdmin]="isAdmin"
+            [showShipment]="false">
+        </app-purchase-card>
+      }
+    </div>
+</div>

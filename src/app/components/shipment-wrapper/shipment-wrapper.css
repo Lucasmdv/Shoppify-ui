@@ -1,0 +1,17 @@
+.shipment-wrapper {
+    border: 2px solid #7b50fd;
+    border-radius: 20px;
+    background: #faf8ff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.shipment-card {
+    min-height: 12em;
+}
+
+.sale-card {
+    margin-top: 20px;
+    border-top: 1px solid #e5e0ff;
+    padding-top: 20px;
+    margin: 1em;
+}

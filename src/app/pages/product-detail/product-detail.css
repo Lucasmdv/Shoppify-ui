@@ -255,17 +255,27 @@
     width: fit-content;
 }
 
-.stock-info {
-    padding: 12px;
-    background: #e8f5e9;
-    border-radius: 6px;
+.stock-status {
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stock-status.ok {
+    color: #065f46;
+    background: #ecfdf3;
     border-left: 4px solid #00a650;
 }
 
-.stock-available {
-    color: #00a650;
-    font-size: 14px;
-    font-weight: 600;
+.stock-status.empty {
+    color: #991b1b;
+    background: #fef2f2;
+    border-left: 4px solid #dc2626;
 }
 
 .actions {

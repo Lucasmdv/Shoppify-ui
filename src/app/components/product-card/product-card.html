@@ -1,52 +1,47 @@
 @if (product) {
-  <article
-    id="card"
-    (click)="getDetails(product.id)"
-    [class.is-horizontal]="isHorizontal">
+<article id="card" (click)="getDetails(product.id)" [class.is-horizontal]="isHorizontal">
 
-    <div class="card-media">
-      @if (product.imgURL) {
-        <img [src]="product.imgURL" [alt]="product.name || 'Producto'">
-      }
-      @else {
-        <img
-          [src]="'https://placehold.co/600x400?text=' + (product.name || 'Producto')"
-          [alt]="product.name || 'Producto'">
-      }
-    </div>
+  <div class="card-media">
+    @if (product.imgURL) {
+    <img [src]="product.imgURL" [alt]="product.name || 'Producto'">
+    }
+    @else {
+    <img [src]="'https://placehold.co/600x400?text=' + (product.name || 'Producto')" [alt]="product.name || 'Producto'">
+    }
+  </div>
 
-    <div class="card-body">
-      <h3 class="product-name">{{ product.name }}</h3>
-      @if (isHorizontal && isMostrarDescripcion && product.description) {
-        <p class="product-description">{{ product.description }}</p>
-      }
+  <div class="card-body">
+    <h3 class="product-name">{{ product.name }}</h3>
+    @if (isHorizontal && isMostrarDescripcion && product.description) {
+    <p class="product-description">{{ product.description }}</p>
+    }
 
-      <div class="card-footer">
-        <div class="pricing">
-          @if (isMostrarDescuento && hasDiscount) {
-            <span class="price-original">$ {{ product.price | number:'1.0-2' }}</span>
-            <div class="price-row">
-              <span class="price price-final">$ {{ (product.priceWithDiscount ?? product.price) | number:'1.0-2' }}</span>
-              <span class="discount-badge">-{{ product.discountPercentage | number:'1.0-2' }}%</span>
-            </div>
-          }
-          @else {
-            <span class="price">$ {{ product.price | number:'1.0-2' }}</span>
-          }
-
-          @if ((product.priceWithDiscount ?? product.price) > 1000 && isMostrarCuotas) {
-            <span class="installment">
-              6 cuotas de $ {{ ((product.priceWithDiscount ?? product.price) / 6) | number:'1.0-2' }}
-            </span>
-          }
+    <div class="card-footer">
+      <div class="pricing">
+        @if (isMostrarDescuento && hasDiscount) {
+        <span class="price-original">$ {{ product.price | number:'1.0-2' }}</span>
+        <div class="price-row">
+          <span class="price price-final">$ {{ (product.priceWithDiscount ?? product.price) | number:'1.0-2' }}</span>
+          <span class="discount-badge">-{{ product.discountPercentage | number:'1.0-2' }}%</span>
         </div>
+        }
+        @else {
+        <span class="price">$ {{ product.price | number:'1.0-2' }}</span>
+        }
 
-        <div class="stock-slot">
-          @if (product.stock < 10 && isMostrarStock) {
-            <span id="product-Stock">solo quedan {{ product.stock }} disponibles.</span>
+        @if ((product.priceWithDiscount ?? product.price) > 1000 && isMostrarCuotas) {
+        <span class="installment">
+          6 cuotas de $ {{ ((product.priceWithDiscount ?? product.price) / 6) | number:'1.0-2' }}
+        </span>
+        }
+      </div>
+
+      <div class="stock-slot">
+        @if (product.stock < 10 && isMostrarStock) { <span id="product-Stock">{{ product.stock === 0 ? 'Sin stock' :
+          'Solo quedan ' + product.stock + ' disponibles.' }}</span>
           }
-        </div>
       </div>
     </div>
-  </article>
+  </div>
+</article>
 }

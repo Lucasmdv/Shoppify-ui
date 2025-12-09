@@ -3,16 +3,15 @@ import { TransactionService } from '../../services/transaction-service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Cart, DetailCart } from '../../models/cart/cartResponse';
 import { CartService } from '../../services/cart-service';
-import { ProductCard } from "../../components/product-card/product-card";
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { CommonModule, CurrencyPipe, DecimalPipe } from '@angular/common';
-
+import { CommonModule } from '@angular/common';
+import { MercadopagoButton } from '../../components/mercadopago-button/mercadopago-button';
 @Component({
   selector: 'app-cart-page',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, MercadopagoButton],
   templateUrl: './cart-page.html',
   styleUrl: './cart-page.css'
 })
@@ -86,11 +85,11 @@ export class CartPage implements OnInit {
     this.selectedItems.set(updated)
   }
 
-  toggleAll(){
+  toggleAll() {
     const isAllSelected = this.items.length > 0 && this.selectedItems().size === this.items.length;
 
     if (isAllSelected) {
-      this.selectedItems.set(new Set()); 
+      this.selectedItems.set(new Set());
     } else {
       const allIds = this.items.map(item => item.id!);
       this.selectedItems.set(new Set(allIds));
@@ -156,8 +155,8 @@ export class CartPage implements OnInit {
     }
   }
 
-  goToDetailProduct(id?:number){
-  this.router.navigate(["products/details/", id]);
+  goToDetailProduct(id?: number) {
+    this.router.navigate(["products/details/", id]);
   }
 
   onSubmit() {

@@ -1,22 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 import Swal from 'sweetalert2';
-import { DropdownComponent, DropdownMenuDirective, DropdownToggleDirective, DropdownItemDirective, ImgDirective} from '@coreui/angular';
-import { ButtonDirective } from '@coreui/angular';
+import { DropdownComponent, DropdownMenuDirective, DropdownToggleDirective, DropdownItemDirective } from '@coreui/angular';
 import { CommonModule } from '@angular/common';
 import { ImageFallbackDirective } from '../../core/directives/image-fallback';
 
 @Component({
   selector: 'app-user-avatar',
   standalone: true,
-  imports: [RouterLink, DropdownComponent, DropdownMenuDirective, DropdownToggleDirective, DropdownItemDirective, ButtonDirective, CommonModule, ImageFallbackDirective],
+  imports: [RouterLink, DropdownComponent, DropdownMenuDirective, DropdownToggleDirective, DropdownItemDirective, CommonModule, ImageFallbackDirective],
   
   templateUrl: './user-avatar.html',
   styleUrl: './user-avatar.css'
 })
 export class UserAvatar {
   showMenu = false;
+
 
   constructor(private router: Router , public auth:AuthService) {}
 

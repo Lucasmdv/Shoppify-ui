@@ -16,6 +16,9 @@ import { WishlistService } from '../../services/wishlist-service';
 // Components
 import { ProductCard } from '../../components/product-card/product-card';
 import { ProductParams } from '../../models/filters/productParams';
+import { IconDirective } from '@coreui/icons-angular';
+import { cilBell } from '@coreui/icons';
+
 
 @Component({
   selector: 'app-product-detail',
@@ -25,21 +28,23 @@ import { ProductParams } from '../../models/filters/productParams';
 })
 export class ProductDetail implements OnInit {
 
+  icons = { cilBell };
+
   private aService = inject(AuthService);
 
   product!: Product;
   id?: number;
   userId?: number = this.aService.user()?.id || undefined;
   relatedProducts: Product[] = [];
-  
+
   isHidden: boolean = false;
   isFavorite: boolean = false;
   isQuantityOpen = false;
 
   // Quantity Logic
   selectedQuantity = 1;
-  maxAvailable: number = 1;     
-  dropdownOptions: number[] = []; 
+  maxAvailable: number = 0;
+  dropdownOptions: number[] = [];
   cartQuantity = 0;
 
   constructor(
@@ -49,7 +54,7 @@ export class ProductDetail implements OnInit {
     private cartService: CartService,
     private localStorage: StorageService,
     private wishlistService: WishlistService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe({
@@ -65,7 +70,7 @@ export class ProductDetail implements OnInit {
         this.id = parsedId;
         this.checkFavorite();
         this.renderProduct(parsedId);
-      
+
       },
       error: () => this.router.navigate(['/'])
     });
@@ -141,7 +146,7 @@ export class ProductDetail implements OnInit {
     });
   }
 
-  toggleFavorite() {
+  toggleFavorite(notification: boolean = false) {
     if (!this.userId) {
       this.router.navigate(["auth/login"]);
       return;
@@ -153,6 +158,7 @@ export class ProductDetail implements OnInit {
         const message = isRemoved
           ? 'Producto eliminado de favoritos'
           : 'Producto agregado a favoritos';
+        
         this.showToast(message, 'success');
       },
       error: (err) => {
@@ -161,6 +167,8 @@ export class ProductDetail implements OnInit {
       }
     });
   }
+
+
 
   // --- Lógica de Cantidad y Stock ---
 
@@ -171,7 +179,7 @@ export class ProductDetail implements OnInit {
       next: (cart) => {
         const foundItem = cart.items.find(item => item.product?.id === this.product.id);
 
-  
+
         const remaining = foundItem
           ? this.product.stock - foundItem.quantity!
           : this.product.stock;
@@ -181,7 +189,7 @@ export class ProductDetail implements OnInit {
       },
       error: (err) => {
         console.error("Error checking cart:", err);
-  
+
         this.cartQuantity = 0;
         this.updateDropdownLogic(this.product.stock);
       }
@@ -191,9 +199,16 @@ export class ProductDetail implements OnInit {
 
   private updateDropdownLogic(limit: number) {
     this.maxAvailable = Math.max(0, limit);
-    
+
     const optionsToShow = Math.min(this.maxAvailable, 4);
-        this.dropdownOptions = Array.from({ length: optionsToShow }, (_, i) => i + 1);
+    this.dropdownOptions = Array.from({ length: optionsToShow }, (_, i) => i + 1);
+
+    if (this.maxAvailable === 0) {
+      this.isQuantityOpen = false;
+      this.selectedQuantity = 1;
+    } else {
+      this.selectedQuantity = this.normalizeQuantity(this.selectedQuantity);
+    }
   }
 
   toggleQuantityDropdown() {
@@ -232,6 +247,8 @@ export class ProductDetail implements OnInit {
     return Math.max(1, Math.min(qty, this.maxAvailable));
   }
 
+
+
   // --- Acciones de Compra ---
 
   onAddToCart(): void {
@@ -256,16 +273,16 @@ export class ProductDetail implements OnInit {
       });
     } else {
       const userId = this.aService.user()!.id!;
-      
+
       if (this.selectedQuantity > this.maxAvailable) {
-          this.showToast('No hay suficiente stock disponible', 'error');
-          return;
+        this.showToast('No hay suficiente stock disponible', 'error');
+        return;
       }
 
       this.cartService.addItem(userId, this.product.id!, this.selectedQuantity).subscribe({
         next: () => {
           this.showCartSuccessToast(this.product.name);
-          this.calculateRemainingStock(); 
+          this.calculateRemainingStock();
         },
         error: (err) => {
           console.error(err);
@@ -300,8 +317,8 @@ export class ProductDetail implements OnInit {
       });
     } else {
       const userId = this.aService.user()!.id!;
-      
-      if(this.maxAvailable < 1){
+
+      if (this.maxAvailable < 1) {
         this.router.navigate(['/cart']);
         return
       }

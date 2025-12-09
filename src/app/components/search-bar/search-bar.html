@@ -3,8 +3,6 @@
       role="search"
       (submit)="onSubmit()">
 
-
-
   <input
     #searchInput
     formControlName="search"
@@ -16,14 +14,14 @@
   />
 
   <button type="submit" aria-label="Buscar">
-    <img src="image/lupa.png" alt="">
+   <i class="material-icons" style="color: white;">search</i>
   </button>
 
   @if (results.length) {
     <ul class="suggestions">
       @for (p of results; track p.id) {
         <li (click)="selectSuggestion(p)" title="{{ p.name }}">
-          <img class="sugg-icon" src="image/lupa.png" alt="">
+          <i class="material-icons" style="color: rgb(235, 235, 235);">search</i>
           <span class="sugg-text">{{ p.name }}</span>
         </li>
       }

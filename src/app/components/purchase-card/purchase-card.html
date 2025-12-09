@@ -1,0 +1,70 @@
+<div class="purchase-card">
+      <div class="purchase-header">
+        <div class="purchase-summary">
+          <p>Fecha: {{ purchase.dateTime | date:'short' }}</p>
+          <p>Total: <strong>${{ purchase.total | number:'1.2-2' }}</strong></p>
+        </div>
+        <button class="toggle-details" (click)="toggleDetails(i)">
+          {{ activePurchase() === i ? 'Ocultar detalles ↑' : 'Mostrar detalles ↓' }}
+        </button>
+      </div>
+
+      <div class="purchase-details-wrapper" [class.show]="activePurchase() === i">
+        <div class="purchase-details">
+          @if (isAdmin && purchase.userId) {
+            <div class="buy-info-header">
+              <div class="buyer-info-row">
+                <p class="buyer-info"><strong>Comprador:</strong> ID: {{ purchase.userId }}</p>
+                <button class="view-client-btn" type="button" (click)="toggleClientInfo(purchase.userId)">
+                  {{ clientsExpanded().has(purchase.userId) ? 'Ocultar comprador' : 'Ver comprador' }}
+                </button>
+              </div>
+
+              @if (clientsExpanded().has(purchase.userId)) {
+                <div class="client-details">
+                  <p><strong>Nombre:</strong> {{ clientsCache().get(purchase.userId)?.firstName }} {{ clientsCache().get(purchase.userId)?.lastName }}</p>
+                  <p><strong>Email:</strong> {{ clientsCache().get(purchase.userId)?.email }}</p>
+                  <p><strong>Teléfono:</strong> {{ clientsCache().get(purchase.userId)?.phone }}</p>
+                  <p><strong>DNI:</strong> {{ clientsCache().get(purchase.userId)?.dni }}</p>
+                </div>
+              }
+            </div>
+          }
+
+          <h4>Productos</h4>
+          <ul>
+            @for (item of purchase.detailTransactions; track item.id) {
+            <li>
+              <div class="item-info">
+                <img (click)="gotoDetailsProduct(item.product?.id)" [src]="item.product?.imgURL"
+                  alt="{{ item.product?.name }}" />
+                <div class="item-text">
+                  <p><strong>{{ item.product?.name }}</strong></p>
+                  <p>Cantidad: {{ item.quantity }}</p>
+                  <p>Precio: ${{ item.product?.priceWithDiscount | number:'1.2-2' }}</p>
+                  <p>Subtotal: <strong>${{ item.subtotal | number:'1.2-2' }}</strong></p>
+                </div>
+              </div>
+            </li>
+            }
+          </ul>
+
+          @if (shipment) {
+            <div class="shipment-card">
+              <h4>Envío</h4>
+
+              <app-shipment-card
+                [shipment]="shipment"
+                [isAdmin]="isAdmin"
+                [showPurchaseCard]="false"
+                ></app-shipment-card>
+            </div>
+          }
+
+          <div class="purchase-extra">
+            <p><strong>Método de pago:</strong> {{ purchase.paymentMethod }}</p>
+            <p><strong>Descripción:</strong> {{ purchase.description || 'Sin descripción' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
