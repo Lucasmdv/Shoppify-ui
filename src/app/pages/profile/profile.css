@@ -10,11 +10,11 @@
   flex-direction: column;
   gap: clamp(2rem, 4vw, 3rem);
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.95) 0%, rgba(241, 245, 249, 0.92) 100%);
-  border: 1px solid rgba(148, 163, 184, 0.18);
+  border: 1px solid var(--border-color);
   border-radius: 2rem;
   box-shadow: 0 24px 56px rgba(15, 23, 42, 0.12);
   backdrop-filter: blur(20px);
-  color: #0f172a;
+  color: var(--text-main);
   font-family: 'Poppins', sans-serif;
 }
 
@@ -34,7 +34,7 @@
 
 .profile-subtitle {
   font-size: 1rem;
-  color: #475569;
+  color: var(--text-muted);
 }
 
 .profile-main {
@@ -53,7 +53,7 @@
   background: linear-gradient(160deg, rgba(248, 250, 252, 0.94) 0%, rgba(255, 255, 255, 0.98) 100%);
   border-radius: 1.75rem;
   border: 1px solid rgba(148, 163, 184, 0.2);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 18px 40px var(--shadow-color);
 }
 
 .profile-avatar {
@@ -124,8 +124,8 @@
   padding: 0.85rem 1.6rem;
   border-radius: 999px;
   border: none;
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-  color: #fff;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-gradient-end) 100%);
+  color: var(--bg-card);
   font-weight: 600;
   font-size: 0.95rem;
   letter-spacing: 0.01em;
@@ -143,8 +143,8 @@
 .account-settings {
   background: linear-gradient(155deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 100%);
   border-radius: 1.75rem;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  box-shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 16px 42px var(--shadow-color);
   padding: clamp(1.75rem, 3vw, 2.4rem);
   display: flex;
   flex-direction: column;
@@ -159,7 +159,7 @@
 .account-description {
   margin: 0;
   font-size: 0.95rem;
-  color: #475569;
+  color: var(--text-muted);
 }
 
 .setting-grid {
@@ -175,7 +175,7 @@
   gap: 0.35rem;
   padding: 1.1rem 1.25rem;
   border-radius: 1.1rem;
-  border: 1px solid rgba(148, 163, 184, 0.18);
+  border: 1px solid var(--border-color);
   background: rgba(255, 255, 255, 0.88);
   color: #1e293b;
   font-size: 0.95rem;
@@ -209,8 +209,8 @@
   padding: clamp(1.75rem, 3vw, 2.4rem);
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 249, 255, 0.9) 100%);
   border-radius: 1.75rem;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.08);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 18px 44px var(--shadow-color);
 }
 
 .wish-header {
@@ -228,7 +228,7 @@
 .wish-subtitle {
   margin: 0;
   font-size: 0.95rem;
-  color: #475569;
+  color: var(--text-muted);
 }
 
 .wish-items {
@@ -251,7 +251,7 @@
   border-radius: 999px;
   border: 1px solid rgba(79, 70, 229, 0.25);
   background: rgba(79, 70, 229, 0.1);
-  color: #4338ca;
+  color: var(--primary-hover);
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;

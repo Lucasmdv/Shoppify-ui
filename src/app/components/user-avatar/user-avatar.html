@@ -1,61 +1,28 @@
 <div class="ua">
   @if (auth.user()) {
-    <c-dropdown class="profile-dropdown" [autoClose]="'outside'">
-      <button
-        type="button"
-        cDropdownToggle
-        [caret]="false"
-        aria-label="Cuenta"
-        class="profile-trigger">
-        
-        @if (auth.user()?.img; as userImg) {
-          <img class="ua-avatar" [src]="userImg" alt="Usuario">
-        } @else {
-          <i class="material-icons ua-avatar" aria-hidden="true">account_circle</i>
-        }
-
-        <span class="profile-name d-none d-md-inline">{{ truncatedFirstName }}</span>
-      </button>
-
-      <ul cDropdownMenu class="profile-menu" role="menu">
-        <li class="menu-header">
-          <div class="user-summary">
-
-            @if (auth.user()?.img; as userImg) {
-              <img class="ua-avatar" [src]="userImg" alt="Usuario">
-            } @else {
-              <i class="material-icons ua-avatar" aria-hidden="true">account_circle</i>
-            }
-
-            <div class="user-text">
-              <p class="user-name">{{ auth.user()?.firstName }} {{ auth.user()?.lastName }}</p>
-              @if (auth.user()?.email) {
-                <span class="user-email">{{ auth.user()?.email }}</span>
-              }
-            </div>
-          </div>
-          <button type="button" class="icon-button" aria-label="Cerrar sesion" (click)="logout()">
-            <i class="material-icons">logout</i>
-          </button>
-        </li>
-
-        <li class="menu-divider"></li>
-
-        <li>
-          <a routerLink="/profile" cDropdownItem class="profile-link">
-            <i class="material-icons" aria-hidden="true">person</i>
-            <span>Mi cuenta</span>
-          </a>
-        </li>
-
-        @if (auth.permits().includes('ADMIN')) {
-          <li>
-            <a routerLink="/auth/admin" cDropdownItem class="profile-link">
-              <i class="material-icons" aria-hidden="true">admin_panel_settings</i>
-              <span>Administrar</span>
-            </a>
-          </li>
-          <li><a routerLink="/shipments" cDropdownItem>Envios</a></li>
+    <c-dropdown>
+      <button 
+        class="ua-toggle"
+        type="button" 
+        aria-label="Cuenta" 
+        cButton 
+        cDropdownToggle 
+        color="secondary">
+       
+        @if (auth.user()) {}
+        <p class="ua-name">{{ truncatedFirstName }}</p>
+       
+        <img 
+          class="ua-avatar" 
+          [ngClass]="{ 'ua-avatar--placeholder': !auth.user()?.img }"
+          [src]="auth.user()?.img ?? 'image/user.png'" 
+          alt="Usuario"
+        />
+        </button>
+      <ul cDropdownMenu class="ua-menu" role="menu">
+        <li><a routerLink="/profile" cDropdownItem>Mi cuenta</a></li>
+        @if (auth.hasPermission('ADMIN')) {
+                <li><a routerLink="/auth/admin" cDropdownItem>Administrar</a></li>
         }
         <li><a routerLink="/purchases" cDropdownItem>Compras</a></li>
         <li><a routerLink="/favorites" cDropdownItem>Favoritos</a></li>

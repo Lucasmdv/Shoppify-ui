@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  align-items: center;   
+  align-items: center;
 }
 
 .category-preview {
@@ -50,7 +50,7 @@ fieldset {
 fieldset label {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #475569;
+  color: var(--text-muted);
 }
 
 fieldset input {
@@ -68,8 +68,8 @@ fieldset input {
 
 fieldset input:focus {
   outline: none;
-  border-color: #4338ca;
-  background: #ffffff;
+  border-color: var(--primary-hover);
+  background: var(--bg-card);
   box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.15);
 }
 
@@ -95,7 +95,7 @@ fieldset:has(#id-input) {
   padding: 0.95rem 1.25rem;
   border: none;
   border-radius: 999px;
-  background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
+  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-light) 100%);
   box-shadow: 0 16px 30px rgba(79, 70, 229, 0.35);
   color: #f8fafc;
   font-size: 1rem;
@@ -129,7 +129,7 @@ fieldset:has(#id-input) {
   .category-preview {
     display: none !important;
   }
-  
+
   #category-form {
     padding: 2rem 1.5rem;
     border-radius: 24px;
@@ -137,9 +137,9 @@ fieldset:has(#id-input) {
   }
 
   #category-form fieldset {
-    grid-column: 1 / -1;    
+    grid-column: 1 / -1;
   }
-  
+
   #submit-button {
     font-size: 0.95rem;
   }

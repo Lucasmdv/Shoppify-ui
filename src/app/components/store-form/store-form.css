@@ -1,6 +1,6 @@
 :host {
   display: block;
-  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+  background: linear-gradient(180deg, var(--bg-page-gradient-start) 0%, #eef2ff 100%);
   min-height: 100%;
   padding: 2.5rem 1.5rem 3rem;
 }
@@ -22,7 +22,7 @@
   border-radius: 1.5rem;
   padding: 2.5rem;
   border: 1px solid rgba(148, 163, 184, 0.25);
-  box-shadow: 0 24px 45px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 24px 45px var(--shadow-color);
 }
 
 .form-header {
@@ -46,7 +46,7 @@
 .form-description {
   margin: 0;
   font-size: 1rem;
-  color: #475569;
+  color: var(--text-muted);
   max-width: 560px;
 }
 
@@ -70,7 +70,7 @@
   border: 1px solid rgba(148, 163, 184, 0.45);
   padding: 0.95rem 1.1rem;
   font-size: 1rem;
-  color: #0f172a;
+  color: var(--text-main);
   background: rgba(248, 250, 252, 0.8);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
@@ -83,13 +83,13 @@
   outline: none;
   border-color: rgba(99, 102, 241, 0.8);
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-  background: #ffffff;
+  background: var(--bg-card);
 }
 
 .form-input.is-invalid {
   border-color: rgba(239, 68, 68, 0.75);
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
-  background: #ffffff;
+  background: var(--bg-card);
 }
 
 .form-error {
@@ -126,8 +126,8 @@
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-gradient-end));
+  color: var(--bg-card);
   box-shadow: 0 16px 34px rgba(79, 70, 229, 0.25);
 }
 
@@ -145,7 +145,7 @@
 .action-button.secondary {
   background: rgba(79, 70, 229, 0.08);
   border: 1px solid rgba(99, 102, 241, 0.4);
-  color: #4338ca;
+  color: var(--primary-hover);
   box-shadow: none;
 }
 
@@ -176,6 +176,7 @@
 }
 
 @media (max-width: 720px) {
+
   .name-row,
   .meta-row {
     grid-template-columns: 1fr;

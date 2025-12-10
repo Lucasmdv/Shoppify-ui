@@ -1,6 +1,5 @@
 @use '@coreui/coreui/scss/coreui';
 @use "@coreui/chartjs/scss/coreui-chartjs";
-  
 
 * {
   margin: 0;
@@ -26,16 +25,50 @@ main, router-outlet {
 }
 
 .swal2-toast-dark {
-    background: #ffffff !important; 
-    color: #ffffff !important; 
-    border: 1px solid #000000 !important;
-    box-shadow: 0 4px 15px #b08cee !important;
+  background: #ffffff !important;
+  color: #ffffff !important;
+  border: 1px solid #000000 !important;
+  box-shadow: 0 4px 15px #b08cee !important;
 }
 
 .swal2-toast-dark .swal2-title {
-    color: #7c3aed !important;
+  color: #7c3aed !important;
 }
 
 .swal2-toast-dark .swal2-timer-progress-bar {
-    background-color: #7c3aed !important;
+  background-color: #7c3aed !important;
+}
+
+:root {
+  /* Colores Principales */
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #6366f1;
+  --primary-gradient-start: #4f46e5;
+  --primary-gradient-end: #7c3aed;
+
+  /* Backgrounds */
+  --bg-page-gradient-start: #f8fafc;
+  --bg-page-gradient-end: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+
+  /* Texto */
+  --text-main: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #475569;
+
+  /* Bordes & Sombras */
+  --border-color: rgba(148, 163, 184, 0.18);
+  --shadow-color: rgba(15, 23, 42, 0.08);
+
+  /* Bordes Personalizables */
+  --border-card-product: var(--border-color);
+  --border-card-auth: var(--border-color);
+
+  /* Bordes de Secciones Home */
+  --border-section-welcome: transparent;
+  --border-section-products: transparent;
+  --border-section-categories: transparent;
+  --border-section-empty-state: transparent;
 }

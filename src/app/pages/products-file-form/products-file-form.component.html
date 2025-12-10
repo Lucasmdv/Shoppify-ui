@@ -1,0 +1,55 @@
+<div class="file-form-page">
+    <div class="file-form-container">
+        <div class="form-header">
+            <h2>Importar Productos</h2>
+            <p>Carga un archivo CSV para importar productos masivamente.</p>
+        </div>
+
+        <div class="file-input-wrapper">
+            <input type="file" id="fileInput" (change)="onFileSelected($event)" accept=".csv, .xlsx, .xls"
+                class="file-input" />
+            <label for="fileInput" class="file-label">
+                <span class="create-product-button__icon">+</span>
+                @if(!selectedFile){
+                    <span>Seleccionar archivo CSV</span>
+                }
+                @if(selectedFile){
+                    <span>{{ selectedFile.name }}</span>
+                }
+            </label>
+        </div>
+
+        @if(previewData.length > 0){
+            <div>
+            <h3>Vista Previa (Primeras filas)</h3>
+            <div class="table-responsive">
+                <table class="preview-table">
+                    <thead>
+                        <tr>
+                            @for(header of headers; track $index){
+                                <th>{{ header }}</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for(row of previewData; track $index){
+                            <tr>
+                                @for(header of headers; track $index){
+                                    <td>{{ row[header] }}</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        }
+
+        <div class="form-actions">
+            <button class="btn-cancel" (click)="cancel()">Cancelar</button>
+            <button class="btn-upload" (click)="uploadFile()" [disabled]="!selectedFile || isLoading">
+                {{ isLoading ? 'Importando...' : 'Importar Productos' }}
+            </button>
+        </div>
+    </div>
+</div>

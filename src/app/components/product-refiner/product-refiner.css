@@ -34,7 +34,7 @@
 
 .panel-helper {
   margin: 0;
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 0.9rem;
 }
 
@@ -84,7 +84,7 @@
 .field-label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #475569;
+  color: var(--text-muted);
   letter-spacing: 0.01em;
 }
 
@@ -105,13 +105,14 @@
 .field-select:focus,
 .field-input:hover,
 .field-select:hover {
-  border-color: #4338ca;
+  border-color: var(--primary-hover);
   box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.15);
   outline: none;
-  background: #ffffff;
+  background: var(--bg-card);
 }
 
-.price-range, .discount-range {
+.price-range,
+.discount-range {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.9rem;
@@ -137,8 +138,8 @@
   border: none;
   border-radius: 999px;
   padding: 0.85rem 1.8rem;
-  background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
-  color: #f8fafc;
+  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-light) 100%);
+  color: var(--bg-card);
   font-weight: 700;
   font-size: 0.95rem;
   cursor: pointer;
@@ -174,7 +175,7 @@ app-products-refiner .mat-pseudo-checkbox {
 }
 
 app-products-refiner .mat-pseudo-checkbox::after {
-  color: #4338ca !important;
+  color: var(--primary-hover) !important;
   font-size: 1.1rem;
 }
 
@@ -195,7 +196,7 @@ app-products-refiner .mat-mdc-text-field-wrapper {
 
 app-products-refiner .mat-mdc-form-field-focus-overlay {
   background: rgba(99, 102, 241, 0.08) !important;
-} 
+}
 
 app-products-refiner .mat-mdc-select-trigger {
   min-height: 2.75rem;
@@ -205,12 +206,12 @@ app-products-refiner .mat-mdc-select-trigger {
 }
 
 app-products-refiner .mat-mdc-floating-label {
-  color: #4f46e5 !important;
+  color: var(--primary-color) !important;
   font-weight: 600;
 }
 
 app-products-refiner .mat-mdc-select-arrow {
-  color: #4f46e5 !important;
+  color: var(--primary-color) !important;
 }
 
 app-products-refiner .mat-mdc-select-value-text {
@@ -243,7 +244,7 @@ app-products-refiner .mat-mdc-select-value-text {
 }
 
 .custom-select-panel .mat-pseudo-checkbox::after {
-  color: #4338ca !important;
+  color: var(--primary-hover) !important;
   font-size: 1.1rem;
 }
 
@@ -252,6 +253,7 @@ app-products-refiner .mat-mdc-select-value-text {
 }
 
 @media (max-width: 768px) {
+
   .price-range,
   .sort-grid {
     grid-template-columns: 1fr;

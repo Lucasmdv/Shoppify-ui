@@ -29,7 +29,7 @@
   border-radius: 999px;
   border: 1px solid rgba(148, 163, 184, 0.28);
   background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 18px 40px var(--shadow-color);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
@@ -40,7 +40,7 @@
 
 .search-bar:focus-within {
   border-color: rgba(79, 70, 229, 0.55);
-  background: #ffffff;
+  background: var(--bg-card);
   box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.16), 0 22px 48px rgba(79, 70, 229, 0.18);
 }
 
@@ -50,7 +50,7 @@
   outline: none;
   background: transparent;
   font-size: 1rem;
-  color: #0f172a;
+  color: var(--text-main);
 }
 
 .search-bar input::placeholder {
@@ -66,7 +66,7 @@
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-gradient-end));
   box-shadow: 0 16px 30px rgba(79, 70, 229, 0.22);
   transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
@@ -131,5 +131,5 @@
 
 .suggestions strong {
   font-weight: 700;
-  color: #4338ca;
+  color: var(--primary-hover);
 }

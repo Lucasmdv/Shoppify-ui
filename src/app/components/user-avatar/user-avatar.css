@@ -8,7 +8,20 @@
   align-items: center;
 }
 
-.profile-dropdown {
+.ua-toggle {
+  background: transparent;
+  border: 0;
+  line-height: 1;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary-color);
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease, color 0.2s ease;
   position: relative;
 }
 
@@ -69,13 +82,40 @@
   font-size: 14px;
 }
 
-.profile-menu {
-  width: min(340px, 86vw);
-  padding: 0;
-  border: 1px solid rgba(148, 163, 184, 0.24);
-  border-radius: 14px;
-  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.16);
-  background: #ffffff;
+.ua-toggle::after {
+  display: none;
+}
+
+.ua-toggle:focus,
+.ua-toggle:focus-visible,
+.ua-toggle:focus-within {
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.ua-toggle:hover .ua-avatar,
+.ua-toggle:focus-visible .ua-avatar {
+  transform: scale(1.08);
+  filter: drop-shadow(0 12px 26px rgba(79, 70, 229, 0.22));
+}
+
+.ua-toggle:hover .ua-avatar--placeholder,
+.ua-toggle:focus-visible .ua-avatar--placeholder {
+  filter: brightness(0) saturate(100%) invert(16%) sepia(77%) saturate(1384%) hue-rotate(229deg) brightness(96%) contrast(97%) drop-shadow(0 12px 26px rgba(79, 70, 229, 0.22));
+}
+
+.ua-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 190px;
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 1rem;
+  padding: 0.35rem 0;
+  box-shadow: 0 22px 48px rgba(15, 23, 42, 0.14);
   list-style: none;
   margin: 0;
   overflow: hidden;
@@ -159,6 +199,11 @@
   color: #334155;
   font-weight: 600;
   font-size: 14px;
+}
+.ua-menu a,
+.ua-menu button[cDropdownItem] {
+  display: block;
+  padding: 0.75rem 1rem;
   text-decoration: none;
   border-bottom: 1px solid rgba(148, 163, 184, 0.14);
   transition: background 0.15s ease, color 0.15s ease, padding-left 0.15s ease;
@@ -178,4 +223,9 @@
 .profile-link .material-icons {
   font-size: 20px;
   color: inherit;
+}
+.ua-menu a:hover,
+.ua-menu button[cDropdownItem]:hover {
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--primary-hover);
 }
