@@ -22,6 +22,7 @@
     backdrop-filter: blur(12px);
     box-shadow: 0 18px 38px rgba(15, 23, 42, 0.12);
     padding: 1rem;
+    max-width: 500px;
 }
 
 #product-form {
@@ -34,7 +35,7 @@
     border: 1px solid rgba(148, 163, 184, 0.22);
     backdrop-filter: blur(12px);
     box-shadow: 0 18px 38px rgba(15, 23, 42, 0.12);
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(auto, 1fr));
     gap: 1.5rem;
 }
 
@@ -53,7 +54,6 @@ fieldset label {
     color: var(--text-muted);
 }
 
-/* MODIFICACIÓN: Estilo de la etiqueta del Fieldset de Categorías para igualar el Refiner */
 .categories-fieldset label {
     font-size: 0.85rem;
     letter-spacing: 0.01em;
