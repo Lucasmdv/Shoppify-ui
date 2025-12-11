@@ -488,7 +488,7 @@
 
 /* === Personalización del contenedor del MatDialog === */
 .product-dialog-panel .mat-mdc-dialog-container {
-  border-radius: 24px !important;
+  border-radius: 5px !important;
   overflow: auto !important;
   max-height: calc(100vh - 3rem) !important;
   background: var(--bg-card) !important;

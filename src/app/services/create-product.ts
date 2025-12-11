@@ -25,7 +25,7 @@ export class CreateProduct {
   openDialog(refinedProducts: any[], categories: any[], currentFilters: any, renderRefinedProducts: (filters: any) => void) {
     this.dialog.open(ProductFormDialog, {
       height: '90vh',
-      minWidth: '80vw',
+      minWidth: '90vw',
       data: {
         products: refinedProducts,
         categories: categories
