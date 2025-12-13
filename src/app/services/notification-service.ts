@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable, Subject } from 'rxjs';
 import { NotificationResponse } from '../models/notification/notification';
 import { environment } from '../../environments/environment';
+import { EventSourcePolyfill } from 'event-source-polyfill';
+import { AuthService } from './auth-service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +12,9 @@ import { environment } from '../../environments/environment';
 export class NotificationService {
 
   private http = inject(HttpClient);
+  private authService = inject(AuthService);
   private notificationSubject = new Subject<NotificationResponse>();
-  private eventSource!: EventSource;
+  private eventSource!: EventSource | EventSourcePolyfill;
 
   readonly API_URL = `${environment.apiUrl}/notifications/user`;
 
@@ -23,9 +26,19 @@ export class NotificationService {
       this.eventSource.close();
     }
 
+    const token = this.authService.token();
+    if (!token) {
+      console.warn('NotificationService: Cannot connect SSE without token');
+      return;
+    }
+
     const url = `${this.API_URL}/${userId}/stream`;
     console.log('NotificationService: Connecting to SSE', url);
-    this.eventSource = new EventSource(url);
+    this.eventSource = new EventSourcePolyfill(url, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
     const handleNotification = (event: MessageEvent) => {
       this.zone.run(() => {
@@ -72,6 +85,12 @@ export class NotificationService {
       .pipe(map((n) => this.adaptNotification(n)));
   }
 
+  public hideNotification(userId: number, notificationId: number): Observable<NotificationResponse> {
+    return this.http
+      .patch<NotificationResponse>(`${this.API_URL}/${userId}/hide/${notificationId}`, {})
+      .pipe(map((n) => this.adaptNotification(n)));
+  }
+
   public disconnect(): void {
     if (this.eventSource) {
       this.eventSource.close();
@@ -81,13 +100,15 @@ export class NotificationService {
   private adaptNotification(raw: any): NotificationResponse {
     const mappedType = this.mapType(raw?.type);
     const read = raw?.read ?? raw?.isRead ?? false;
+    const hidden = raw?.hidden ?? false;
     const id = raw?.id ?? raw?.notificationId;
     return {
       ...raw,
       id,
       type: mappedType,
       isRead: read,
-      read
+      read,
+      hidden
     };
   }
 

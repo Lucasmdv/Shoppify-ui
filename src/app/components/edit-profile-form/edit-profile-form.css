@@ -32,7 +32,7 @@ form{
 }
 
 .contenedor h2 {
-  color: #2d0747;
+  color: #4338ca;
   text-align: center;
   margin-top: 1rem;
   font-weight: 650;
@@ -47,12 +47,12 @@ form{
 label {
   font-weight: 600;
   margin-bottom: 0.3rem;
-  color: #6a0dad;
+  color: #4338ca;
 }
 
 input {
   padding: 0.6rem 0.75rem;
-  border: 1.5px solid #b88af7;
+  border: 1.5px solid #ababac;
   border-radius: 6px;
   background-color: #fff;
   transition: all 0.2s ease;
@@ -60,7 +60,7 @@ input {
 
 input:focus {
   outline: none;
-  border-color: #6a0dad;
+  border-color: #4338ca;
   box-shadow: 0 0 4px rgba(106, 13, 173, 0.3);
 }
 
@@ -88,24 +88,25 @@ button {
 
 .cancelar-btn {
   background-color: #fff;
-  color: #6a0dad;
-  border: 2px solid #6a0dad;
+  color: #4338ca;
+  border: 2px solid #ababac;
 }
 
 .cancelar-btn:hover {
-  background-color: #f3e8ff;
+  color: #1201ca;
+
 }
 
 .enviar-btn {
-  background-color: #6a0dad;
+  background-color: #4338ca;
   color: #fff;
 }
 
 .enviar-btn:hover:not([disabled]) {
-  background-color: #580c9c;
+  background-color: #1d0dc5;
 }
 
 button[disabled] {
-  background-color: #d1b3f7;
+  background-color: rgb(193, 182, 207);
   cursor: not-allowed;
 }

@@ -173,7 +173,7 @@ header button:focus-visible img {
 .search-trigger {
   display: none;
 
-    box-shadow: none;            /* Quita la sombra */
+    box-shadow: none;         
     padding: 5px;
 }
 

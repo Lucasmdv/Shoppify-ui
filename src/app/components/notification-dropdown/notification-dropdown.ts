@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, effect } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, effect, ViewChild } from '@angular/core';
 import { DropdownComponent, DropdownMenuDirective, DropdownToggleDirective, BadgeComponent } from '@coreui/angular';
 import { NotificationService } from '../../services/notification-service';
 import { AuthService } from '../../services/auth-service';
@@ -6,6 +6,7 @@ import { NotificationResponse } from '../../models/notification/notification';
 import Swal from 'sweetalert2';
 import { Subject, takeUntil } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-notification-dropdown',
@@ -16,8 +17,10 @@ import { DatePipe } from '@angular/common';
 })
 export class NotificationDropdown implements OnInit, OnDestroy {
 
+  @ViewChild(DropdownComponent) dropdown?: DropdownComponent;
   private notificationService = inject(NotificationService);
   private authService = inject(AuthService);
+  private router = inject(Router);
   private destroy$ = new Subject<void>();
   private currentUserId?: number;
 
@@ -73,13 +76,39 @@ export class NotificationDropdown implements OnInit, OnDestroy {
       toast: true,
       position: 'bottom-end',
       showConfirmButton: false,
-      timer: 3000,
+      timer: 8 * 1000,
+      showCloseButton: true,
       timerProgressBar: true,
-      didOpen: () => {
-    const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
-    audio.play()
+      didOpen: (toast) => {
+        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
+        audio.play();
+        if (notification.relatedProductId) {
+          toast.addEventListener('click', () => {
+            this.router.navigate(['/products/details', notification.relatedProductId]);
+          });
+        }
+      }
+    });
+  }
 
-    }});
+  hideNotification(notification: NotificationResponse, event?: Event) {
+    event?.stopPropagation();
+    if (!this.currentUserId || !notification.id) return;
+
+    const previous = [...this.notifications];
+    this.notifications = this.notifications.filter((n) => n.id !== notification.id);
+    this.updateSelectedNotifications();
+
+    this.notificationService
+      .hideNotification(this.currentUserId, notification.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        error: (error) => {
+          console.error('NotificationDropdown: Error hiding notification', error);
+          this.notifications = previous;
+          this.updateSelectedNotifications();
+        }
+      });
   }
 
   updateSelectedNotifications() {
@@ -106,8 +135,7 @@ export class NotificationDropdown implements OnInit, OnDestroy {
 
   markNotificationAsRead(notification: NotificationResponse) {
     if (!notification) return;
-
-    // Optimistic update
+    const targetProductId = notification.relatedProductId ?? null;
     this.notifications = this.notifications.map((n) =>
       n === notification || n.id === notification.id ? { ...n, isRead: true, read: true } : n
     );
@@ -128,6 +156,10 @@ export class NotificationDropdown implements OnInit, OnDestroy {
           console.error('NotificationDropdown: Error marking notification as read', error);
         }
       });
+    if (targetProductId !== null) {
+      this.closeDropdown();
+      this.router.navigate(['/products/details', targetProductId]);
+    }
   }
 
   private loadNotificationsForUser(userId: number) {
@@ -156,5 +188,9 @@ export class NotificationDropdown implements OnInit, OnDestroy {
     this.notifications = [];
     this.selectedNotifications = [];
     this.notificationType = 'general';
+  }
+
+  private closeDropdown() {
+    this.dropdown?.setVisibleState(false);
   }
 }

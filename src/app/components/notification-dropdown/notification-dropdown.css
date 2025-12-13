@@ -189,13 +189,15 @@
 
 .notification-list li {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr auto;
     gap: 10px;
     padding: 12px 12px 12px 10px;
     border-radius: 12px;
     border: 1px solid #e2e8f0;
     background: #f8fafc;
     box-shadow: 0 6px 12px rgba(15, 23, 42, 0.06);
+    align-items: center;
+    cursor: pointer;
 }
 
 .notification-list li.unread {
@@ -229,6 +231,31 @@
 .meta {
     font-size: 12px;
     color: #64748b;
+}
+
+.hide-button {
+    border: none;
+    background: #ffffff;
+    color: #64748b;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.hide-button:hover,
+.hide-button:focus-visible {
+    background: rgba(99, 102, 241, 0.1);
+    color: #4338ca;
+    transform: translateY(-1px);
+}
+
+.hide-button .material-icons {
+    font-size: 18px;
 }
 
 .empty-state {

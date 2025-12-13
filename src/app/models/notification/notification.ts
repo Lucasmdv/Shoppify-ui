@@ -9,4 +9,5 @@ export interface NotificationResponse {
   createdAt: string;
   isRead: boolean;
   read?: boolean;
+  hidden?: boolean;
 }

@@ -36,6 +36,15 @@
             <p class="message">{{ notification.message}}</p>
             <span class="meta">{{ notification.createdAt | date }}</span>
           </div>
+          @if (notification.type === 'product') {
+          <button
+            type="button"
+            class="hide-button"
+            aria-label="Ocultar notificación"
+            (click)="hideNotification(notification, $event)">
+            <i class="material-icons" aria-hidden="true">close</i>
+          </button>
+          }
         </li>
         }
       </ul>
