@@ -1,17 +1,13 @@
 import { Component, inject, Inject, Input, NgModule, OnInit, output } from '@angular/core';
 import { Shipment } from '../../models/shipment';
-import { Sale } from '../../models/sale';
 import { ShipmentService } from '../../services/shipment-service';
-import { SaleService } from '../../services/sale-service';
 import { SwalService } from '../../services/swal-service';
-import { PurchaseCard } from '../purchase-card/purchase-card';
-import { BgColorDirective, ButtonDirective } from "@coreui/angular";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-shipment-card',
-  imports: [BgColorDirective, ButtonDirective, CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './shipment-card.html',
   styleUrl: './shipment-card.css',
   standalone: true

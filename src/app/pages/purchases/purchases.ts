@@ -6,14 +6,12 @@ import { AuditService } from '../../services/audit-service';
 import { SalesParams } from '../../models/filters/salesParams';
 import { FormsModule } from "@angular/forms";
 import Swal from 'sweetalert2';
-import { ImageFallbackDirective } from '../../core/directives/image-fallback';
-import { Router } from '@angular/router';
 import { UserService } from '../../services/user-service';
 import { PurchaseCard } from '../../components/purchase-card/purchase-card';
 
 @Component({
   selector: 'app-purchases',
-  imports: [CommonModule, FormsModule,ImageFallbackDirective, PurchaseCard],
+  imports: [CommonModule, FormsModule, PurchaseCard],
   templateUrl: './purchases.html',
   styleUrl: './purchases.css'
 })
