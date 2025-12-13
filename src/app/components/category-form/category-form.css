@@ -117,7 +117,7 @@ fieldset:has(#id-input) {
 
 #submit-button:disabled {
   cursor: not-allowed;
-  background: #5f3e36;
+   background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-light) 100%);
   opacity: 0.65;
 }
 
