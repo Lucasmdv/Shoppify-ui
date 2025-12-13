@@ -96,6 +96,12 @@
   gap: 10px;
 }
 
+.user-summary-link {
+  flex: 1;
+  text-decoration: none;
+  color: inherit;
+}
+
 .user-summary .ua-avatar {
   width: 40px;
   height: 40px;

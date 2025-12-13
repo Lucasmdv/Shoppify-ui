@@ -1,3 +1,5 @@
+
+
 <div class="ua">
   @if (auth.user()) {
     <c-dropdown class="profile-dropdown" [autoClose]="'outside'">
@@ -19,7 +21,7 @@
 
       <ul cDropdownMenu class="profile-menu" role="menu">
         <li class="menu-header">
-          <div class="user-summary">
+          <a routerLink="/profile" class="user-summary user-summary-link">
 
             @if (auth.user()?.img; as userImg) {
               <img class="ua-avatar" [src]="userImg" alt="Usuario">
@@ -33,7 +35,7 @@
                 <span class="user-email">{{ auth.user()?.email }}</span>
               }
             </div>
-          </div>
+          </a>
           <button type="button" class="icon-button" aria-label="Cerrar sesion" (click)="logout()">
             <i class="material-icons">logout</i>
           </button>
@@ -41,25 +43,36 @@
 
         <li class="menu-divider"></li>
 
-        <li>
-          <a routerLink="/profile" cDropdownItem class="profile-link">
-            <i class="material-icons" aria-hidden="true">person</i>
-            <span>Mi cuenta</span>
-          </a>
-        </li>
-
-        @if (auth.hasPermission("ADMIN")) {
+        @if (auth.permits().includes('ADMIN')) {
           <li>
             <a routerLink="/auth/admin" cDropdownItem class="profile-link">
               <i class="material-icons" aria-hidden="true">admin_panel_settings</i>
               <span>Administrar</span>
             </a>
           </li>
-          <li><a routerLink="/shipments" cDropdownItem>Envios</a></li>
         }
-        <li><a routerLink="/purchases" cDropdownItem>Compras</a></li>
-        <li><a routerLink="/favorites" cDropdownItem>Favoritos</a></li>
-        <li><button (click)="logout()" cDropdownItem>Cerrar Sesión</button></li>
+
+        <li>
+          <a routerLink="/purchases" cDropdownItem class="profile-link">
+            <i class="material-icons" aria-hidden="true">receipt_long</i>
+            <span>Compras</span>
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/favorites" cDropdownItem class="profile-link">
+            <i class="material-icons" aria-hidden="true">favorite_border</i>
+            <span>Favoritos</span>
+          </a>
+        </li>
+        @if (auth.permits().includes('ADMIN')) {
+          <li>
+            <a routerLink="/shipments" cDropdownItem class="profile-link">
+              <i class="material-icons" aria-hidden="true">receipt_long</i>
+              <span>Envios</span>
+            </a>
+          </li>
+        }
       </ul>
     </c-dropdown>
   } @else {
