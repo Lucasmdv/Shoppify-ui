@@ -63,7 +63,7 @@
 }
 
 .create-product-button__icon {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     width: clamp(2rem, 5vw, 3.5rem);
@@ -71,11 +71,13 @@
     border-radius: 50%;
     background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-light) 100%);
     color: var(--bg-card);
-    font-size: clamp(1rem, 3.5vw, 2.3rem);
-    font-weight: 600;
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+    font-weight: 300;
     box-shadow: 0 18px 36px rgba(79, 70, 229, 0.25);
     line-height: 1;
     padding: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
 }
 
 .preview-section {
