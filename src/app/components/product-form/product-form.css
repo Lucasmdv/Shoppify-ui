@@ -1,4 +1,5 @@
-:host {
+/* Reemplaza :host con una clase específica o el selector del componente */
+app-product-form {
     display: block;
     width: 100%;
     color: #f5f5f7;
@@ -39,7 +40,7 @@
     gap: 1.5rem;
 }
 
-fieldset {
+#product-form fieldset {
     border: none;
     padding: 0;
     margin: 0;
@@ -48,19 +49,19 @@ fieldset {
     gap: 0.5rem;
 }
 
-fieldset label {
+#product-form fieldset label {
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--text-muted);
 }
 
-.categories-fieldset label {
+#product-form .categories-fieldset label {
     font-size: 0.85rem;
     letter-spacing: 0.01em;
 }
 
-fieldset input,
-fieldset textarea {
+#product-form fieldset input,
+#product-form fieldset textarea {
     width: 100%;
     padding: 0.85rem 1rem;
     border: 1px solid rgba(148, 163, 184, 0.6);
@@ -72,67 +73,67 @@ fieldset textarea {
     transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-fieldset input[type="number"]::-webkit-inner-spin-button,
-fieldset input[type="number"]::-webkit-outer-spin-button {
+#product-form fieldset input[type="number"]::-webkit-inner-spin-button,
+#product-form fieldset input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-fieldset input[type="number"] {
+#product-form fieldset input[type="number"] {
     -moz-appearance: textfield;
     appearance: textfield;
 }
 
-fieldset input[type="text"] {
+#product-form fieldset input[type="text"] {
     min-width: 180px;
 }
 
-fieldset input:focus,
-fieldset textarea:focus {
+#product-form fieldset input:focus,
+#product-form fieldset textarea:focus {
     outline: none;
     border-color: var(--primary-hover);
     background: var(--bg-card);
     box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.15);
 }
 
-fieldset input::placeholder,
-fieldset textarea::placeholder {
+#product-form fieldset input::placeholder,
+#product-form fieldset textarea::placeholder {
     color: #8f8f93;
 }
 
-fieldset textarea {
+#product-form fieldset textarea {
     min-height: 100px;
     max-height: 400px;
     resize: none;
     overflow-y: auto;
 }
 
-fieldset textarea::-webkit-scrollbar {
+#product-form fieldset textarea::-webkit-scrollbar {
     width: 8px;
 }
 
-fieldset textarea::-webkit-scrollbar-track {
+#product-form fieldset textarea::-webkit-scrollbar-track {
     background: rgba(18, 18, 18, 0.5);
     border-radius: 10px;
 }
 
-fieldset textarea::-webkit-scrollbar-thumb {
+#product-form fieldset textarea::-webkit-scrollbar-thumb {
     background: var(--primary-hover);
     border-radius: 10px;
 }
 
-fieldset textarea::-webkit-scrollbar-thumb:hover {
+#product-form fieldset textarea::-webkit-scrollbar-thumb:hover {
     background: var(--primary-hover);
 }
 
-fieldset h5 {
+#product-form fieldset h5 {
     margin: 0.25rem 0 0;
     font-size: 0.85rem;
     font-weight: 500;
     color: #ff5a6d;
 }
 
-fieldset h6 {
+#product-form fieldset h6 {
     margin: 0.25rem 0 0;
     font-size: 0.8rem;
     font-weight: 400;
@@ -141,16 +142,16 @@ fieldset h6 {
     transition: color 0.2s ease;
 }
 
-fieldset h6.over-limit {
+#product-form fieldset h6.over-limit {
     color: #ff5a6d;
     font-weight: 500;
 }
 
-.price-preview-fieldset {
+#product-form .price-preview-fieldset {
     gap: 0.4rem;
 }
 
-.price-preview {
+#product-form .price-preview {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
@@ -160,7 +161,7 @@ fieldset h6.over-limit {
     border: 1px solid rgba(79, 70, 229, 0.16);
 }
 
-.price {
+#product-form .price {
     font-size: clamp(1.35rem, 2.2vw, 1.6rem);
     font-weight: 700;
     color: var(--primary-color);
@@ -168,24 +169,24 @@ fieldset h6.over-limit {
     letter-spacing: -0.01em;
 }
 
-.price-row {
+#product-form .price-row {
     display: flex;
     align-items: center;
     gap: 0.6rem;
 }
 
-.price-original {
+#product-form .price-original {
     font-size: 0.95rem;
     font-weight: 500;
     color: #64748b;
     text-decoration: line-through;
 }
 
-.price-final {
+#product-form .price-final {
     color: #312e81;
 }
 
-.discount-badge {
+#product-form .discount-badge {
     font-size: 0.82rem;
     font-weight: 700;
     color: #047857;
@@ -196,17 +197,20 @@ fieldset h6.over-limit {
     letter-spacing: 0.04em;
 }
 
-.price-savings {
+#product-form .price-savings {
     font-size: 0.9rem;
     font-weight: 600;
     color: #047857;
 }
 
-app-product-form .mat-form-field {
+/* Estilos de Material Angular */
+#product-form .mat-form-field,
+#product-form .mat-mdc-form-field {
     width: 100%;
 }
 
-.categories-fieldset ::ng-deep .mat-mdc-text-field-wrapper {
+/* Estilos del INPUT del select */
+#product-form .categories-fieldset .mat-mdc-text-field-wrapper {
     background: rgba(255, 255, 255, 0.9) !important;
     border-radius: 0.9rem !important;
     border: 1px solid rgba(148, 163, 184, 0.6) !important;
@@ -215,68 +219,38 @@ app-product-form .mat-form-field {
     transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-.categories-fieldset ::ng-deep .mat-mdc-text-field-wrapper:hover,
-.categories-fieldset ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--focused {
+#product-form .categories-fieldset .mat-mdc-text-field-wrapper:hover,
+#product-form .categories-fieldset .mat-mdc-text-field-wrapper.mdc-text-field--focused {
     border-color: var(--primary-hover) !important;
     box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.15) !important;
     background: var(--bg-card) !important;
 }
 
-.categories-fieldset ::ng-deep .mat-mdc-select-trigger {
+#product-form .categories-fieldset .mat-mdc-select-trigger {
     min-height: 1rem;
     align-items: center;
     color: #1f2937;
-    /* Color base oscuro */
     font-weight: 500;
     font-size: 0.95rem;
 }
 
-.categories-fieldset ::ng-deep .mat-mdc-select-value .mat-mdc-select-value-text {
+#product-form .categories-fieldset .mat-mdc-select-value .mat-mdc-select-value-text {
     color: #1f2937 !important;
     font-size: 0.95rem;
 }
 
-.categories-fieldset ::ng-deep .mat-mdc-select-arrow {
+#product-form .categories-fieldset .mat-mdc-select-arrow {
     color: var(--primary-color) !important;
 }
 
-.categories-fieldset ::ng-deep .mat-mdc-floating-label,
-.categories-fieldset ::ng-deep .mat-mdc-form-field-bottom-line::before,
-.categories-fieldset ::ng-deep .mat-mdc-form-field-bottom-line::after,
-.categories-fieldset ::ng-deep .mat-mdc-form-field-focus-overlay {
+#product-form .categories-fieldset .mat-mdc-floating-label,
+#product-form .categories-fieldset .mat-mdc-form-field-bottom-line::before,
+#product-form .categories-fieldset .mat-mdc-form-field-bottom-line::after,
+#product-form .categories-fieldset .mat-mdc-form-field-focus-overlay {
     display: none !important;
 }
 
-
-app-product-form .mat-form-field-appearance-fill .mat-form-field-flex {
-    background: rgba(18, 18, 18, 0.9);
-    border: 1px solid #3a3a3a;
-    border-radius: 14px;
-    padding: 0.5rem 1rem;
-}
-
-app-product-form .mat-form-field-appearance-fill:hover .mat-form-field-flex {
-    background: rgba(18, 18, 18, 0.95);
-}
-
-app-product-form .mat-pseudo-checkbox {
-    border: none !important;
-    background: transparent !important;
-}
-
-app-product-form .mat-pseudo-checkbox::after {
-    color: var(--primary-hover) !important;
-    font-size: 1.1rem;
-}
-
-app-product-form .mat-option:not(.mat-selected) .mat-pseudo-checkbox {
-    visibility: hidden;
-}
-
-app-product-form .mat-option:not(.mat-selected) .mat-pseudo-checkbox {
-    visibility: hidden;
-}
-
+/* Estilos del PANEL dropdown (este se renderiza fuera del componente) */
 .custom-select-panel {
     background-color: #f8fafc !important;
     border-radius: 1rem !important;
@@ -310,20 +284,22 @@ app-product-form .mat-option:not(.mat-selected) .mat-pseudo-checkbox {
     visibility: hidden;
 }
 
-fieldset:has(textarea),
-fieldset:has(#image-input),
-.categories-fieldset {
+/* Grid layout */
+#product-form fieldset:has(textarea),
+#product-form fieldset:has(#image-input),
+#product-form .categories-fieldset {
     grid-column: 1 / -1;
 }
 
-.categories-fieldset {
+#product-form .categories-fieldset {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 0.5rem;
 }
 
-.btn-categoria {
+/* Botones */
+#product-form .btn-categoria {
     grid-column: 1 / -1;
     margin-top: 0.5rem;
     width: 100%;
@@ -339,18 +315,18 @@ fieldset:has(#image-input),
     transition: transform 0.15s ease, filter 0.15s ease;
 }
 
-.btn-categoria:hover:not(:disabled) {
+#product-form .btn-categoria:hover:not(:disabled) {
     box-shadow: 0 20px 36px rgba(99, 102, 241, 0.45);
     transform: translateY(-1px);
     filter: brightness(1.05);
 }
 
-.btn-categoria:active:not(:disabled) {
+#product-form .btn-categoria:active:not(:disabled) {
     transform: translateY(0);
     filter: brightness(0.95);
 }
 
-#submit-button {
+#product-form #submit-button {
     grid-column: 1 / -1;
     margin-top: 0.5rem;
     width: 100%;
@@ -366,25 +342,26 @@ fieldset:has(#image-input),
     transition: transform 0.15s ease, filter 0.15s ease;
 }
 
-#submit-button:hover:not(:disabled) {
+#product-form #submit-button:hover:not(:disabled) {
     box-shadow: 0 20px 36px rgba(99, 102, 241, 0.45);
     transform: translateY(-1px);
     filter: brightness(1.05);
 }
 
-#submit-button:active:not(:disabled) {
+#product-form #submit-button:active:not(:disabled) {
     transform: translateY(0);
     filter: brightness(0.95);
 }
 
-#submit-button:disabled {
+#product-form #submit-button:disabled {
     cursor: not-allowed;
     background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-light) 100%);
     opacity: 0.65;
 }
 
+/* Media queries */
 @media (max-width: 780px) {
-    :host {
+    app-product-form {
         padding: 2rem 1rem;
     }
 
@@ -402,7 +379,7 @@ fieldset:has(#image-input),
         grid-column: 1 / -1;
     }
 
-    #submit-button {
+    #product-form #submit-button {
         font-size: 0.95rem;
     }
 }

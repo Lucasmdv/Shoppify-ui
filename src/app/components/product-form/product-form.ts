@@ -32,6 +32,7 @@ import { ScreenSizeService } from '../../services/screen-size-service';
   ],
   templateUrl: './product-form.html',
   styleUrl: './product-form.css',
+  encapsulation: ViewEncapsulation.None 
 })
 export class ProductForm implements OnInit {
   form!: FormGroup
