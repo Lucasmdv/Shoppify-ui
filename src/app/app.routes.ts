@@ -27,6 +27,7 @@ import { MercadopagoButton } from './components/mercadopago-button/mercadopago-b
 import { Shipments } from './pages/shipments/shipments';
 import { Checkout } from './pages/checkout/checkout';
 import { ProductsFileForm } from './pages/products-file-form/products-file-form.component';
+import { Notification } from './pages/notification/notification';
 
 export const routes: Routes = [
   {
@@ -40,6 +41,7 @@ export const routes: Routes = [
       { path: 'admin/edit/store', component: StoreForm, canActivate: [authGuard], data: { permissions: ['ADMIN'] } },
       { path: 'admin/edit/carousel', component: CarouselForm, canActivate: [authGuard], data: { permissions: ['ADMIN'] } },
       { path: 'admin/edit/carousel/:id', component: CarouselForm, canActivate: [authGuard], data: { permissions: ['ADMIN'] } },
+      { path: 'admin/edit/notification', component: Notification, canActivate: [authGuard], data: { permissions: ['ADMIN'] } },
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: '**', redirectTo: 'login' }
     ]

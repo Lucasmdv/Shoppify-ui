@@ -34,12 +34,20 @@
             <small>Edita nombre, direccion y detalles</small>
           </span>
         </a>
+
+                <a class="btn btn-primary" routerLink="edit/notification">
+          <span class="btn-icon" aria-hidden="true">🔔</span>
+          <span class="btn-content">
+            <span class="btn-label">Gestionar notificaciones</span>
+            <small>Edita y crea alertas personalizadas</small>
+          </span>
+        </a>
       </div>
     </div>
     <div class="hero-chart">
       <div class="chart-card">
         <header class="chart-card__header">
- 
+
           <div class="chart-meta">
             <h3>Productos más vendidos</h3>
           </div>
@@ -61,7 +69,7 @@
       <div (click) = "createProduct()" class="action-card" data-accent="violet">
         <div class="action-copy">
           <h3>Nuevo producto</h3>
-          <p>Publica un lanzamiento y programalo en el catalogo.</p>
+          <p>Publica un nuevo producto .</p>
         </div>
         <span class="action-hint">5 min</span>
       </div>
@@ -79,7 +87,9 @@
           <p>Crea un banner destacado para impulsar ventas express.</p>
         </div>
         <span class="action-hint">Promueve ahora</span>
-      </div >
+      </div>
+
+      
 
     </div>
   </section> 
