@@ -74,4 +74,8 @@ getData() {
     }
   }
 
+  bulkProducts() {
+    this.router.navigate(['/product-import']);
+  }
+
 }

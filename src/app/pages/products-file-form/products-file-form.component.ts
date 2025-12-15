@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { ProductService } from '../../services/product-service';
 import { Router } from '@angular/router';
 import { SwalService } from '../../services/swal-service';
@@ -25,6 +25,7 @@ export class ProductsFileForm {
     constructor(
         private productService: ProductService,
         private router: Router,
+        private location: Location,
         private swal: SwalService
     ) { }
 
@@ -106,6 +107,6 @@ export class ProductsFileForm {
     }
 
     cancel() {
-        this.router.navigate(['/products']);
+        this.location.back()
     }
 }
