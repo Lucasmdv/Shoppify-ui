@@ -21,17 +21,18 @@ export class TransactionService extends BaseService<Transaction> {
   }
 
   postPurchase(p: Purchase) {
-    return this.http.post<Purchase>(this.API+"/purchases", p)
+    return this.http.post<Purchase>(this.API + "/purchases", p)
   }
 
   postSale(p: SaleRequest) {
-    return this.http.post<SaleRequest>(this.API+"/"+this.endpoint+"/sales", p)
+    return this.http.post<SaleRequest>(this.API + "/" + this.endpoint + "/sales", p)
   }
 
   createPreference(p: SaleRequest) {
-    const token = this.auth.token();
-    const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
-    return this.http.post<MercadoPagoPreference>(`${this.API}/mercadopago/preferences`, p, { headers });
+    return this.http.post<MercadoPagoPreference>(`${this.API}/mercadopago/preferences`, p);
   }
 
+  cancelTransaction(id: number) {
+    return this.http.post<void>(`${this.API}/transactions/${id}/cancel`, {});
+  }
 }

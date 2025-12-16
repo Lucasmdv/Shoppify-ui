@@ -1,0 +1,117 @@
+.mp-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 50px;
+}
+
+.mp-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #009ee3;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.mp-error {
+  color: #e74c3c;
+  background-color: #fce4e4;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+
+.confirm-container {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.confirm-btn {
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #009ee3;
+  /* MP Color */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.confirm-btn:hover {
+  background-color: #007bb0;
+}
+
+.retry-btn {
+  background: none;
+  border: 1px solid #c0392b;
+  color: #c0392b;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.retry-btn:hover {
+  background-color: #c0392b;
+  color: white;
+}
+
+.header-actions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.back-btn:hover {
+  color: #009ee3;
+}
+
+.back-btn i {
+  font-size: 1.1rem;
+}

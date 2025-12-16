@@ -32,12 +32,21 @@ export class AuthService {
   }
 
   private restoreSession() {
-    this.loadUserPayload();
-    this.user.set(this.getUser())
-    this.permits.set(this.getPermits())
-    this.roles.set(this.getRolesFromStorage())
     const tk = this.getToken()
-    this.token.set(tk || null)
+    if (tk) {
+      this.token.set(tk)
+      if (!this.isTokenValid()) {
+        console.warn('Token expirado al restaurar sesión');
+        this.logout();
+        return;
+      }
+      this.loadUserPayload();
+      this.user.set(this.getUser())
+      this.permits.set(this.getPermits())
+      this.roles.set(this.getRolesFromStorage())
+    } else {
+      this.logout();
+    }
   }
 
   private loadUserPayload(): void {
