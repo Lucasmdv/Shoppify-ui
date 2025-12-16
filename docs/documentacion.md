@@ -62,7 +62,7 @@ src/app
 ### 3.4 Servicios y modelos HAL
 - `BaseService<T>` centraliza llamadas REST (`getList`, `get`, `post`, `put`, `patch`, `delete`), anade soporte de paginacion y desempaquetado HAL (`_embedded`, `page`).
 - Modelos HAL (`src/app/models/hal`) definen `ResponseJSON`, `PaginatedResponse`, `Page`, `Links`.
-- Servicios especializados (`ProductService`, `CategoryService`, `StoreService`, `CarouselService`, `TransactionService`, `AuditService`, `CreateProduct/CreateCategory`) extienden `BaseService` o encapsulan llamadas particulares.
+- Servicios especializados (`ProductService`, `CategoryService`, `StoreService`, `CarouselService`, `TransactionService`, `CreateProduct/CreateCategory`) extienden `BaseService` o encapsulan llamadas particulares.
 
 ### 3.5 Estado y sesion
 - **AuthService**: usa signals (`user`, `token`, `permits`) + `StorageService` para persistir sesion en `localStorage`. Expone helpers para login, registro, actualizacion de credenciales y restore automatico.
@@ -96,7 +96,7 @@ src/app
 - Los endpoints devuelven estructuras HAL (`{ _embedded: { responseList: [...] }, page: {...} }`). `BaseService.unwrapEmbeddedList` obtiene la lista independientemente del nombre del recurso.
 - Logica adicional:
   - `CreateProduct` y `CreateCategory` orquestan modales y validaciones antes de `post`.
-  - `AuditService`/`TransactionService` agrupan endpoints administrativos (ver `src/app/services`).
+  - `TransactionService` agrupa endpoints administrativos (ver `src/app/services`).
 - `SwalService` centraliza los mensajes de exito/error mostrados al usuario final.
 
 ## 6. Estilos y UX

@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 import { Transaction } from '../../models/transaction';
 import { CommonModule } from '@angular/common';
-import { AuditService } from '../../services/audit-service';
+import { SaleService } from '../../services/sale-service';
 import { SalesParams } from '../../models/filters/salesParams';
 import { FormsModule } from "@angular/forms";
 import Swal from 'sweetalert2';
@@ -17,7 +17,7 @@ import { PurchaseCard } from '../../components/purchase-card/purchase-card';
 })
 export class Purchases implements OnInit {
 
-  AService = inject(AuditService)
+  saleService = inject(SaleService)
   aService = inject(AuthService)
   uService = inject(UserService)
   user = this.aService.user
@@ -39,7 +39,7 @@ export class Purchases implements OnInit {
     paymentMethod: '',
     minPrice: undefined,
     maxPrice: undefined,
-    userId: this.user()?.id?.toString() ?? '',
+    userId: this.isAdmin ? '' : (this.user()?.id?.toString() ?? ''),
     page: this.currentPage,
     size: this.purchasesXPage
   }
@@ -50,7 +50,7 @@ export class Purchases implements OnInit {
 
   toggleAdminView(): void {
     this.adminView = !this.adminView
-    this.filters.userId = this.adminView ? '' : this.user()?.id?.toString() ?? ''
+    this.filters.userId = this.adminView ? '' : (this.user()?.id?.toString() ?? '')
     this.currentPage = 0
     this.loadTransactions()
   }
@@ -62,7 +62,7 @@ export class Purchases implements OnInit {
     this.loadTransactions()
   }
 
-   changePage(page: number): void {
+  changePage(page: number): void {
     if (page < 0 || page >= this.totalPages) return
     this.currentPage = page
     this.filters.page = this.currentPage
@@ -74,9 +74,13 @@ export class Purchases implements OnInit {
     this.filters.page = this.currentPage
     this.filters.size = this.purchasesXPage
 
-    this.AService.getAllTransactions(this.filters).subscribe({
+    const request$ = this.isAdmin
+      ? this.saleService.getList(this.filters)
+      : this.saleService.getMySales(this.filters)
+
+    request$.subscribe({
       next: (data) => {
-        const sales = data._embedded?.saleResponseList || []
+        const sales = data.data || []
         this.purchases.set(sales.map((s: any) => ({
           id: s.transaction?.id,
           total: s.transaction?.total,
@@ -87,7 +91,8 @@ export class Purchases implements OnInit {
           storeName: s.transaction?.storeName,
           userId: s.transaction?.userId || s.userId,
           detailTransactions: s.transaction?.detailTransactions || [],
-          paymentDetail: s.transaction?.paymentDetail
+          paymentDetail: s.transaction?.paymentDetail,
+          paymentStatus: s.transaction?.paymentStatus
         })))
         console.log(this.purchases())
         this.totalPages = data.page?.totalPages || 1
