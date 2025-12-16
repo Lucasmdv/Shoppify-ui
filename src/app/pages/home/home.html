@@ -28,7 +28,7 @@
       </div>
       <div class="product-grid">
         @for (item of products; track $index) {
-          <app-product-card [product]="item"></app-product-card>
+          <app-product-card [isMostrarDescuento]="true"  [product]="item"></app-product-card>
         }
       </div>
     </section>
