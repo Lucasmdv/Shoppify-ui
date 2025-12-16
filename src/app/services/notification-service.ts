@@ -32,11 +32,12 @@ export class NotificationService {
       return;
     }
 
-    const url = `${this.API_URL}/${userId}/stream`;
+    const url = this.withNgrokBypass(`${this.API_URL}/${userId}/stream`);
     console.log('NotificationService: Connecting to SSE', url);
     this.eventSource = new EventSourcePolyfill(url, {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true'
       }
     });
 
@@ -44,6 +45,9 @@ export class NotificationService {
       this.zone.run(() => {
         console.log('NotificationService: Raw event received', event);
         try {
+          if (event.type === 'keepalive' || event.data === 'keepalive') {
+            return;
+          }
           const notification = this.adaptNotification(JSON.parse(event.data));
           console.log('NotificationService: Parsed notification', notification);
           this.notificationSubject.next(notification);
@@ -95,6 +99,14 @@ export class NotificationService {
     if (this.eventSource) {
       this.eventSource.close();
     }
+  }
+
+  private withNgrokBypass(url: string): string {
+    if (url.includes('ngrok')) {
+      const separator = url.includes('?') ? '&' : '?';
+      return `${url}${separator}ngrok-skip-browser-warning=true`;
+    }
+    return url;
   }
 
   private adaptNotification(raw: any): NotificationResponse {

@@ -1,0 +1,176 @@
+<section class="carousel-editor">
+    <div class="editor-shell">
+        <header class="editor-header">
+            <div class="header-copy">
+                <p class="eyebrow">Gestion de notificaciones</p>
+                <h1>Diseña y programa los eventos de tu tienda</h1>
+                <p>
+                    Visualiza tus notificaciones y crea nuevas sin perder la estetica de Shoppify.
+                </p>
+
+            </div>
+     
+                    <button type="button" class="header-back" (click)="goBack()">Volver</button>
+</header>
+
+        <div class="editor-grid">
+            <article class="panel preview-panel">
+                <div class="panel-header">
+                   <div class="slides-grid-container">
+                        <div class="slides-grid">
+
+                                <button type="button" class="slide-card"
+                                
+                                (click)="createItem()"
+                                 [class.active] = "!selectedItem">
+                                
+                                <div class="thumb create-thumb" aria-hidden="true">
+                                    <span class="plus-icon">+</span>
+                                </div>
+                                
+                            </button>
+
+
+                            @for (item of carouselItems; track item.id) {
+                            <button type="button" class="slide-card"
+                                (click)="onPreviewSelect(item)"
+                                [class.active] = "selectedItem?.id == item.id">
+                                <div class="thumb" aria-hidden="true">
+                                    <img [src]="item.url" [alt]="item.title" loading="lazy" />
+                                </div>
+                                <div class="slide-meta">
+                                    <span class="slide-title">{{ item.title }}</span>
+                                    <span class="slide-link">{{ item.href }}</span>
+                                </div>
+                            </button>
+                            }
+                         
+                        </div>
+
+
+                   </div>
+
+                </div>
+
+            </article>
+
+            <article class="panel form-panel">
+                <div class="panel-header">
+                    <div class="panel-header-copy">
+                        @if (selectedItem) {
+                            <span class="panel-eyebrow">Slide seleccionado</span>
+                        } @else {
+                            <span class="panel-eyebrow">Crea tu nueva notificación</span>
+                        }
+                    </div>
+                </div>
+
+                <form class="carousel-form" [formGroup]="fg" (ngSubmit)="onSubmit()">
+                    <div class="form-field">
+                        <label for="title">Titulo destacado</label>
+                        <input
+                          id="title"
+                          type="text"
+                          placeholder="Ej. Ofertas navideñas"
+                          formControlName="title"
+                          [class.is-invalid]="showErrors('title')"
+                        />
+                        @if (showErrors('title')) {
+                          <div class="form-error">
+                            @if (hasError('title', 'required')) {
+                              <span>El titulo es obligatorio.</span>
+                            }
+                            @if (hasError('title', 'minlength')) {
+                              <span>Debe tener al menos 4 caracteres.</span>
+                            }
+                            @if (hasError('title', 'maxlength')) {
+                              <span>No puede superar los 80 caracteres.</span>
+                            }
+                          </div>
+                        }
+                    </div>
+
+                    <div class="form-field">
+                        <label for="href">Mensaje </label>
+                        <input
+                          id="href"
+                          type="text"
+                          placeholder="Ej. Aprovecha un 30% off en todo el pais"
+                          formControlName="href"
+                          [class.is-invalid]="showErrors('href')"
+                        />
+                        @if (showErrors('href')) {
+                          <div class="form-error">
+                            @if (hasError('href', 'required')) {
+                              <span>La ruta de destino es obligatoria.</span>
+                            }
+                            @if (hasError('href', 'pattern')) {
+                              <span>Debe comenzar con "/" o "http(s)://".</span>
+                            }
+                          </div>
+                        }
+
+                        <small>Define a donde se dirige el usuario al hacer click.</small>
+
+                    </div>
+
+                    <label for="title">Programar fecha</label>
+                      <mat-form-field>
+  <mat-date-range-input [rangePicker]="picker" [min]="minDate">
+    <input matStartDate formControlName="publishStart" placeholder="Fecha inicio">
+    <input matEndDate formControlName="publishEnd" placeholder="Fecha expiracion">
+  </mat-date-range-input>
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-date-range-picker #picker></mat-date-range-picker>
+
+
+</mat-form-field>
+      <div class="form-field">
+
+                          <div class="time-grid">
+                            <div class="time-field">
+                              <label for="publishStartTime">Hora inicio</label>
+                              <input
+                                id="publishStartTime"
+                                type="time"
+                                formControlName="publishStartTime"
+                              />
+                            </div>
+                            <div class="time-field">
+                              <label for="publishEndTime">Hora fin</label>
+                              <input
+                                id="publishEndTime"
+                                type="time"
+                                formControlName="publishEndTime"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <small>Seleccione en el calendario de que fecha hasta que otra fecha se mostrara la notificacion.</small>
+                  
+
+          
+
+                    <div class="form-actions">
+                        <button class="btn primary" type="submit"
+                            [disabled]="fg.invalid || !fg.dirty">
+                            Guardar
+                        </button>
+                        <button class="btn ghost" type="button" (click)="resetCurrent()" [disabled]="!fg.dirty">
+                            Restablecer
+                        </button>
+                        <button class="btn danger" type="button" (click)="onDelete()"
+                            [disabled]="!selectedItem">Eliminar
+                        </button>
+                    </div>
+
+                </form>
+
+                
+            </article>
+        </div>
+
+    </div>
+</section>
+
+

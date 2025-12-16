@@ -72,3 +72,13 @@ main, router-outlet {
   --border-section-categories: transparent;
   --border-section-empty-state: transparent;
 }
+
+.mat-datepicker-content {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.mat-calendar {
+  background-color: var(--bg-card) !important;
+}
