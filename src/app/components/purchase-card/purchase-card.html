@@ -64,6 +64,16 @@
           <div class="purchase-extra">
             <p><strong>Método de pago:</strong> {{ purchase.paymentMethod }}</p>
             <p><strong>Descripción:</strong> {{ purchase.description || 'Sin descripción' }}</p>
+            @if (purchase.paymentDetail) {
+              <div class="payment-detail">
+                <h5>Detalle de pago</h5>
+                <p><strong>Estado:</strong> {{ purchase.paymentDetail.status || '—' }} ({{ purchase.paymentDetail.statusDetail || '—' }})</p>
+                <p><strong>Método:</strong> {{ purchase.paymentDetail.paymentTypeId || '—' }} / {{ purchase.paymentDetail.paymentMethodId || '—' }}</p>
+                <p><strong>Tarjeta:</strong> {{ purchase.paymentDetail.cardholderName || '—' }} •••• {{ purchase.paymentDetail.cardLastFour || '----' }}</p>
+                <p><strong>Cuotas:</strong> {{ purchase.paymentDetail.installments || 1 }}</p>
+                <p><strong>Payer:</strong> {{ purchase.paymentDetail.payerEmail || purchase.userId || '—' }}</p>
+              </div>
+            }
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { DetailTransaction } from "./detailTransaction";
+import { PaymentDetail } from "./paymentDetail";
 
 export interface Transaction {
   id?: number
@@ -11,4 +12,5 @@ export interface Transaction {
   type: string
   storeName: string
   detailTransactions: DetailTransaction[]
+  paymentDetail?: PaymentDetail
 }

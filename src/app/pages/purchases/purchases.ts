@@ -87,6 +87,7 @@ export class Purchases implements OnInit {
           storeName: s.transaction?.storeName,
           userId: s.transaction?.userId || s.userId,
           detailTransactions: s.transaction?.detailTransactions || [],
+          paymentDetail: s.transaction?.paymentDetail
         })))
         console.log(this.purchases())
         this.totalPages = data.page?.totalPages || 1
