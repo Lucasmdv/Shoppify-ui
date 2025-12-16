@@ -1,49 +1,53 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-content">
+      @if (store) {
       <p class="footer-info">
         (C) 2025-{{ getCurrYear() }} <strong>{{store.storeName}} S.R.L.</strong><br />
         {{ store.address }}
       </p>
+      }
 
       <nav class="footer-links" aria-label="Enlaces legales y de contacto">
 
         @if (store?.phone) {
-           <a href="https://wa.me/{{store?.phone}}" target="_blank" rel="noopener noreferrer" aria-label="Contacto">
+        <a href="https://wa.me/{{store?.phone}}" target="_blank" rel="noopener noreferrer" aria-label="Contacto">
           Contacto
         </a>
         }
-       
+
 
         <a routerLink="/help/terms" aria-label="Terminos y condiciones">Terminos</a>
-        
+
         <a routerLink="/help/privacy" aria-label="Politica de privacidad">Privacidad</a>
       </nav>
     </div>
 
     <div class="footer-social">
+      @if (store) {
       @if (store.facebook) {
-
       <a [href]="store.facebook" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
         <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/facebook.svg" alt="Facebook" />
       </a>
-    }
-       @if (store.instagram) {
+      }
+      @if (store.instagram) {
       <a [href]="store.instagram" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
         <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg" alt="Instagram" />
       </a>
-    }
+      }
       @if (store.twitter) {
       <a [href]="store.twitter" target="_blank" rel="noopener noreferrer" aria-label="X">
         <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/x.svg" alt="X" />
       </a>
-    }
+      }
       @if (store.youtube) {
-    <a [href]="store.youtube" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+      <a [href]="store.youtube" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
         <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg" alt="YouTube" />
       </a>
       }
-     
+      }
+
+
     </div>
   </div>
 </footer>

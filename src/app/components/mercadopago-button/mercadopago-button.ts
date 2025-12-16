@@ -1,6 +1,5 @@
-import { AfterViewInit, Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, inject, input, OnDestroy, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { firstValueFrom } from 'rxjs';
 import { TransactionService } from '../../services/transaction-service';
 import { CartService } from '../../services/cart-service';
 import { AuthService } from '../../services/auth-service';
@@ -14,71 +13,120 @@ import { DetailCart } from '../../models/cart/cartResponse';
   templateUrl: './mercadopago-button.html',
   styleUrl: './mercadopago-button.css'
 })
-export class MercadopagoButton implements AfterViewInit, OnChanges {
+export class MercadopagoButton implements OnDestroy {
   private tService = inject(TransactionService);
   private cartService = inject(CartService);
   private authService = inject(AuthService);
   private mpService = inject(MercadoPagoService);
-  private viewReady = false;
 
+  public cartItems = input<DetailCart[]>([]);
+  public loading = signal(false);
+  public error = signal<string | null>(null);
+  public preferenceId = signal<string | null>(null);
 
-  @Input() cartItems: DetailCart[] = [];
+  private containerRef = viewChild<ElementRef>('walletBrickContainer');
+  private brickController: any = null;
 
-  async ngAfterViewInit(): Promise<void> {
-    await this.mpService.loadSdk();
-    this.viewReady = true;
-
-    if (this.cartItems.length) {
-      await this.renderWalletFromBackend();
+  ngOnInit() {
+    const active = this.cartService.activeTransaction();
+    if (active) {
+      console.log("Resuming existing transaction:", active);
+      this.preferenceId.set(active.preferenceId);
+      setTimeout(() => {
+        this.renderBrick(active.preferenceId);
+      }, 100);
     }
   }
 
-  async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    if(changes['cartItems'] && this.cartItems.length > 0 && this.viewReady) {
-      await this.renderWalletFromBackend();
-    }
-  }
-
-  private async renderWalletFromBackend() {
-    await this.mpService.loadSdk();
-
-    const user = this.authService.user();
-    if (!user?.id) {
-      console.warn('Usuario no logueado. No se puede crear la preferencia.');
-      return;
-    }
-
-    if (!this.cartItems?.length) {
-      console.warn('Carrito vacio. No se puede crear la preferencia.');
-      return;
-    }
-
-    const salePayload = this.cartService.prepareSaleRequest(
-      user.id,
-      this.cartItems
-    );
-
-    if (!salePayload) {
-      console.warn('No se pudo armar el payload de venta.');
-      return;
-    }
-
-    const pref = await firstValueFrom(this.tService.createPreference(salePayload));
-    if (!pref?.preferenceId) {
-      console.error('El backend no devolvio preferenceId');
-      return;
-    }
+  async generatePayment() {
+    this.error.set(null);
+    this.loading.set(true);
 
     try {
-      const mp = this.mpService.initialize();
-      const container = document.getElementById('walletBrick_container');
-      if (container) container.innerHTML = ''; // Clear previous button if any
-      
-      await mp.bricks().create('wallet', 'walletBrick_container', {
-        initialization: { preferenceId: pref.preferenceId }
-      });
-    } catch (error) {
-      console.error('Error al inicializar Mercado Pago', error);
+      const items = this.cartItems();
+      if (!items || items.length === 0) return;
+
+      const user = this.authService.user();
+      if (!user?.id) throw new Error('Usuario no logueado');
+
+      const salePayload = this.cartService.prepareSaleRequest(user.id, items);
+
+      console.log('Generando preferencia con payload:', JSON.stringify(salePayload, null, 2));
+
+      if (!salePayload) return;
+
+      const pref = await this.tService.createPreference(salePayload).toPromise();
+
+      if (pref?.preferenceId) {
+        // Updated: Store the active transaction so we can cancel it if needed
+        this.cartService.setActiveTransaction({
+          preferenceId: pref.preferenceId,
+          transactionId: pref.transactionId // Assuming this exists, validating next
+        });
+
+        this.preferenceId.set(pref.preferenceId);
+        // Wait for change detection to reveal container
+        setTimeout(() => {
+          this.renderBrick(pref.preferenceId);
+        }, 100);
+      }
+    } catch (err: any) {
+      console.error('Error info:', err);
+      this.error.set(err.message || 'Error al crear preferencia');
+      this.loading.set(false);
     }
   }
+
+  checkAndCancelTransaction() {
+    this.cartService.cancelActiveTransaction();
+    this.preferenceId.set(null);
+    this.unmountBrick();
+  }
+
+  private async renderBrick(preferenceId: string) {
+    try {
+      await this.mpService.loadSdk();
+      this.unmountBrick(); // Clean up previous instance
+
+      const mp = this.mpService.initialize();
+      const container = this.containerRef()?.nativeElement;
+
+      if (container) {
+        console.log('Inicializando Brick con preferenceId:', preferenceId);
+
+        this.brickController = await mp.bricks().create('wallet', 'walletBrick_container', {
+          initialization: { preferenceId: preferenceId },
+          customization: {
+            visual: {
+              hideValue: false // Example customization
+            }
+          }
+        });
+      } else {
+        console.error("Container not found!");
+      }
+    } catch (err) {
+      console.error('Error renderizando Brick', err);
+      this.error.set('Error inicializando MercadoPago');
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  private unmountBrick() {
+    if (this.brickController) {
+      try {
+        this.brickController.unmount();
+      } catch (e) {
+        console.warn('Error unmounting brick', e);
+      }
+      this.brickController = null;
+    }
+  }
+
+  ngOnDestroy(): void {
+    // Ensure we cancel if the user navigates away without completing
+    this.checkAndCancelTransaction();
+  }
 }
+

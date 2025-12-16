@@ -4,14 +4,11 @@
     <p class="profile-subtitle">Gestiona tus datos personales y accesos desde un solo lugar.</p>
   </section>
 
+  @if(user) {
   <section class="profile-main">
     <article class="profile-card" aria-label="Resumen del usuario">
       <div class="profile-avatar">
-        <img
-          class="profile-pic"
-          [src]="user.img"
-          [alt]="(user.firstName || 'Usuario')"
-        />
+        <img class="profile-pic" [src]="user.img" [alt]="(user.firstName || 'Usuario')" />
       </div>
 
       <div class="profile-info">
@@ -52,6 +49,7 @@
       </div>
     </nav>
   </section>
+  }
 
   <!--
   <section class="wish-list">
@@ -75,5 +73,5 @@
     }
   </section>
   -->
-  
+
 </div>

@@ -1,3 +1,42 @@
-<div class="mp-wrapper">
-  <div id="walletBrick_container"></div>
+<div class="mp-container">
+
+  @if (preferenceId()) {
+  <div class="header-actions">
+    <button class="back-btn" (click)="checkAndCancelTransaction()">
+      <i class="material-icons">arrow_back</i> Volver
+    </button>
+  </div>
+  }
+
+  @if (!preferenceId() && !loading()) {
+  <div class="confirm-container">
+    <button class="confirm-btn" (click)="generatePayment()">
+      Confirmar Compra
+    </button>
+  </div>
+  }
+
+  @if (loading()) {
+  <div class="mp-loading">
+    <div class="spinner"></div>
+    <p>Generando pago...</p>
+  </div>
+  }
+
+  @if (error()) {
+  <div class="mp-error">
+    <p>{{ error() }}</p>
+    <button class="retry-btn" (click)="generatePayment()">Reintentar</button>
+  </div>
+  }
+
+  <!-- Container for the Wallet Brick, hidden until needed to reserve space? Or just if exists? -->
+  <!-- We keep it in DOM but maybe control visibility or just let directive handle it. 
+        Actually, we need it to exist when renderBrick is called. 
+        Use [style.display] to hide it if not ready, or just @if with a small delay logic in TS? 
+        The TS sets preferenceId THEN waits 100ms then renders. So @if (preferenceId()) is fine.
+   -->
+  @if (preferenceId()) {
+  <div #walletBrickContainer id="walletBrick_container"></div>
+  }
 </div>
