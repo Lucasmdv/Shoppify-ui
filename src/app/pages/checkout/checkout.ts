@@ -1,27 +1,22 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, viewChild } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
-import { FormBuilder } from '@angular/forms';
 import { CartService } from '../../services/cart-service';
-import { Router } from '@angular/router';
-import { TransactionService } from '../../services/transaction-service';
 import Swal from 'sweetalert2';
-import { Cart, DetailCart } from '../../models/cart/cartResponse';
-import { Observable } from 'rxjs';
+import { DetailCart } from '../../models/cart/cartResponse';
 import { CommonModule } from '@angular/common';
 import { MercadopagoButton } from '../../components/mercadopago-button/mercadopago-button';
+import { BackButtonComponent } from '../../components/back-button/back-button';
 
 @Component({
   selector: 'app-checkout',
-  imports: [CommonModule, MercadopagoButton],
+  imports: [CommonModule, MercadopagoButton, BackButtonComponent],
   templateUrl: './checkout.html',
   styleUrl: './checkout.css',
 })
 export class Checkout {
   private aService = inject(AuthService);
-  private fb = inject(FormBuilder);
   public cService = inject(CartService);
-  private router = inject(Router);
-  private tService = inject(TransactionService);
+  private mpButton = viewChild(MercadopagoButton);
 
   total: number = 0;
   items: DetailCart[] = [];
@@ -41,5 +36,9 @@ export class Checkout {
         });
       },
     });
+  }
+
+  checkAndCancelTransaction() {
+    this.mpButton()?.checkAndCancelTransaction();
   }
 }

@@ -1,4 +1,5 @@
 <aside class="summary-card">
+    <app-back-button (click)="checkAndCancelTransaction()"></app-back-button>
     <h3>Resumen de compra</h3>
     @for (item of items; track item.id) {
     <div class="summary-block">
@@ -10,7 +11,7 @@
             <span>{{ item.subtotal | currency }}</span>
         </div>
     </div>
-    } 
+    }
 
     <div class="summary-total">
         <span>Total</span>

@@ -262,7 +262,7 @@ export class ProductDetail implements OnInit {
       return;
     }
 
-    if (!this.aService.isLogged) {
+    if (!this.aService.isLogged()) {
       Swal.fire({
         icon: "warning",
         title: "Atención",
@@ -306,7 +306,7 @@ export class ProductDetail implements OnInit {
       return;
     }
     
-    if (!this.aService.isLogged) {
+    if (!this.aService.isLogged()) {
       Swal.fire({
         icon: "warning",
         title: "Atención",

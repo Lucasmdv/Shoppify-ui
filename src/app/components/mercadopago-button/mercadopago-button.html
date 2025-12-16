@@ -1,12 +1,6 @@
 <div class="mp-container">
 
-  @if (preferenceId()) {
-  <div class="header-actions">
-    <button class="back-btn" (click)="checkAndCancelTransaction()">
-      <i class="material-icons">arrow_back</i> Volver
-    </button>
-  </div>
-  }
+
 
   @if (!preferenceId() && !loading()) {
   <div class="confirm-container">
