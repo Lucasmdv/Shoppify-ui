@@ -1,5 +1,6 @@
 .help-container {
-  width: 900px;
+  width: 100%;
+  max-width: 900px;
   margin: 2rem auto;
   padding: 1rem;
   font-family: 'Segoe UI', Arial, sans-serif;
