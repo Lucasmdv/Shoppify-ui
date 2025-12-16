@@ -5,10 +5,11 @@ import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { catchError, map, of } from 'rxjs';
+import { BackButtonComponent } from '../../components/back-button/back-button';
 
 @Component({
   selector: 'app-credentials-form',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, BackButtonComponent],
   templateUrl: './credentials-form.html',
   styleUrl: './credentials-form.css'
 })

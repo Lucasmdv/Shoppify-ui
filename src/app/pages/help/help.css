@@ -8,6 +8,10 @@
   min-height: 60vh;
 }
 
+app-back-button {
+  margin: 20px;
+}
+
 .card {
   background-color: #ffffff;
   border: 1px solid #ddd;

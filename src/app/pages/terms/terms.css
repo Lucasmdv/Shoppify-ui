@@ -11,6 +11,10 @@
   transition: all 0.3s ease-in-out;
 }
 
+app-back-button {
+  margin: 20px;
+}
+
 .terms-container h1 {
   font-size: 2rem;
   text-align: center;

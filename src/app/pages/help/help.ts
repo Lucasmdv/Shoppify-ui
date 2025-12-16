@@ -3,18 +3,19 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import Swal from 'sweetalert2';
 import { StoreService } from '../../services/store-service';
 import { RouterLink } from "@angular/router";
+import { BackButtonComponent } from '../../components/back-button/back-button';
 
 @Component({
   selector: 'app-help',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, BackButtonComponent],
   templateUrl: './help.html',
   styleUrl: './help.css'
 })
-export class Help implements OnInit{
+export class Help implements OnInit {
 
   private fb = inject(FormBuilder)
   private storeService = inject(StoreService)
-  store: any = {} 
+  store: any = {}
   showFaq = false
   showContact = false
   activeQuestion = signal<number | null>(null)
@@ -25,7 +26,7 @@ export class Help implements OnInit{
     this.renderPage()
   }
 
-  renderPage(){
+  renderPage() {
     this.storeService.getStore().subscribe({
       next: (data) => {
         this.store = data
@@ -45,7 +46,7 @@ export class Help implements OnInit{
   }
 
   toggleContact() {
-    this.showContact= !this.showContact
+    this.showContact = !this.showContact
   }
 
   toggleQuestion(i: number) {

@@ -2,6 +2,10 @@
   display: block;
 }
 
+app-back-button {
+  margin: 20px;
+}
+
 .profile-page {
   width: min(1180px, 100%);
   margin: clamp(2rem, 5vw, 3.5rem) auto;

@@ -11,6 +11,10 @@
   transition: all 0.3s ease-in-out;
 }
 
+app-back-button {
+  margin: 20px;
+}
+
 .privacy-container h1 {
   font-size: 2rem;
   text-align: center;
