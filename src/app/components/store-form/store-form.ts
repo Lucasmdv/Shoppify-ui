@@ -30,8 +30,8 @@ export class StoreForm implements OnInit {
   renderStore(){
     this.storeService.getStore().subscribe({
       next: (data) => {
-      this.store = data
-      this.fg.patchValue(data)
+        this.store = data
+        this.fg.patchValue(data)
       },
       error(err) {
         Swal.fire({
@@ -44,34 +44,35 @@ export class StoreForm implements OnInit {
 
 
   forminit(){
-      this.fg = new FormGroup({
+    this.fg = new FormGroup({
       storeName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(15)]),
-      address: new FormControl('', [Validators.required , Validators.maxLength(100)]),
-      city: new FormControl('', [Validators.required , Validators.maxLength(100),Validators.minLength(3)]),
-      phone: new FormControl('', [Validators.required , Validators.maxLength(20),Validators.minLength(3)]),
-      facebook: new FormControl('', [Validators.maxLength(100),Validators.minLength(3)]),
-      instagram: new FormControl('', [Validators.maxLength(100),Validators.minLength(3)]),
-      twitter: new FormControl('', [Validators.maxLength(100),Validators.minLength(3)]),
+      address: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      city: new FormControl('', [Validators.required, Validators.maxLength(100), Validators.minLength(3)]),
+      postalCode: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+      phone: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.minLength(3)]),
+      facebook: new FormControl('', [Validators.maxLength(100), Validators.minLength(3)]),
+      instagram: new FormControl('', [Validators.maxLength(100), Validators.minLength(3)]),
+      twitter: new FormControl('', [Validators.maxLength(100), Validators.minLength(3)]),
     });
   }
 
  onRestore(){
- this.fg.reset()
- this.fg.patchValue(this.store)
- }
+    this.fg.reset()
+    this.fg.patchValue(this.store)
+  }
   onSubmit(){
     if(this.fg.invalid){
       this.fg.markAllAsTouched();
       return;
     }
 
-  this.storeService.putStore(this.fg.value).subscribe({
+    this.storeService.putStore(this.fg.value).subscribe({
       next: (data) => {
-       this.swalService.success("Formulario actualizado correctamente")
+        this.swalService.success("Formulario actualizado correctamente")
       },
 
       error:(err) => {
-       this.swalService.error("Hubo un error al actualizar la tienda.")
+        this.swalService.error("Hubo un error al actualizar la tienda.")
       },
     })
   }
