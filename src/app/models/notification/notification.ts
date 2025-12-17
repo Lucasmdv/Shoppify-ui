@@ -8,6 +8,7 @@ export interface NotificationResponse {
   relatedProductId?: number;
   relatedSaleId?: number;
   publishAt?: string;
+  expiresAt?: string;
   createdAt: string;
   isRead: boolean;
   read?: boolean;
@@ -22,4 +23,5 @@ export interface NotificationPayload {
   relatedProductId?: number | null;
   relatedSaleId?: number | null;
   publishAt?: string | null;
+  expiresAt?: string | null;
 }

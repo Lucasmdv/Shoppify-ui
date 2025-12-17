@@ -95,6 +95,30 @@ export class NotificationService {
       .pipe(map((n) => this.adaptNotification(n)));
   }
 
+  public createNotification(notification: any): Observable<NotificationResponse> {
+    const url = `${environment.apiUrl}/notifications`; // Base admin endpoint
+    return this.http.post<NotificationResponse>(url, notification);
+  }
+
+  public getAllNotifications(): Observable<NotificationResponse[]> {
+    const url = `${environment.apiUrl}/notifications`;
+    return this.http.get<SpringPage<NotificationResponse>>(url).pipe(
+      map(page => page.content || [])
+    );
+  }
+
+  public updateNotification(id: number, notification: any): Observable<NotificationResponse> {
+    const url = `${environment.apiUrl}/notifications/${id}`;
+    return this.http.put<NotificationResponse>(url, notification);
+  }
+
+  public deleteNotification(id: number): Observable<void> {
+    // Assuming DELETE exists standardly, if not verified by user image, but common practice.
+    // If 405, we will know.
+    const url = `${environment.apiUrl}/notifications/${id}`;
+    return this.http.delete<void>(url);
+  }
+
   public disconnect(): void {
     if (this.eventSource) {
       this.eventSource.close();
@@ -114,13 +138,15 @@ export class NotificationService {
     const read = raw?.read ?? raw?.isRead ?? false;
     const hidden = raw?.hidden ?? false;
     const id = raw?.id ?? raw?.notificationId;
+    const expiresAt = raw?.expiresAt ?? raw?.expireAt ?? null;
     return {
       ...raw,
       id,
       type: mappedType,
       isRead: read,
       read,
-      hidden
+      hidden,
+      expiresAt
     };
   }
 

@@ -2,127 +2,231 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CarouselService } from '../../services/carousel-service';
-import { Carouselitem } from '../../models/carouselitem';
+import { NotificationService } from '../../services/notification-service';
+import { NotificationResponse, NotificationPayload } from '../../models/notification/notification';
+
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
-
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-notification',
-  imports: [CommonModule, ReactiveFormsModule, MatDatepickerModule, MatInputModule, MatFormFieldModule],
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule
+  ],
   templateUrl: './notification.html',
   styleUrl: './notification.css'
 })
 export class Notification implements OnInit {
 
-  carouselItems: Carouselitem[] = [];
-  selectedItem? : Carouselitem
+  notifications: NotificationResponse[] = [];
+  selectedItem?: NotificationResponse;
   fg!: FormGroup;
-  minDate: Date = new Date();
+  minDate = new Date(); // For datepicker
 
   constructor(
-    private carouselService: CarouselService,
+    private notificationService: NotificationService,
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    this.renderItems()
-    this.initForm()
+    this.initForm();
+    this.loadHistory();
   }
 
-  renderItems(){
-    this.carouselService.getCarousel().subscribe({
-      next:(data) => {
-        this.carouselItems = data
-        const id = this.route.snapshot.params['id']
-
-        if(id){
-        this.selectedItem = data.find(a => a.id == id)
-        }
+  loadHistory() {
+    this.notificationService.getAllNotifications().subscribe({
+      next: (res) => {
+        this.notifications = res.sort((a, b) => (b.id || 0) - (a.id || 0)); 
       },
-    })
+      error: (err) => console.error('Error loading history', err)
+    });
   }
 
+  initForm() {
+    this.fg = this.fb.group({
+      title: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(80)]],
+      message: ['', [Validators.required, Validators.minLength(4)]],
+      type: ['GLOBAL', [Validators.required]],
+      deliveryMode: ['immediate'], 
+      
+      publishStart: [null],
+      publishEnd: [null],
 
-  resetCurrent(){
-    if(this.selectedItem){
-      this.fg.patchValue(this.selectedItem)
-    }
-    else{
-      this.fg.reset()
-    }
+      immediateExpireDate: [null],
+      
+      startTime: [''],
+      endTime: [''],
+      
+      relatedProductId: [null],
+    });
   }
 
+  createItem() {
+    this.selectedItem = undefined;
+    this.fg.reset({ type: 'GLOBAL', deliveryMode: 'immediate' });
+  }
 
+  onPreviewSelect(item: NotificationResponse) {
+    this.selectedItem = item;
+    
+    let pStart = null;
+    let sTime = '';
+    if (item.publishAt) {
+      const dateObj = new Date(item.publishAt);
+      pStart = dateObj;
+      const hours = dateObj.getHours().toString().padStart(2, '0');
+      const mins = dateObj.getMinutes().toString().padStart(2, '0');
+      sTime = `${hours}:${mins}`;
+    }
 
-  onSubmit(){
-    if(this.fg.invalid){
+    // Parse expiresAt
+    let pEnd = null; // for scheduled
+    let iExpire = null; // for immediate
+    let eTime = '';
+
+    if (item.expiresAt) {
+       const dateObj = new Date(item.expiresAt);
+       const hours = dateObj.getHours().toString().padStart(2, '0');
+       const mins = dateObj.getMinutes().toString().padStart(2, '0');
+       eTime = `${hours}:${mins}`;
+       
+       pEnd = dateObj;
+       iExpire = dateObj;
+    }
+
+    this.fg.patchValue({
+      title: item.title,
+      message: item.message,
+      type: item.type || 'GLOBAL',
+      deliveryMode: 'scheduled', // Default to showing as scheduled so they see start/end clearly
+      publishStart: pStart,
+      publishEnd: pEnd,
+      immediateExpireDate: iExpire, 
+      startTime: sTime,
+      endTime: eTime
+    });
+  }
+
+  resetCurrent() {
+    this.fg.reset({ type: 'GLOBAL', deliveryMode: 'immediate' });
+    this.selectedItem = undefined;
+  }
+
+  onSubmit() {
+    if (this.fg.invalid) {
       this.fg.markAllAsTouched();
       return;
     }
 
-    if(this.selectedItem){
-         this.carouselService.putCarouselItem(this.fg.value).subscribe({
-      next:(value) => {
-          this.cleanValues()
-          this.renderItems()
-      },
-      })
+    const val = this.fg.value;
+    const mode = val.deliveryMode;
+    
+    let publishAt = null;
+    let expiresAt = null;
+
+    if (mode === 'immediate') {
+      const now = new Date();
+      publishAt = now.toISOString();
+      
+      if (val.immediateExpireDate) {
+        const date = new Date(val.immediateExpireDate);
+        if (val.endTime) {
+           const [hours, minutes] = val.endTime.split(':');
+           date.setHours(+hours);
+           date.setMinutes(+minutes);
+        } else {
+           date.setHours(23, 59, 59);
+        }
+        expiresAt = date.toISOString();
+      }
+    } else {
+      if (val.publishStart) {
+        const date = new Date(val.publishStart); 
+        if (val.startTime) {
+          const [hours, minutes] = val.startTime.split(':');
+          date.setHours(+hours);
+          date.setMinutes(+minutes);
+        }
+        publishAt = date.toISOString();
+      }
+
+      if (val.publishEnd) {
+        const date = new Date(val.publishEnd);
+        if (val.endTime) {
+           const [hours, minutes] = val.endTime.split(':');
+           date.setHours(+hours);
+           date.setMinutes(+minutes);
+        } else {
+           date.setHours(23, 59, 59);
+        }
+        expiresAt = date.toISOString();
+      }
     }
-    else{
-      this.carouselService.postCarouselItem(this.fg.value).subscribe({
-      next:(value) => {
-          this.cleanValues()
-          this.renderItems()
-      },
-      })
+
+    const payload: NotificationPayload = {
+      title: val.title,
+      message: val.message,
+      type: 'GLOBAL',
+      publishAt: publishAt,
+      expiresAt: expiresAt,
+      relatedProductId: val.relatedProductId
+    };
+
+    if (this.selectedItem && this.selectedItem.id) {
+       this.notificationService.updateNotification(this.selectedItem.id, payload).subscribe({
+         next: (res) => {
+           alert('Notificación actualizada!');
+           this.loadHistory();
+         },
+         error: (err) => {
+           console.error(err);
+           alert('Error al actualizar.');
+         }
+       });
+    } else {
+       this.notificationService.createNotification(payload).subscribe({
+        next: (res) => {
+          alert('Notificación enviada!');
+          this.resetCurrent();
+          this.loadHistory();
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Error al crear notificación.');
+        }
+      });
     }
-  
   }
 
-  onPreviewSelect(item: Carouselitem){
-    this.selectedItem = item
-    this.fg.patchValue(item)
+  onDelete() {
+    if (!this.selectedItem || !this.selectedItem.id) return;
+    
+    if (confirm('¿Eliminar esta notificación del historial?')) {
+      this.notificationService.deleteNotification(this.selectedItem.id).subscribe({
+        next: () => {
+          alert('Eliminada.');
+          this.resetCurrent();
+          this.loadHistory();
+        },
+        error: (err) => {
+           console.error(err);
+           alert('Error al eliminar (o no soportado por API).');
+        }
+      });
+    }
   }
 
-  onDelete(){
-    this.carouselService.deleteCarouselItem(this.selectedItem!.id).subscribe({
-      next:(value) => {
-         this.cleanValues()
-         this.renderItems()
-      },
-    })
-  }
-
-  initForm(){
-  this.fg = this.fb.group({
-    id:[''],
-    title: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(80)]],
-    href: ['', [Validators.required, Validators.pattern(/^(\/|https?:\/\/).+/)]],
-    url: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+/)]],
-    publishStart: [null],
-    publishEnd: [null],
-    publishStartTime: [''],
-    publishEndTime: ['']
-  });
-  }
-
-  createItem(){
-    this.cleanValues()
-  }
-
-  cleanValues(){
-    this.selectedItem = undefined
-    this.fg.reset()
-  }
-
-  goBack(){
-    this.router.navigate(['/auth','admin'])
+  goBack() {
+    this.router.navigate(['/auth', 'admin']);
   }
 
   showErrors(controlName: string): boolean {
@@ -130,9 +234,24 @@ export class Notification implements OnInit {
     return !!control && control.invalid && (control.dirty || control.touched);
   }
 
-  hasError(controlName: string, errorCode: string): boolean {
-    const control = this.fg.get(controlName);
-    return !!control && control.hasError(errorCode);
-  }
 
+  getStatus(item: NotificationResponse): 'active' | 'scheduled' | 'expired' {
+    const now = new Date();
+    
+    if (item.expiresAt) {
+      const expirationDate = new Date(item.expiresAt);
+      if (expirationDate < now) {
+        return 'expired';
+      }
+    }
+
+    if (item.publishAt) {
+      const publishDate = new Date(item.publishAt);
+      if (publishDate > now) {
+        return 'scheduled';
+      }
+    }
+
+    return 'active';
+  }
 }

@@ -51,7 +51,7 @@
                </div>
                <div class="prod-info">
                   <p class="prod-name" (click)="goToProduct(item.product?.id)">{{ item.product?.name }}</p>
-                  <p class="prod-qty">{{ item.quantity }} u. | <span class="link">Ver detalle</span></p>
+                  <p class="prod-qty">{{ item.quantity }} unidad <span class="prod-info">{{item.subtotal | currency }}</span></p>
                </div>
             </div>
          }
@@ -128,7 +128,7 @@
           </div>
         <div class="action-buttons">
            @if (purchase.detailTransactions.length === 1) {
-              <button class="btn-primary">Volver a comprar</button>
+             <button (click)="goToProduct(purchase.detailTransactions[0].product?.id)"class="btn-secondary">Volver a comprar</button>
            }
          </div>
       }
