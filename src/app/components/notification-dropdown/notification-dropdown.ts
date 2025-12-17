@@ -87,6 +87,11 @@ export class NotificationDropdown implements OnInit, OnDestroy {
             this.router.navigate(['/products/details', notification.relatedProductId]);
           });
         }
+        else if (notification.relatedSaleId) {
+          toast.addEventListener('click', () => {
+            this.router.navigate(['/purchase', notification.relatedSaleId]);
+          });
+        }
       }
     });
   }
@@ -121,7 +126,7 @@ export class NotificationDropdown implements OnInit, OnDestroy {
 
   getGeneralNotifications() {
     this.notificationType = 'general';
-    this.selectedNotifications = this.notifications.filter((n) => n.type === 'general' || !n.type);
+    this.selectedNotifications = this.notifications.filter((n) => n.type === 'general' || n.type === 'personal' || !n.type);
   }
 
   getProductNotifications() {
@@ -159,6 +164,11 @@ export class NotificationDropdown implements OnInit, OnDestroy {
     if (targetProductId !== null) {
       this.closeDropdown();
       this.router.navigate(['/products/details', targetProductId]);
+    }
+    else if (notification.relatedSaleId) {
+      this.closeDropdown();
+      this.router.navigate(['/purchase', notification.relatedSaleId]);
+      
     }
   }
 

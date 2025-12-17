@@ -1,0 +1,141 @@
+<div class="purchase-detail-container">
+  
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <span class="link" (click)="goBack()">Compras</span>
+    <span class="separator">></span>
+    <span class="current">Estado de la compra</span>
+  </div>
+
+  @if (purchase) {
+  <div class="detail-grid">
+    
+    <!-- LEFT COLUMN -->
+    <div class="left-col">
+      
+      <!-- 1. Header Card (Status) -->
+      <div class="status-card">
+         
+        <div class="status-header">
+        
+
+           @if (shipment && purchase.paymentStatus === PaymentStatus.APPROVED) {
+            <app-shipment-stepper [shipment]="shipment" orientation="horizontal"></app-shipment-stepper>
+           }
+
+           @else {
+   <h2 [class.text-red]="isRedStatus()" [class.text-green]="isGreenStatus()">
+              {{ getStatusTitle() }}
+           </h2>
+           
+
+           <p class="main-message">
+              {{ getMainStatusMessage() }}
+              @if (isGreenStatus()) { <span class="full-tag">⚡ FULL</span> }
+           </p>
+           @if (purchase.paymentStatus === PaymentStatus.CANCELLED) {
+             <p class="sub-message">Cancelamos la compra porque se cumplió el tiempo que tenías para hacer el pago.</p>
+           }}
+        </div>
+            
+
+   
+      </div>
+
+      <!-- 2. Product List (in left col) -->
+      <div class="products-block">
+         @for (item of purchase.detailTransactions; track item.id){
+            <div class="product-item-row">
+               <div class="prod-img">
+                  <img [src]="item.product?.imgURL || 'assets/no-image.png'" alt="Product">
+               </div>
+               <div class="prod-info">
+                  <p class="prod-name" (click)="goToProduct(item.product?.id)">{{ item.product?.name }}</p>
+                  <p class="prod-qty">{{ item.quantity }} u. | <span class="link">Ver detalle</span></p>
+               </div>
+            </div>
+         }
+      </div>
+
+
+
+    </div>
+
+    <!-- RIGHT COLUMN (Sidebar) -->
+    <div class="right-col">
+       
+       <div class="summary-box box">
+          <div class="summary-header">
+             <h3>Detalle de la compra</h3>
+             <span class="date-id">{{ purchase.dateTime | date:'d  MMMM y HH:mm:ss' }}</span>
+          </div>
+          
+          <hr>
+
+          <div class="summary-row">
+             <span>Productos ({{ purchase.detailTransactions.length }})</span>
+             <span>{{ purchase.total | currency }}</span>
+          </div>
+          <div class="summary-row">
+             <span>Envío</span>
+             <span class="text-green">Gratis</span>
+          </div>
+          <div class="summary-row total-row">
+             <span>Total</span>
+             <span>{{ purchase.total | currency }}</span>
+          </div>
+          
+          <hr>
+          
+          <div class="detail-section">
+             <h4>Pago</h4>
+             <div class="payment-info">
+               @if (purchase.paymentMethod === 'DIGITAL') {
+                     <div class="card-icon">💵</div> 
+               }
+               @else {
+               <div class="card-icon">💳</div> 
+
+                 @if (purchase.paymentDetail) {
+                     <p class="card-desc">{{ purchase.paymentDetail.statementDescriptor }} terminada en {{ purchase.paymentDetail.cardLastFour }}</p>
+                   }
+               }
+              
+                <div class="payment-text">
+                   <p class="amount">{{ purchase.total | currency }}</p>
+                 
+                   <p class="status-sml" 
+                      [class.text-red]="isRedStatus()" 
+                      [class.text-green]="purchase.paymentStatus === 'APPROVED'">
+                      {{ purchase.paymentStatus === 'APPROVED' ? 'Pago aprobado' : getStatusTitle() }}
+                   </p>
+                </div>
+             </div>
+          </div>
+
+          @if (shipment) {
+
+    
+          <div class="detail-section">
+             <h4>Envío</h4>
+             <div class="shipping-info">
+                <div class="truck-icon">🚚</div>
+                <div class="shipping-text">
+                   <p class="address">{{ shipment.adress }}</p>
+                   <p class="city">Mar del Plata, Buenos Aires</p> 
+                </div>
+             </div>
+          </div>
+        <div class="action-buttons">
+           @if (purchase.detailTransactions.length === 1) {
+              <button class="btn-primary">Volver a comprar</button>
+           }
+         </div>
+      }
+      </div>
+
+    </div>
+
+  </div>
+  }
+</div>

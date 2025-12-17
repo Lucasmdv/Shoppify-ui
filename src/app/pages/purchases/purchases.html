@@ -1,5 +1,5 @@
 <div class="purchases-container">
-  <h2>🛍️ Mis Compras</h2>
+  <h2>Mis Compras</h2>
 
 
   <div class="filters">
@@ -27,6 +27,7 @@
     </button>
     }
 
+    @if (purchases().length > 5) {
     <label>Mostrar:
       <select [(ngModel)]="purchasesXPage" (change)="loadTransactions()">
         <option [value]="5">5</option>
@@ -36,15 +37,17 @@
       </select>
       por página
     </label>
+    }
   </div>
 
   @if (purchases().length > 0) {
+  @if (totalPages > 1) {
   <div class="pagination">
     <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 0">Anterior</button>
     <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
     <button (click)="changePage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1">Siguiente</button>
   </div>
-
+  }
   <div class="purchases-list">
     @for (purchase of purchases(); let i = $index; track purchase.id) {
       <app-purchase-card

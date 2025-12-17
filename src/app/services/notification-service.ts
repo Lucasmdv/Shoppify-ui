@@ -124,11 +124,12 @@ export class NotificationService {
     };
   }
 
-  private mapType(type?: string): 'general' | 'product' {
+  private mapType(type?: string): 'general' | 'product' | 'personal' {
     switch (type) {
       case 'PRODUCT_ALERT':
         return 'product';
       case 'PERSONAL':
+        return 'personal';
       case 'GLOBAL':
       default:
         return 'general';

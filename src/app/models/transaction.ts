@@ -5,7 +5,7 @@ export interface Transaction {
   id?: number
   userId?: number
   total: number
-  paymentStatus: string
+  paymentStatus: PaymentStatus
   dateTime: string
   paymentMethod: string
   description: string
@@ -14,3 +14,12 @@ export interface Transaction {
   detailTransactions: DetailTransaction[]
   paymentDetail?: PaymentDetail
 }
+
+export enum PaymentStatus {
+    APPROVED = 'APPROVED',
+    PENDING = 'PENDING',
+    REJECTED = 'REJECTED',
+    CANCELLED = 'CANCELLED',
+    REFUNDED = 'REFUNDED'
+}
+

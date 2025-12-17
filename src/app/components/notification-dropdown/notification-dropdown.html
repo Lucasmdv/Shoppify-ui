@@ -23,6 +23,7 @@
         Tiendas que sigo
         <span class="material-icons tab-icon" aria-hidden="true">campaign</span>
       </button>
+      
     </li>
 
     <li class="panel-body">
@@ -36,7 +37,7 @@
             <p class="message">{{ notification.message}}</p>
             <span class="meta">{{ notification.createdAt | date }}</span>
           </div>
-          @if (notification.type === 'product') {
+          @if (notification.type === 'product' || notification.type === 'personal') {
           <button
             type="button"
             class="hide-button"

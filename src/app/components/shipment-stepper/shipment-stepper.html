@@ -1,0 +1,31 @@
+<div class="stepper-container" [class.horizontal]="orientation === 'horizontal'">
+  @for (step of steps; track step.title) {
+    <div class="step-item" [class.active]="step.active" [class.completed]="step.completed" [class.last]="step.isLast">
+      
+      <!-- Timestamp Column -->
+      <div class="step-time">
+         @if (step.date) {
+            <span class="date">{{ step.date | date:'d MMM' }}</span>
+            <span class="time">{{ step.date | date:'h:mm a' }}</span>
+         }
+      </div>
+
+      <!-- Timeline Column -->
+      <div class="step-timeline">
+         <div class="dot"></div>
+         @if (!step.isLast) {
+            <div class="line"></div>
+         }
+      </div>
+
+      <!-- Content Column -->
+      <div class="step-content">
+         <div class="step-title">{{ step.title }}</div>
+         @if (step.description && (step.active || step.completed)) {
+            <div class="step-desc">{{ step.description }}</div>
+         }
+      </div>
+
+    </div>
+  }
+</div>

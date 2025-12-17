@@ -1,0 +1,202 @@
+.purchase-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Proxima Nova', -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #333;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: #666;
+}
+.breadcrumb .link {
+  cursor: pointer;
+  color: #333;
+}
+.breadcrumb .link:hover { color: #3483fa; }
+.breadcrumb .separator { margin: 0 8px; color: #999; }
+
+/* Grid Layout */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+}
+
+/* Cards & Boxes */
+.box, .status-card, .products-block {
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e6e6e6;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.box { box-shadow: 0 1px 2px rgba(0,0,0,.05); }
+
+/* Left Column Styling */
+.status-header h2 {
+  font-size: 16px;
+  margin: 0 0 6px 0;
+  font-weight: 600;
+}
+.main-message {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sub-message {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 16px 0;
+}
+
+.full-tag {
+  color: #00a650;
+  font-style: italic;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.text-red { color: #f23d4f !important; }
+.text-green { color: #00a650 !important; }
+
+/* Buttons */
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+.btn-primary, .btn-secondary {
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+.btn-primary {
+  background-color: #3483fa;
+  color: white;
+}
+.btn-primary:hover { background-color: #2968c8; }
+
+.btn-secondary {
+  background-color: rgba(65, 137, 230, .15);
+  color: #3483fa;
+}
+.btn-secondary:hover { background-color: rgba(65, 137, 230, .25); }
+
+
+/* Products List */
+.product-item-row {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid #eee;
+}
+.product-item-row:last-child { border-bottom: none; }
+.prod-img {
+  width: 64px;
+  height: 64px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+}
+.prod-img img {
+  width: 100%; height: 100%; object-fit: contain;
+}
+.prod-info {
+  display: flex; flex-direction: column; justify-content: center;
+}
+.prod-name {
+  font-size: 16px; margin: 0 0 4px 0;
+  font-weight: 600;
+  cursor: pointer;
+}
+.prod-qty { font-size: 14px; color: #999; margin: 0; }
+.prod-qty .link { color: #3483fa; cursor: pointer; margin-left: 8px; }
+
+
+/* Help Section */
+.help-section h3, .seller-section h3 {
+  font-size: 16px; margin: 0 0 16px 0; color: #333;
+}
+.help-item {
+  padding: 12px 0;
+  border-top: 1px solid #f0f0f0;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+.help-item:hover { color: #3483fa; }
+
+/* Seller Section */
+.seller-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.avatar-placeholder {
+  width: 40px; height: 40px;
+  background: #f0f0f0;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold; color: #999;
+}
+.seller-info {
+  display: flex; flex-direction: column;
+}
+.store-name { font-size: 14px; font-weight: 500; }
+.seller-info .link { font-size: 13px; color: #3483fa; cursor: pointer; }
+
+
+/* Right Column (Sidebar) */
+.summary-header h3 { font-size: 16px; margin: 0 0 4px 0; }
+.date-id { font-size: 12px; color: #999; }
+
+.summary-row {
+  display: flex; justify-content: space-between;
+  font-size: 14px; color: #333;
+  margin-bottom: 12px;
+}
+.total-row {
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 12px;
+}
+
+hr { border: 0; border-top: 1px solid #eee; margin: 16px 0; }
+
+.detail-section h4 { font-size: 14px; color: #3483fa; margin: 0 0 12px 0;  }
+
+.payment-info, .shipping-info {
+  display: flex; gap: 12px;
+}
+.card-icon, .truck-icon {
+  width: 32px; height: 32px;
+  border: 1px solid #eee; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.payment-text .amount { font-weight: 600; margin: 0; font-size: 14px; }
+.card-desc { font-size: 12px; color: #999; margin: 2px 0; }
+.status-sml { font-size: 12px; font-weight: 600; margin: 0; }
+
+.shipping-text .address { font-size: 14px; margin: 0; }
+.shipping-text .city { font-size: 12px; color: #999; margin: 2px 0; }
+
+
+/* Responsive */
+@media (max-width: 900px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

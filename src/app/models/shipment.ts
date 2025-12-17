@@ -1,11 +1,19 @@
 export interface Shipment {
     id: number
-    status: string
+    status: Status
     startDate: Date
     endDate: Date
     saleId: number
     pickup: boolean
     adress: string
+}
+
+export enum Status {
+    PROCESSING = 'PROCESSING',
+    SHIPPED = 'SHIPPED',
+    DELIVERED = 'DELIVERED',
+    CANCELLED = 'CANCELLED',
+    RETURNED = 'RETURNED'
 }
 
 export interface ShipmentRequest {

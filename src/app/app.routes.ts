@@ -28,6 +28,7 @@ import { Shipments } from './pages/shipments/shipments';
 import { Checkout } from './pages/checkout/checkout';
 import { ProductsFileForm } from './pages/products-file-form/products-file-form.component';
 import { Notification } from './pages/notification/notification';
+import { PurchaseDetail } from './pages/purchase-detail/purchase-detail';
 
 export const routes: Routes = [
   {
@@ -66,6 +67,7 @@ export const routes: Routes = [
       { path: 'cart', component: CartPage, canActivate: [authGuard] },
 
       { path: 'purchases', component: Purchases, canActivate: [authGuard] },
+      { path: 'purchase/:id', component: PurchaseDetail, canActivate: [authGuard] },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'shipments', component: Shipments},
 

@@ -6,6 +6,7 @@ export interface NotificationResponse {
   type: string;
   rawType?: string;
   relatedProductId?: number;
+  relatedSaleId?: number;
   publishAt?: string;
   createdAt: string;
   isRead: boolean;
@@ -19,5 +20,6 @@ export interface NotificationPayload {
   icon?: string;
   type: string;
   relatedProductId?: number | null;
+  relatedSaleId?: number | null;
   publishAt?: string | null;
 }
