@@ -8,98 +8,107 @@
 
       <form class="register-form" [formGroup]="fg" (ngSubmit)="onSubmit()">
         <label class="form-label" for="storeName">Nombre de la tienda</label>
-        <input
-          id="storeName"
-          class="form-input"
-          type="text"
-          formControlName="storeName"
-          [class.is-invalid]="showErrors('storeName')"
-          placeholder="Ej. Mi Tienda Increible"
-        />
+        <input id="storeName" class="form-input" type="text" formControlName="storeName"
+          [class.is-invalid]="showErrors('storeName')" placeholder="Ej. Mi Tienda Increible" />
         @if (showErrors('storeName')) {
-          <div class="form-error">
-            @if (hasError('storeName', 'required')) {
-              <span>El nombre de la tienda es obligatorio.</span>
-            }
-            @if (hasError('storeName', 'minlength')) {
-              <span>Debe tener al menos 3 caracteres.</span>
-            }
-            @if (hasError('storeName', 'maxlength')) {
-              <span>No puede superar los 15 caracteres.</span>
-            }
-          </div>
+        <div class="form-error">
+          @if (hasError('storeName', 'required')) {
+          <span>El nombre de la tienda es obligatorio.</span>
+          }
+          @if (hasError('storeName', 'minlength')) {
+          <span>Debe tener al menos 3 caracteres.</span>
+          }
+          @if (hasError('storeName', 'maxlength')) {
+          <span>No puede superar los 15 caracteres.</span>
+          }
+        </div>
         }
 
         <div class="name-row">
           <div class="field">
             <label class="form-label" for="address">Direccion</label>
-            <input
-              id="address"
-              class="form-input"
-              type="text"
-              formControlName="address"
-              [class.is-invalid]="showErrors('address')"
-              placeholder="Av. Siempre Viva 123"
-            />
+            <input id="address" class="form-input" type="text" formControlName="address"
+              [class.is-invalid]="showErrors('address')" placeholder="Av. Siempre Viva 123" />
             @if (showErrors('address')) {
-              <div class="form-error">
-                @if (hasError('address', 'required')) {
-                  <span>La direccion es obligatoria.</span>
-                }
-                @if (hasError('address', 'maxlength')) {
-                  <span>No puede superar los 100 caracteres.</span>
-                }
-              </div>
+            <div class="form-error">
+              @if (hasError('address', 'required')) {
+              <span>La direccion es obligatoria.</span>
+              }
+              @if (hasError('address', 'maxlength')) {
+              <span>No puede superar los 100 caracteres.</span>
+              }
+            </div>
             }
           </div>
           <div class="field">
             <label class="form-label" for="city">Ciudad</label>
-            <input
-              id="city"
-              class="form-input"
-              type="text"
-              formControlName="city"
-              [class.is-invalid]="showErrors('city')"
-              placeholder="Springfield"
-            />
+            <input id="city" class="form-input" type="text" formControlName="city"
+              [class.is-invalid]="showErrors('city')" placeholder="Springfield" />
             @if (showErrors('city')) {
-              <div class="form-error">
-                @if (hasError('city', 'required')) {
-                  <span>La ciudad es obligatoria.</span>
-                }
-                @if (hasError('city', 'minlength')) {
-                  <span>Debe tener al menos 3 caracteres.</span>
-                }
-                @if (hasError('city', 'maxlength')) {
-                  <span>No puede superar los 100 caracteres.</span>
-                }
-              </div>
+            <div class="form-error">
+              @if (hasError('city', 'required')) {
+              <span>La ciudad es obligatoria.</span>
+              }
+              @if (hasError('city', 'minlength')) {
+              <span>Debe tener al menos 3 caracteres.</span>
+              }
+              @if (hasError('city', 'maxlength')) {
+              <span>No puede superar los 100 caracteres.</span>
+              }
+            </div>
+            }
+          </div>
+          <div class="field">
+            <label class="form-label" for="postalCode">Codigo Postal</label>
+            <input id="postalCode" class="form-input" type="text" formControlName="postalCode"
+              [class.is-invalid]="showErrors('postalCode')" placeholder="1234" />
+            @if (showErrors('postalCode')) {
+            <div class="form-error">
+              @if (hasError('postalCode', 'required')) {
+              <span>El codigo postal es obligatorio.</span>
+              }
+              @if (hasError('postalCode', 'maxlength')) {
+              <span>No puede superar los 20 caracteres.</span>
+              }
+            </div>
             }
           </div>
         </div>
 
-        <label class="form-label" for="phone">Telefono</label>
-        <input
-          id="phone"
-          class="form-input"
-          type="tel"
-          formControlName="phone"
-          [class.is-invalid]="showErrors('phone')"
-          autocomplete="tel"
-          placeholder="+54 9 11 1234-5678"
-        />
-        @if (showErrors('phone')) {
-          <div class="form-error">
-            @if (hasError('phone', 'required')) {
-              <span>El telefono es obligatorio.</span>
-            }
-            @if (hasError('phone', 'minlength')) {
-              <span>Debe tener al menos 3 caracteres.</span>
-            }
-            @if (hasError('phone', 'maxlength')) {
-              <span>No puede superar los 20 caracteres.</span>
-            }
+        <h3 class="form-title form-title--compact">Costos de envio</h3>
+        <div class="name-row">
+          <div class="field">
+            <label class="form-label" for="shippingCostSmall">Pequeño (<= 4)</label>
+                <input id="shippingCostSmall" class="form-input" type="number" formControlName="shippingCostSmall"
+                  min="0" placeholder="0.00" />
           </div>
+          <div class="field">
+            <label class="form-label" for="shippingCostMedium">Mediano (5-6)</label>
+            <input id="shippingCostMedium" class="form-input" type="number" formControlName="shippingCostMedium" min="0"
+              placeholder="0.00" />
+          </div>
+          <div class="field">
+            <label class="form-label" for="shippingCostLarge">Grande (> 6)</label>
+            <input id="shippingCostLarge" class="form-input" type="number" formControlName="shippingCostLarge" min="0"
+              placeholder="0.00" />
+          </div>
+        </div>
+
+        <label class="form-label" for="phone">Telefono</label>
+        <input id="phone" class="form-input" type="tel" formControlName="phone" [class.is-invalid]="showErrors('phone')"
+          autocomplete="tel" placeholder="+54 9 11 1234-5678" />
+        @if (showErrors('phone')) {
+        <div class="form-error">
+          @if (hasError('phone', 'required')) {
+          <span>El telefono es obligatorio.</span>
+          }
+          @if (hasError('phone', 'minlength')) {
+          <span>Debe tener al menos 3 caracteres.</span>
+          }
+          @if (hasError('phone', 'maxlength')) {
+          <span>No puede superar los 20 caracteres.</span>
+          }
+        </div>
         }
 
         <h3 class="form-title form-title--compact">Redes sociales (opcional)</h3>
@@ -107,75 +116,57 @@
         <div class="meta-row">
           <div class="field">
             <label class="form-label" for="facebook">Facebook</label>
-            <input
-              id="facebook"
-              class="form-input"
-              type="text"
-              formControlName="facebook"
-              [class.is-invalid]="showErrors('facebook')"
-              placeholder="ej. /mitiendaincreible"
-            />
+            <input id="facebook" class="form-input" type="text" formControlName="facebook"
+              [class.is-invalid]="showErrors('facebook')" placeholder="ej. /mitiendaincreible" />
             @if (showErrors('facebook')) {
-              <div class="form-error">
-                @if (hasError('facebook', 'required')) {
-                  <span>El enlace de Facebook es obligatorio.</span>
-                }
-                @if (hasError('facebook', 'minlength')) {
-                  <span>Debe tener al menos 3 caracteres.</span>
-                }
-                @if (hasError('facebook', 'maxlength')) {
-                  <span>No puede superar los 100 caracteres.</span>
-                }
-              </div>
+            <div class="form-error">
+              @if (hasError('facebook', 'required')) {
+              <span>El enlace de Facebook es obligatorio.</span>
+              }
+              @if (hasError('facebook', 'minlength')) {
+              <span>Debe tener al menos 3 caracteres.</span>
+              }
+              @if (hasError('facebook', 'maxlength')) {
+              <span>No puede superar los 100 caracteres.</span>
+              }
+            </div>
             }
           </div>
           <div class="field">
             <label class="form-label" for="instagram">Instagram</label>
-            <input
-              id="instagram"
-              class="form-input"
-              type="text"
-              formControlName="instagram"
-              [class.is-invalid]="showErrors('instagram')"
-              placeholder="ej. @mitienda"
-            />
+            <input id="instagram" class="form-input" type="text" formControlName="instagram"
+              [class.is-invalid]="showErrors('instagram')" placeholder="ej. @mitienda" />
             @if (showErrors('instagram')) {
-              <div class="form-error">
-                @if (hasError('instagram', 'required')) {
-                  <span>El usuario de Instagram es obligatorio.</span>
-                }
-                @if (hasError('instagram', 'minlength')) {
-                  <span>Debe tener al menos 3 caracteres.</span>
-                }
-                @if (hasError('instagram', 'maxlength')) {
-                  <span>No puede superar los 100 caracteres.</span>
-                }
-              </div>
+            <div class="form-error">
+              @if (hasError('instagram', 'required')) {
+              <span>El usuario de Instagram es obligatorio.</span>
+              }
+              @if (hasError('instagram', 'minlength')) {
+              <span>Debe tener al menos 3 caracteres.</span>
+              }
+              @if (hasError('instagram', 'maxlength')) {
+              <span>No puede superar los 100 caracteres.</span>
+              }
+            </div>
             }
           </div>
         </div>
 
         <label class="form-label" for="twitter">Twitter / X</label>
-        <input
-          id="twitter"
-          class="form-input"
-          type="text"
-          formControlName="twitter"
-          [class.is-invalid]="showErrors('twitter')"
-          placeholder="ej. @mitienda"
-        />
+        <input id="twitter" class="form-input" type="text" formControlName="twitter"
+          [class.is-invalid]="showErrors('twitter')" placeholder="ej. @mitienda" />
         @if (showErrors('twitter')) {
-          <div class="form-error">
-            @if (hasError('twitter', 'required')) {
-              <span>El usuario de Twitter/X es obligatorio.</span>
-            }
-            @if (hasError('twitter', 'minlength')) {
-              <span>Debe tener al menos 3 caracteres.</span>
-            }
-            @if (hasError('twitter', 'maxlength')) {
-              <span>No puede superar los 100 caracteres.</span>
-            }
-          </div>
+        <div class="form-error">
+          @if (hasError('twitter', 'required')) {
+          <span>El usuario de Twitter/X es obligatorio.</span>
+          }
+          @if (hasError('twitter', 'minlength')) {
+          <span>Debe tener al menos 3 caracteres.</span>
+          }
+          @if (hasError('twitter', 'maxlength')) {
+          <span>No puede superar los 100 caracteres.</span>
+          }
+        </div>
         }
 
         <div class="button-group">

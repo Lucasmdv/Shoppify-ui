@@ -4,14 +4,14 @@
       @if (store) {
       <p class="footer-info">
         (C) 2025-{{ getCurrYear() }} <strong>{{store.storeName}} S.R.L.</strong><br />
-        {{ store.address }}
+        {{ store.address }} @if(store.postalCode){, {{store.postalCode}}}
       </p>
       }
 
       <nav class="footer-links" aria-label="Enlaces legales y de contacto">
 
         @if (store?.phone) {
-        <a href="https://wa.me/{{store?.phone}}" target="_blank" rel="noopener noreferrer" aria-label="Contacto">
+        <a href="https://wa.me/{{store!.phone}}" target="_blank" rel="noopener noreferrer" aria-label="Contacto">
           Contacto
         </a>
         }

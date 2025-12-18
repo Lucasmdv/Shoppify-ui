@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
 })
 export class Footer implements OnInit {
 
-  store!: Store
+  store?: Store
 
 
   constructor(private storeService:StoreService){
@@ -29,9 +29,9 @@ export class Footer implements OnInit {
     })
   }
 
- getCurrYear() {
-  return new Date().getFullYear();
-}
+  getCurrYear() {
+    return new Date().getFullYear();
+  }
 
 
 

@@ -5,10 +5,14 @@ export interface Store {
   storeName: string;
   address: string;
   city: string;
-  phone:string
-  twitter: string
-  facebook:string
-  instagram:string
-  youtube:string //Implementar en backend
-  homeCarousel?:Carouselitem[]
+  postalCode: string;
+  phone: string;
+  twitter: string;
+  facebook: string;
+  instagram: string;
+  youtube: string; //Implementar en backend
+  homeCarousel?: Carouselitem[];
+  shippingCostSmall?: number;
+  shippingCostMedium?: number;
+  shippingCostLarge?: number;
 }
