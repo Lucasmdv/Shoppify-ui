@@ -1,5 +1,6 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { Capacitor } from '@capacitor/core';
+import { App as CapacitorApp } from '@capacitor/app';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { appConfig } from './app/app.config';
 import { App } from './app/app';
@@ -21,7 +22,22 @@ const configureStatusBar = async () => {
   }
 };
 
+const registerBackButtonHandler = () => {
+  if (Capacitor.getPlatform() !== 'android' || !Capacitor.isPluginAvailable('App')) {
+    return;
+  }
+
+  CapacitorApp.addListener('backButton', ({ canGoBack }) => {
+    if (canGoBack) {
+      window.history.back();
+    } else {
+      CapacitorApp.exitApp();
+    }
+  });
+};
+
 void configureStatusBar();
+registerBackButtonHandler();
 
 bootstrapApplication(App, appConfig)
   .catch((err) => console.error(err));
