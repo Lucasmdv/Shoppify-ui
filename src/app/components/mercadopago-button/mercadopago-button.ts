@@ -5,6 +5,7 @@ import { CartService } from '../../services/cart-service';
 import { AuthService } from '../../services/auth-service';
 import { MercadoPagoService } from '../../services/mercado-pago-service';
 import { DetailCart } from '../../models/cart/cartResponse';
+import { ShipmentRequest } from '../../models/shipment';
 
 @Component({
   selector: 'app-mercadopago-button',
@@ -27,6 +28,8 @@ export class MercadopagoButton implements OnDestroy {
   private containerRef = viewChild<ElementRef>('walletBrickContainer');
   private brickController: any = null;
 
+  shipment!: ShipmentRequest
+
   ngOnInit() {
     const active = this.cartService.activeTransaction();
     if (active) {
@@ -44,12 +47,31 @@ export class MercadopagoButton implements OnDestroy {
 
     try {
       const items = this.cartItems();
+      const savedData = localStorage.getItem('shipping_data');
+
+      let shipment: ShipmentRequest;
+      if (savedData) {
+        const parsed = JSON.parse(savedData);
+
+        if (parsed.type === 'delivery') {
+          shipment = {
+            pickup: false,
+            ...parsed.form
+          };
+        } else {
+          shipment = { pickup: true };
+        }
+      } else {
+        shipment = { pickup: true };
+      }
+      this.shipment = shipment;
+      
       if (!items || items.length === 0) return;
 
       const user = this.authService.user();
       if (!user?.id) throw new Error('Usuario no logueado');
 
-      const salePayload = this.cartService.prepareSaleRequest(user.id, items);
+      const salePayload = this.cartService.prepareSaleRequest(user.id, items, this.shipment);
 
       console.log('Generando preferencia con payload:', JSON.stringify(salePayload, null, 2));
 

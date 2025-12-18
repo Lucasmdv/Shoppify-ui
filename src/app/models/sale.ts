@@ -1,15 +1,10 @@
+import { Shipment, ShipmentRequest } from "./shipment";
 import { Transaction } from "./transaction";
 
 export interface SaleRequest {
   userId: number;
   transaction: TransactionRequest;
-  shipment?: ShipmentRequest;
-}
-
-export interface ShipmentRequest {
-  pickup: boolean;
-  adress: string;
-  postalCode?: string;
+  shipment?: ShipmentRequest
 }
 
 export interface TransactionRequest {

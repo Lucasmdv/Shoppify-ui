@@ -3,10 +3,12 @@
     border-radius: 20px;
     background: #faf8ff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    max-width: 40rem;
+    min-height: 36rem;
 }
 
 .shipment-card {
-    min-height: 12em;
+    min-height: 260px;
 }
 
 .sale-card {
