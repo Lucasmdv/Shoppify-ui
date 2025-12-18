@@ -114,12 +114,38 @@ export class CartService {
 
     if (detailTransactions.length === 0) return null;
 
+    const shippingDataJson = localStorage.getItem('shipping_data');
+    let shipmentRequest;
+
+    if (shippingDataJson) {
+      const shippingData = JSON.parse(shippingDataJson);
+      const isPickup = shippingData.type === 'pickup';
+      let address = 'Retiro en sucursal';
+      let postalCode = '';
+
+      if (!isPickup && shippingData.form) {
+        const f = shippingData.form;
+        address = `${f.street} ${f.number}, ${f.city}`;
+        if (f.notes) {
+          address += ` (${f.notes})`;
+        }
+        postalCode = f.zip;
+      }
+
+      shipmentRequest = {
+        pickup: isPickup,
+        adress: address,
+        postalCode: postalCode
+      };
+    }
+
     return {
       userId,
       transaction: {
         detailTransactions,
         description: 'Mercado Pago checkout'
-      }
+      },
+      shipment: shipmentRequest
     };
   }
 }

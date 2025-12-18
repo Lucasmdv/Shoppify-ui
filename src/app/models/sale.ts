@@ -3,6 +3,13 @@ import { Transaction } from "./transaction";
 export interface SaleRequest {
   userId: number;
   transaction: TransactionRequest;
+  shipment?: ShipmentRequest;
+}
+
+export interface ShipmentRequest {
+  pickup: boolean;
+  adress: string;
+  postalCode?: string;
 }
 
 export interface TransactionRequest {
