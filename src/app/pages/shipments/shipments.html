@@ -46,8 +46,9 @@
             <app-shipment-wrapper
             [shipment]="shipment"
             [index]="i"
-            [isAdmin]="isAdmin">
-            </app-shipment-wrapper>
+            [isAdmin]="isAdmin"
+            (changeStatus)="getShipments()"
+            ></app-shipment-wrapper>
         }
     }@else {
         <div class="empty-purchases">

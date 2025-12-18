@@ -1,8 +1,10 @@
+import { Shipment, ShipmentRequest } from "./shipment";
 import { Transaction } from "./transaction";
 
 export interface SaleRequest {
   userId: number;
   transaction: TransactionRequest;
+  shipment?: ShipmentRequest
 }
 
 export interface TransactionRequest {
