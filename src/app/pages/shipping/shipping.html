@@ -73,6 +73,13 @@
              <div class="form-group">
                 <label>Indicaciones adicionales (opcional)</label>
                 <textarea formControlName="notes" rows="2" placeholder="Ej: Dejar en portería"></textarea>
+                <h6 [class.over-limit]="shippingForm.get('notes')?.value.length > 100">
+                    {{shippingForm.get('notes')?.value.length}}/100
+                </h6>
+
+                @if(shippingForm.get('notes')?.touched && shippingForm.get('notes')?.invalid) {
+                    <span class="error-msg">Debe tener menos de 100 caracteres</span>
+                } 
             </div>
         </form>
         } @else {

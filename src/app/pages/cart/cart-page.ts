@@ -143,4 +143,6 @@ export class CartPage implements OnInit {
   goToDetailProduct(id?: number) {
     this.router.navigate(["products/details/", id]);
   }
+
+  
 }

@@ -42,14 +42,18 @@
 </div>
 
 <section class="shipments-wrapper">
-  @if (this.shipments.length > 0) {
-  @for (shipment of shipments; let i = $index; track shipment.id;) {
-  <app-shipment-wrapper [shipment]="shipment" [index]="i" [isAdmin]="isAdmin">
-  </app-shipment-wrapper>
-  }
-  }@else {
-  <div class="empty-purchases">
-    <p>No tenés pedidos registrados todavía 😕</p>
-  </div>
-  }
+    @if (this.shipments.length > 0) {
+        @for (shipment of shipments; let i = $index; track shipment.id;) {
+            <app-shipment-wrapper
+            [shipment]="shipment"
+            [index]="i"
+            [isAdmin]="isAdmin"
+            (changeStatus)="getShipments()"
+            ></app-shipment-wrapper>
+        }
+    }@else {
+        <div class="empty-purchases">
+            <p>No tenés pedidos registrados todavía 😕</p>
+        </div>
+    }
 </section>

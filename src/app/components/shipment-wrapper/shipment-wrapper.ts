@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, output } from '@angular/core';
 import { ShipmentCard } from '../shipment-card/shipment-card';
 import { PurchaseCard } from '../purchase-card/purchase-card';
 import { Transaction } from '../../models/transaction';
@@ -20,6 +20,8 @@ export class ShipmentWrapper implements OnInit {
   @Input() index: number = 0;
   @Input() isAdmin: boolean = false;
 
+  changeStatus = output<void>()
+
   saleService = inject(SaleService)
   swal = inject(SwalService)
 
@@ -30,8 +32,11 @@ export class ShipmentWrapper implements OnInit {
   getSale() {
     this.saleService.get(this.shipment.saleId).subscribe({
       next: data => {
-        this.sale = data,
+        this.sale = data
+
+        if (this.sale.transaction) {
           this.sale.transaction.userId = this.sale.userId
+        }
       },
       error: error => this.swal.error("Ocurrio un problema al obtener la venta")
     })

@@ -18,5 +18,4 @@ export class ShipmentService extends BaseService<Shipment>{
   updateStatus(status: string, id: number) {
     return this.http.patch<UpdateShipmentRequest>(`${this.API}/${this.endpoint}/${id}`, {status: status})
   }
-
 }
