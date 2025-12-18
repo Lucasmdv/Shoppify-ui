@@ -1,0 +1,101 @@
+<div class="shipping-container">
+    <app-back-button></app-back-button>
+    <div class="shipping-header">
+        <h2>¿Cómo quieres recibir tu compra?</h2>
+        <p>Elige tu opción de preferencia</p>
+    </div>
+
+    <div class="options-grid">
+        <div class="option-card" [class.selected]="deliveryType() === 'delivery'"
+            (click)="setDeliveryType('delivery')">
+            <div class="radio-indicator"></div>
+            <div class="option-content">
+                <span class="icon">🚚</span>
+                <div class="text">
+                    <h3>Envío a domicilio</h3>
+                    <p>Recibe tu pedido en la puerta de tu casa</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="option-card" [class.selected]="deliveryType() === 'pickup'"
+            (click)="setDeliveryType('pickup')">
+            <div class="radio-indicator"></div>
+            <div class="option-content">
+                <span class="icon">🏪</span>
+                <div class="text">
+                    <h3>Retiro en local</h3>
+                    <p>Pasa a buscarlo por nuestra sucursal</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="details-section">
+        @if (deliveryType() === 'delivery') {
+        <form [formGroup]="shippingForm" class="shipping-form swing-in-top-fwd">
+            <h3>Ingresa tu dirección</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Calle</label>
+                    <input type="text" formControlName="street" placeholder="Ej: Av. Principal">
+                    @if (shippingForm.get('street')?.touched && shippingForm.get('street')?.invalid) {
+                        <span class="error-msg">Este campo es requerido</span>
+                    }
+                </div>
+                <div class="form-group small">
+                    <label>Número</label>
+                    <input type="text" formControlName="number" placeholder="1234">
+                    @if (shippingForm.get('number')?.touched && shippingForm.get('number')?.invalid) {
+                        <span class="error-msg">Requerido</span>
+                    }
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Ciudad</label>
+                    <input type="text" formControlName="city" placeholder="Tu ciudad">
+                    @if (shippingForm.get('city')?.touched && shippingForm.get('city')?.invalid) {
+                        <span class="error-msg">Requerido</span>
+                    }
+                </div>
+                <div class="form-group small">
+                    <label>CP</label>
+                    <input type="text" formControlName="zip" placeholder="CP">
+                    @if (shippingForm.get('zip')?.touched && shippingForm.get('zip')?.invalid) {
+                        <span class="error-msg">Requerido</span>
+                    }
+                </div>
+            </div>
+
+             <div class="form-group">
+                <label>Indicaciones adicionales (opcional)</label>
+                <textarea formControlName="notes" rows="2" placeholder="Ej: Dejar en portería"></textarea>
+            </div>
+        </form>
+        } @else {
+        <div class="pickup-info swing-in-top-fwd">
+            <div class="map-placeholder">
+                📍
+            </div>
+            <div class="store-details">
+                <h3>Nuestra Sucursal</h3>
+                <p class="address">{{ storeAddress() }}</p>
+                <div class="info-badges">
+                    <span class="badge">Gratis</span>
+                </div>
+                <p class="note">Te avisaremos cuando tu pedido esté listo para retirar.</p>
+            </div>
+        </div>
+        }
+    </div>
+
+    <div class="actions">
+        <button class="continue-btn" (click)="onSubmit()">
+            Continuar
+            <span class="arrow">→</span>
+        </button>
+    </div>
+</div>

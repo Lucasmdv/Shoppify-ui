@@ -264,7 +264,7 @@
   background-color: #fafafa;
   transition: all 0.2s;
   font-family: inherit;
-  resize: vertical; /* For textarea */
+  resize: vertical; 
 }
 
 .form-group input:not([matStartDate]):not([matEndDate]):focus, 
@@ -312,7 +312,7 @@
 .img-container img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Contain to show full banner */
+  object-fit: contain;
 }
 
 .no-img-placeholder {
@@ -390,11 +390,11 @@ mat-form-field.w-100 {
   background-color: #fafafa !important;
   border-radius: 8px !important;
   border: 1px solid #ddd !important;
-  padding: 0 16px !important; /* Fix "too to the side" */
+  padding: 0 16px !important; 
   align-items: center !important;
 }
 
-}
+
 ::ng-deep .mat-mdc-notched-outline {
   display: none !important;
 }

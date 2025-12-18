@@ -28,7 +28,9 @@ import { Shipments } from './pages/shipments/shipments';
 import { Checkout } from './pages/checkout/checkout';
 import { ProductsFileForm } from './pages/products-file-form/products-file-form.component';
 import { Notification } from './pages/notification/notification';
+
 import { PurchaseDetail } from './pages/purchase-detail/purchase-detail';
+import { ShippingPage } from './pages/shipping/shipping';
 
 export const routes: Routes = [
   {
@@ -91,6 +93,9 @@ export const routes: Routes = [
   { path: 'cart/checkout',   component: Auth,
     canActivate: [authGuard],
     children: [{ path: '', component: Checkout }]},
+  { path: 'cart/shipping', component: Auth,
+      canActivate: [authGuard],
+      children: [{ path: '', component: ShippingPage }]},
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 
 ];

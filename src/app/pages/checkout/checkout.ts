@@ -24,8 +24,9 @@ export class Checkout {
   ngOnInit(): void {
     this.cService.getCart(this.aService.user()!.id!).subscribe({
       next: (cart) => {
-        this.items = cart.items;
-        this.total = cart.total;
+        const selectedIds = this.cService.selected();
+        this.items = cart.items.filter(item => selectedIds.has(item.id!));
+        this.total = this.items.reduce((acc, item) => acc + (item.subtotal || 0), 0);
       },
       error: (err) => {
         console.error(err);

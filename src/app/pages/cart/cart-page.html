@@ -89,7 +89,7 @@
         <span class="total-amount">{{ total | currency }}</span>
       </div>
 
-      <button (click)="router.navigate(['/cart/checkout'])" [disabled]="cService.selected().size === 0" class="checkout-btn">
+      <button (click)="router.navigate(['/cart/shipping'])" [disabled]="cService.selected().size === 0" class="checkout-btn">
         Continuar compra
       </button>
     </aside>
