@@ -157,4 +157,9 @@ export class PurchaseCard implements OnInit {
     })
     return null;
   }
+  continuePayment() {
+    if (this.purchase.paymentLink) {
+      window.open(this.purchase.paymentLink, '_blank');
+    }
+  }
 }
