@@ -13,6 +13,7 @@ export interface Transaction {
   storeName: string
   detailTransactions: DetailTransaction[]
   paymentDetail?: PaymentDetail
+  paymentLink?: string
 }
 
 export enum PaymentStatus {

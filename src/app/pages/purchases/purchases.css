@@ -1,7 +1,7 @@
 .purchases-container {
-  max-width: 60vw;
+  max-width: 80vw;
   margin: 40px auto;
-  padding: 20px;
+  padding: 20px 50px;
   background-color: var(--bg-card);
   border-radius: 16px;
   box-shadow: 0 4px 7px #95a6f0;

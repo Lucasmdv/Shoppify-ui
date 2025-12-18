@@ -5,10 +5,15 @@ export interface Shipment {
     endDate: Date
     saleId: number
     pickup: boolean
-    adress: string
+    street: string
+    number: number
+    city: string
+    zip: number
+    notes: string
 }
 
 export enum Status {
+    PENDING = 'PENDING',
     PROCESSING = 'PROCESSING',
     SHIPPED = 'SHIPPED',
     DELIVERED = 'DELIVERED',
@@ -18,7 +23,11 @@ export enum Status {
 
 export interface ShipmentRequest {
     pickup: boolean
-    adress: string
+    street?: string
+    number?: number
+    city?: string
+    zip?: number
+    notes?: string
 }
 
 export interface UpdateShipmentRequest {

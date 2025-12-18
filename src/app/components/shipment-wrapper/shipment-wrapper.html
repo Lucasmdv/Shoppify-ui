@@ -4,13 +4,14 @@
     @if (shipment) {
       <app-shipment-card
         [shipment]="shipment"
-        [isAdmin]="isAdmin">
+        [isAdmin]="isAdmin"
+        (changeStatus)="this.changeStatus.emit()">
       </app-shipment-card>
     }
   </div>
 
     <div class="sale-card">
-      @if (sale.transaction) {
+      @if (sale?.transaction) {
         <app-purchase-card
             [purchase]="sale.transaction"
             [i]="index"

@@ -5,10 +5,11 @@ import { Store } from '../../models/store';
 import Swal from 'sweetalert2';
 import { RouterLink } from "@angular/router";
 import { SwalService } from '../../services/swal-service';
+import { BackButtonComponent } from '../back-button/back-button';
 
 @Component({
   selector: 'app-store-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, BackButtonComponent],
   templateUrl: './store-form.html',
   styleUrl: './store-form.css'
 })

@@ -6,6 +6,7 @@ import { SaleRequest } from '../models/sale';
 import { tap } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 import { TransactionService } from './transaction-service';
+import { ShipmentRequest } from '../models/shipment';
 
 @Injectable({
   providedIn: 'root'
@@ -102,7 +103,7 @@ export class CartService {
     );
   }
 
-  prepareSaleRequest(userId: number, items: DetailCart[]): SaleRequest | null {
+  prepareSaleRequest(userId: number, items: DetailCart[], shipment: ShipmentRequest): SaleRequest | null {
     if (!items || items.length === 0) return null;
 
     const detailTransactions = items
@@ -145,7 +146,7 @@ export class CartService {
         detailTransactions,
         description: 'Mercado Pago checkout'
       },
-      shipment: shipmentRequest
+      shipment: shipment
     };
   }
 }

@@ -27,7 +27,7 @@ export class ShippingPage implements OnInit {
       number: ['', [Validators.required]],
       city: ['', [Validators.required]],
       zip: ['', [Validators.required]],
-      notes: ['']
+      notes: ['', [Validators.maxLength(100)]]
     });
   }
 

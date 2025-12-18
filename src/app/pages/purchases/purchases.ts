@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 import { Transaction } from '../../models/transaction';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SaleService } from '../../services/sale-service';
 import { SalesParams } from '../../models/filters/salesParams';
 import { FormsModule } from "@angular/forms";
@@ -20,6 +21,8 @@ export class Purchases implements OnInit {
   saleService = inject(SaleService)
   aService = inject(AuthService)
   uService = inject(UserService)
+  route = inject(ActivatedRoute)
+  router = inject(Router)
   user = this.aService.user
   isAdmin = this.aService.permits().includes('ADMIN')
 
@@ -46,6 +49,14 @@ export class Purchases implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params: any) => {
+      if (params['collection_status'] || params['status'] || params['preference_id']) {
+        this.router.navigate([], {
+          queryParams: {},
+          replaceUrl: true
+        });
+      }
+    });
     this.loadTransactions()
   }
 
@@ -97,7 +108,8 @@ export class Purchases implements OnInit {
           userId: s.transaction?.userId || s.userId,
           detailTransactions: s.transaction?.detailTransactions || [],
           paymentDetail: s.transaction?.paymentDetail,
-          paymentStatus: s.transaction?.paymentStatus
+          paymentStatus: s.transaction?.paymentStatus,
+          paymentLink: s.transaction?.paymentLink
         })))
         console.log(this.purchases())
         this.totalPages = data.page?.totalPages || 1

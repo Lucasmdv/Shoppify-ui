@@ -92,7 +92,7 @@ export class Profile implements OnInit {
     this.router.navigate(["/help"])
   }
 
-  verMas() {
-    this.router.navigate([""]) //TODO cuando agreguemos wishlist
+  verFavoritos() {
+    this.router.navigate(["/favorites"])
   }
 }
