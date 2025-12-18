@@ -32,6 +32,7 @@ export class Purchases implements OnInit {
   purchasesXPage = 10
   currentPage = 0
   totalPages = 1
+  filtersOpen = true
 
   filters: SalesParams = {
     startDate: '',
@@ -46,6 +47,10 @@ export class Purchases implements OnInit {
 
   ngOnInit(): void {
     this.loadTransactions()
+  }
+
+  toggleFilters(): void {
+    this.filtersOpen = !this.filtersOpen
   }
 
   toggleAdminView(): void {

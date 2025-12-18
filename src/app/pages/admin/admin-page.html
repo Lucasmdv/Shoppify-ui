@@ -1,16 +1,17 @@
 <div class="admin-wrapper">
+  <app-back-button></app-back-button>
   <section class="admin-section admin-hero">
     <div class="hero-copy">
       <span class="hero-chip">Panel de control</span>
-      
+
       <h1>Impulsa tu tienda con decisiones inteligentes</h1>
       <p>
         Supervisa las metricas clave, coordina a tu equipo y mantene tu inventario siempre listo.
         Todo lo que necesitas para administrar Shoppify con confianza esta aqui.
       </p>
-    
+
       <div class="hero-actions">
-        
+
         <a class="btn btn-primary" routerLink="/products">
           <span class="btn-icon" aria-hidden="true">🛒</span>
           <span class="btn-content">
@@ -25,9 +26,9 @@
             <small>Edita y crea nuevas categorias</small>
           </span>
         </a>
-     
 
-            <a class="btn btn-primary" routerLink="edit/store">
+
+        <a class="btn btn-primary" routerLink="edit/store">
           <span class="btn-icon" aria-hidden="true">🏪</span>
           <span class="btn-content">
             <span class="btn-label">Gestionar tienda</span>
@@ -35,7 +36,7 @@
           </span>
         </a>
 
-                <a class="btn btn-primary" routerLink="edit/notification">
+        <a class="btn btn-primary" routerLink="edit/notification">
           <span class="btn-icon" aria-hidden="true">🔔</span>
           <span class="btn-content">
             <span class="btn-label">Gestionar notificaciones</span>
@@ -66,7 +67,7 @@
       <span class="section-helper">Optimiza tus procesos en segundos</span>
     </div>
     <div class="action-grid">
-      <div (click) = "createProduct()" class="action-card" data-accent="violet">
+      <div (click)="createProduct()" class="action-card" data-accent="violet">
         <div class="action-copy">
           <h3>Nuevo producto</h3>
           <p>Publica un nuevo producto .</p>
@@ -74,7 +75,7 @@
         <span class="action-hint">5 min</span>
       </div>
 
-      <div (click) = "bulkProducts()" class="action-card" data-accent="violet">
+      <div (click)="bulkProducts()" class="action-card" data-accent="violet">
         <div class="action-copy">
           <h3>Importar Productos</h3>
           <p>Importa varios productos desde un archivo csv</p>
@@ -89,9 +90,9 @@
         <span class="action-hint">Promueve ahora</span>
       </div>
 
-      
+
 
     </div>
-  </section> 
-  
+  </section>
+
 </div>

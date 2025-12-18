@@ -113,7 +113,7 @@
                 <label>Vencimiento (Opcional)</label>
                 <div style="display: flex; gap: 16px;">
                   <mat-form-field appearance="outline" style="flex: 1;">
-                    <mat-label>Fecha de Vencimiento</mat-label>
+                    <mat-label></mat-label>
                     <input matInput [matDatepicker]="pickerImmediate" formControlName="immediateExpireDate">
                     <mat-datepicker-toggle matIconSuffix [for]="pickerImmediate"></mat-datepicker-toggle>
                     <mat-datepicker #pickerImmediate></mat-datepicker>
@@ -127,7 +127,7 @@
                 <!-- Expiration Warning -->
                 @if (!fg.get('immediateExpireDate')?.value) {
                   <div class="warning-box">
-                    ⚠️ Sin vencimiento: La notificación permanecerá activa indefinidamente.
+                    Sin vencimiento: La notificación permanecerá activa indefinidamente.
                   </div>
                 }
               </div>

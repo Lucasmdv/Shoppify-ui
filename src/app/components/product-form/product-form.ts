@@ -115,6 +115,10 @@ export class ProductForm implements OnInit {
 
   ngOnInit(): void {
     this.categories = this.createProductService.categories
+    if (!this.product) {
+      this.product = this.createProductService.product
+    }
+
 
     this.form = this.fb.group({
       id: [this.product?.id || ''],
@@ -217,13 +221,14 @@ export class ProductForm implements OnInit {
     if (this.screenSizeService.isScreenSmall()) {
       this.router.navigate(['/category-form'])
     } else {
-    this.createCategoryService.openDialog().afterClosed().subscribe({
-      next: (result) => {
-        if (result) {
-          this.swal.success("La categoría se agregó correctamente!")
-          this.getCategories()
+      this.createCategoryService.openDialog().afterClosed().subscribe({
+        next: (result) => {
+          if (result) {
+            this.swal.success("La categoría se agregó correctamente!")
+            this.getCategories()
+          }
         }
-      }
-    })
-  }}
+      })
+    }
+  }
 }

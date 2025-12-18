@@ -33,6 +33,7 @@ export class Checkout {
         const selectedIds = this.cService.selected();
         this.items = cart.items.filter(item => selectedIds.has(item.id!));
         this.total = this.items.reduce((acc, item) => acc + (item.subtotal || 0), 0);
+        this.fetchStoreAndCalculateShipping();
       },
       error: (err) => {
         console.error(err);
@@ -54,6 +55,15 @@ export class Checkout {
 
   calculateShipping() {
     if (!this.storeConfig) return;
+
+    const shippingDataJson = localStorage.getItem('shipping_data');
+    if (shippingDataJson) {
+      const shippingData = JSON.parse(shippingDataJson);
+      if (shippingData.type === 'pickup') {
+        this.shippingCost = 0;
+        return;
+      }
+    }
 
     const quantity = this.items.reduce((acc, item) => acc + (item.quantity || 0), 0);
 

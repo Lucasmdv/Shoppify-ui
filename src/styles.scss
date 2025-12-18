@@ -12,6 +12,7 @@ html, body {
   margin: 0;
   display: flex;
   flex-direction: column;
+  padding-top: env(safe-area-inset-top);
 }
 
 app-root {
@@ -71,6 +72,16 @@ main, router-outlet {
   --border-section-products: transparent;
   --border-section-categories: transparent;
   --border-section-empty-state: transparent;
+
+  /* Safe-area helpers (iOS notch) */
+  --safe-area-top: env(safe-area-inset-top);
+  --safe-area-bottom: env(safe-area-inset-bottom);
+}
+
+@supports (padding: max(0px)) {
+  body {
+    padding-top: max(env(safe-area-inset-top), 0px);
+  }
 }
 
 .mat-datepicker-content {

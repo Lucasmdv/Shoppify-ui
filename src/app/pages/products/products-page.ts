@@ -189,22 +189,27 @@ export class ProductsPage {
   }
 
   editProduct(product: Product): void {
-    this.dialog.open(ProductFormDialog, {
-      maxWidth: "none",
-      width: '80vw',
-      height: '90vh',
-      data: {
-        product: product,
-        products: this.refinedProducts,
-        categories: this.categories
-      },
-      disableClose: true,
-      panelClass: 'product-dialog-panel'
-    }).afterClosed().subscribe(result => {
-      if (result) {
-        this.renderRefinedProducts(this.currentFilters);
-      }
-    })
+    if (this.screenSizeService.isScreenSmall()) {
+      this.createProductService.setData(this.refinedProducts, this.categories, product);
+      this.router.navigate(['/product-form']);
+    } else {
+      this.dialog.open(ProductFormDialog, {
+        maxWidth: "none",
+        width: '80vw',
+        height: '90vh',
+        data: {
+          product: product,
+          products: this.refinedProducts,
+          categories: this.categories
+        },
+        disableClose: true,
+        panelClass: 'product-dialog-panel'
+      }).afterClosed().subscribe(result => {
+        if (result) {
+          this.renderRefinedProducts(this.currentFilters);
+        }
+      })
+    }
   }
 
 

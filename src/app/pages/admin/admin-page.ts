@@ -7,10 +7,12 @@ import { ProductParams } from '../../models/filters/productParams';
 import { CreateProduct } from '../../services/create-product';
 import { ScreenSizeService } from '../../services/screen-size-service';
 
+import { BackButtonComponent } from '../../components/back-button/back-button';
+
 @Component({
   selector: 'app-admin-page',
   standalone: true,
-  imports: [RouterLink,ChartjsComponent],
+  imports: [RouterLink, ChartjsComponent, BackButtonComponent],
   templateUrl: './admin-page.html',
   styleUrls: ['./admin-page.css'],
   encapsulation: ViewEncapsulation.None
@@ -18,20 +20,20 @@ import { ScreenSizeService } from '../../services/screen-size-service';
 export class AdminPage implements OnInit {
 
   screenSizeService = inject(ScreenSizeService)
-  
+
   constructor(
-  private productService: ProductService,
-  private createProductService: CreateProduct,
-  private router: Router
-  ){}
+    private productService: ProductService,
+    private createProductService: CreateProduct,
+    private router: Router
+  ) { }
 
   data?: ChartData
 
   ngOnInit(): void {
-this.getData()
+    this.getData()
   }
 
-getData() {
+  getData() {
     const params: ProductParams = {
       sort: "soldQuantity,desc",
       page: 0,
@@ -42,7 +44,7 @@ getData() {
 
         const productNames = value.data.map(product => product.name);
         const soldQuantities = value.data.map(product => product.soldQuantity);
-       
+
         this.data = {
           labels: productNames,
           datasets: [
@@ -50,15 +52,15 @@ getData() {
               label: 'Productos más vendidos',
               backgroundColor: '#5f56c2ff',
               borderColor: '#5f56c2',
-              data: soldQuantities 
+              data: soldQuantities
             }
           ]
         };
 
 
-        
 
-        
+
+
 
       },
     })
