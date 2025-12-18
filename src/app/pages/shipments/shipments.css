@@ -1,22 +1,26 @@
 .shipments-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 20px;
-    justify-content: center;
-    gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+  justify-content: center;
+  gap: 20px;
+}
+
+app-back-button {
+  margin: 20px;
 }
 
 .shipments-wrapper app-shipment-card {
-    flex: 1 1 450px;
+  flex: 1 1 450px;
 }
 
 .filters {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  align-items: flex-end; 
-  justify-content: center; 
-  text-align: center; 
+  align-items: flex-end;
+  justify-content: center;
+  text-align: center;
   padding-top: 1rem;
 }
 
@@ -74,14 +78,14 @@
   gap: 8px;
 }
 
-.filters > * {
-  height: 70px; 
+.filters>* {
+  height: 70px;
   display: flex;
   align-items: center;
 }
 
 .filters label.show-per-page select {
-    transform: translateY(-7px);
+  transform: translateY(-7px);
 }
 
 .pagination {
@@ -118,7 +122,8 @@
   color: #555;
 }
 
-.empty-purchases, .no-results {
+.empty-purchases,
+.no-results {
   text-align: center;
   padding: 40px 0;
   color: #777;
@@ -129,11 +134,11 @@
 }
 
 .action-wrapper {
-  order: 999;        
+  order: 999;
   width: 100%;
   display: flex;
   justify-content: center;
-  gap: 12px;  
+  gap: 12px;
   margin-top: 10px;
 }
 
@@ -168,5 +173,5 @@
   border-radius: 999px;
   cursor: pointer;
   font-weight: 600;
-  
+
 }
