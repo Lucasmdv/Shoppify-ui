@@ -53,8 +53,8 @@ export class Notification implements OnInit {
 
   initForm() {
     this.fg = this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(80)]],
-      message: ['', [Validators.required, Validators.minLength(4)]],
+      title: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(120)]],
+      message: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(500)]],
       type: ['GLOBAL', [Validators.required]],
       deliveryMode: ['immediate'], 
       

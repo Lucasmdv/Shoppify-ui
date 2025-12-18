@@ -520,60 +520,126 @@
     padding: 1rem;
   }
 
+  /* Mobile Cart Item Layout */
   .cart-item {
-    padding: 0.9rem;
-  }
-
-  .quantity-control {
-    width: 100%;
-    justify-content: space-between;
-  }
-}
-
-@media (max-width: 540px) {
-  .cart-container {
-    padding: 0.85rem;
-    margin: 0.5rem;
-  }
-
-  .cart-item {
+    display: grid;
     grid-template-columns: auto 1fr;
     grid-template-areas:
-      "check product"
-      "controls controls"
-      "subtotal subtotal";
-    gap: 0.65rem;
-    padding: 0.85rem;
+      "check body"
+      ". controls"
+      ". subtotal";
+    gap: 12px;
+    padding: 16px;
+    align-items: start;
   }
 
+  /* Checkbox alignment */
+  .select-label {
+    grid-area: check;
+    align-self: start;
+    padding-top: 4px; /* Align with image top */
+  }
+
+  /* Body: Image + Info */
   .item-body {
-    grid-template-columns: 82px minmax(0, 1fr);
-    gap: 0.55rem;
-    align-items: flex-start;
+    grid-area: body;
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 16px;
+    align-items: start;
   }
 
   .item-media {
-    width: 82px;
-    height: 82px;
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
   }
 
+  .item-info {
+    gap: 8px;
+  }
+
+  .item-title {
+    font-size: 0.95rem;
+    line-height: 1.3;
+  }
+
+  /* Price and Remove Button */
   .price-row {
     flex-wrap: wrap;
+    gap: 6px;
   }
 
+  .installment {
+    margin-top: 4px;
+    padding: 0;
+    background: transparent;
+  }
+
+  /* Controls: Quantity */
   .cart-controls {
-    max-width: none;
+    grid-area: controls;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between; /* Spread quantity and stock */
     width: 100%;
-    align-items: flex-start;
-    gap: 0.4rem;
+    max-width: none;
+    border-top: 1px solid #f3f4f6;
+    padding-top: 12px;
+    margin-top: 4px;
   }
 
   .quantity-control {
-    width: 100%;
+    width: auto;
+    background: #fff;
+    border-color: #e5e7eb;
   }
 
+  .quantity-control button {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .quantity-control input {
+    width: 40px;
+  }
+
+  .stock-note {
+    width: auto;
+    text-align: right;
+    font-size: 0.85rem;
+  }
+
+  /* Subtotal */
   .item-subtotal {
-    white-space: normal;
-    justify-self: start;
+    grid-area: subtotal;
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 8px;
+    border-top: 1px dashed #e5e7eb;
+    padding-top: 12px;
+    margin-top: -8px; /* tighter spacing to controls */
+    text-align: right;
+  }
+  
+  .item-subtotal::before {
+    content: "Subtotal:";
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 500;
+  }
+}
+
+@media (max-width: 400px) {
+  /* Really small screens: Stack body image and text? */
+  .item-body {
+    grid-template-columns: 80px 1fr;
+    gap: 12px;
+  }
+  
+  .item-media {
+    width: 80px;
+    height: 80px;
   }
 }

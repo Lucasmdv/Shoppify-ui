@@ -9,7 +9,7 @@
   gap: clamp(0.65rem, 1.2vw, 0.9rem);
   width: 100%;
   height: 100%;
-  min-height: 320px;
+  min-height: auto;
   padding: clamp(1rem, 2vw, 1.4rem);
   border-radius: 1.25rem;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.85) 100%);
@@ -24,11 +24,11 @@
 #card:hover,
 #card:focus-visible {
   transform: translateY(-4px) scale(1.01);
-  /* solo transform */
+
   outline: none;
 }
 
-/* MEDIA */
+
 
 .card-media {
   position: relative;
@@ -47,10 +47,10 @@
   height: 100%;
   object-fit: cover;
   border-radius: inherit;
-  /* recorte en la propia capa de la imagen */
+
 }
 
-/* Out of Stock Styles */
+
 .card-media.is-out-of-stock img {
   filter: grayscale(100%);
   opacity: 0.7;
@@ -72,7 +72,7 @@
   backdrop-filter: blur(4px);
 }
 
-/* BODY */
+
 
 .card-body {
   display: flex;
@@ -105,7 +105,7 @@
   overflow: hidden;
 }
 
-/* FOOTER / PRECIO */
+
 
 .card-footer {
   margin-top: auto;
@@ -181,7 +181,7 @@
   border-radius: 0.75rem;
 }
 
-/* HORIZONTAL VARIANT */
+
 
 #card.is-horizontal {
   flex-direction: row;
@@ -220,39 +220,56 @@
   gap: 0.5rem;
 }
 
-/* Ajustes mínimos responsive, pero mismo estilo base */
-
+/* Adjusted responsive styles */
 @media (max-width: 640px) {
   #card {
-    min-height: 240px;
-    padding: 0.85rem;
+    min-height: auto; 
+    padding: 0.75rem;
     border-radius: 1rem;
   }
 
   .card-media {
-    border-radius: 0.9rem;
+    border-radius: 0.8rem;
     padding-top: 70%;
   }
 
+  .card-body {
+    gap: 0.35rem;
+  }
+
   .product-name {
-    font-size: 0.95rem;
-    min-height: 2.1rem;
+    font-size: 0.9rem;
+    min-height: auto; /* Allow natural height */
+    -webkit-line-clamp: 2;
+    margin-bottom: 0.2rem;
+  }
+  
+  .product-description {
+     display: none; /* Hide description on very small screens to save space */
   }
 
   .price {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
+  }
+  
+  .card-footer {
+     gap: 0.4rem;
   }
 
   .installment {
-    font-size: 0.85rem;
-  }
-
-  .card-footer {
-    gap: 0.5rem;
+    font-size: 0.75rem;
+    white-space: normal; /* Allow wrapping */
+    line-height: 1.3;
   }
 
   .price-row {
     gap: 0.35rem;
+    flex-wrap: wrap; 
+  }
+  
+  .discount-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.45rem;
   }
 }
 
@@ -263,5 +280,12 @@
 
   #card.is-horizontal .card-media {
     flex-basis: auto;
+    width: 100%;
+    height: auto;
+    padding-top: 70%;
+  }
+  
+  #card.is-horizontal .card-media img {
+      position: absolute; /* Revert to absolute for aspect ratio trick */
   }
 }
