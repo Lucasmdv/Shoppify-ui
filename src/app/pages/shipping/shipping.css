@@ -113,6 +113,20 @@
     font-size: 1.25rem;
 }
 
+h6 {
+    margin: 0.25rem 0 0;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #8f8f93;
+    text-align: right;
+    transition: color 0.2s ease;
+}
+
+h6.over-limit {
+    color: #ff5a6d;
+    font-weight: 500;
+}
+
 .form-row {
     display: grid;
     grid-template-columns: 2fr 1fr;
