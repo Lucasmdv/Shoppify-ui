@@ -75,6 +75,25 @@
           </div>
         </div>
 
+        <h3 class="form-title form-title--compact">Costos de envio</h3>
+        <div class="name-row">
+          <div class="field">
+            <label class="form-label" for="shippingCostSmall">Pequeño (<= 4)</label>
+                <input id="shippingCostSmall" class="form-input" type="number" formControlName="shippingCostSmall"
+                  min="0" placeholder="0.00" />
+          </div>
+          <div class="field">
+            <label class="form-label" for="shippingCostMedium">Mediano (5-6)</label>
+            <input id="shippingCostMedium" class="form-input" type="number" formControlName="shippingCostMedium" min="0"
+              placeholder="0.00" />
+          </div>
+          <div class="field">
+            <label class="form-label" for="shippingCostLarge">Grande (> 6)</label>
+            <input id="shippingCostLarge" class="form-input" type="number" formControlName="shippingCostLarge" min="0"
+              placeholder="0.00" />
+          </div>
+        </div>
+
         <label class="form-label" for="phone">Telefono</label>
         <input id="phone" class="form-input" type="tel" formControlName="phone" [class.is-invalid]="showErrors('phone')"
           autocomplete="tel" placeholder="+54 9 11 1234-5678" />

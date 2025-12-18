@@ -53,6 +53,9 @@ export class StoreForm implements OnInit {
       facebook: new FormControl('', [Validators.maxLength(100), Validators.minLength(3)]),
       instagram: new FormControl('', [Validators.maxLength(100), Validators.minLength(3)]),
       twitter: new FormControl('', [Validators.maxLength(100), Validators.minLength(3)]),
+      shippingCostSmall: new FormControl(0, [Validators.min(0)]),
+      shippingCostMedium: new FormControl(0, [Validators.min(0)]),
+      shippingCostLarge: new FormControl(0, [Validators.min(0)]),
     });
   }
 

@@ -12,4 +12,7 @@ export interface Store {
   instagram: string;
   youtube: string; //Implementar en backend
   homeCarousel?: Carouselitem[];
+  shippingCostSmall?: number;
+  shippingCostMedium?: number;
+  shippingCostLarge?: number;
 }

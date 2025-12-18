@@ -1,5 +1,6 @@
 import { Component, inject, viewChild } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
+import { StoreService } from '../../services/store-service';
 import { CartService } from '../../services/cart-service';
 import Swal from 'sweetalert2';
 import { DetailCart } from '../../models/cart/cartResponse';
@@ -21,11 +22,17 @@ export class Checkout {
   total: number = 0;
   items: DetailCart[] = [];
 
+  private storeService = inject(StoreService);
+
+  shippingCost: number = 0;
+  storeConfig: any = null;
+
   ngOnInit(): void {
     this.cService.getCart(this.aService.user()!.id!).subscribe({
       next: (cart) => {
         this.items = cart.items;
         this.total = cart.total;
+        this.fetchStoreAndCalculateShipping();
       },
       error: (err) => {
         console.error(err);
@@ -36,6 +43,31 @@ export class Checkout {
         });
       },
     });
+  }
+
+  fetchStoreAndCalculateShipping() {
+    this.storeService.getStore().subscribe(store => {
+      this.storeConfig = store;
+      this.calculateShipping();
+    });
+  }
+
+  calculateShipping() {
+    if (!this.storeConfig) return;
+
+    const quantity = this.items.reduce((acc, item) => acc + (item.quantity || 0), 0);
+
+    if (quantity <= 4) {
+      this.shippingCost = this.storeConfig.shippingCostSmall || 0;
+    } else if (quantity <= 6) {
+      this.shippingCost = this.storeConfig.shippingCostMedium || 0;
+    } else {
+      this.shippingCost = this.storeConfig.shippingCostLarge || 0;
+    }
+  }
+
+  get finalTotal(): number {
+    return this.total + this.shippingCost;
   }
 
   checkAndCancelTransaction() {
