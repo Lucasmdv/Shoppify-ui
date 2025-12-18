@@ -85,6 +85,10 @@ export class CategoriesPage implements OnInit {
   }
 
   editCategory(category: Category): void {
+    if (this.screenSizeService.isScreenSmall()) {
+      this.createCategoryService.setData(this.categories, category);
+      this.router.navigate(['/category-form']);
+    } else {
     this.dialog.open(CategoryFormDialog, {
       maxWidth: "none",
       width: '80vw',
@@ -97,8 +101,9 @@ export class CategoriesPage implements OnInit {
       if (result) {
         this.swal.success("La categoría se editó correctamente!")
         this.renderCategoriesWithFilters(this.currentFilters)
-      }
-    })
+        }
+      })
+    }
   }
 
 

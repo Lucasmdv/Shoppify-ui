@@ -6,6 +6,7 @@ import { SwalService } from '../../services/swal-service';
 import { CommonModule } from '@angular/common';
 import { CategoryCard } from '../category-card/category-card';
 import { MatDialogRef } from '@angular/material/dialog';
+import { CreateCategory } from '../../services/create-category';
 
 @Component({
   selector: 'app-category-form',
@@ -23,6 +24,7 @@ export class CategoryForm implements OnInit {
     private fb: FormBuilder,
     private categoryService: CategoryService,
     private swal: SwalService,
+    private createCategoryService: CreateCategory,
     @Optional() private dialogRef?: MatDialogRef<any>
   ) {}
 
@@ -49,6 +51,10 @@ export class CategoryForm implements OnInit {
   }
 
   ngOnInit(): void {
+    if (!this.category) {
+      this.category = this.createCategoryService.category
+    }
+
     this.form = this.fb.group({
       id: [this.category?.id || ''], 
       name: [this.category?.name || '', [Validators.required, Validators.pattern(/\S/), Validators.minLength(2), Validators.maxLength(50)]],

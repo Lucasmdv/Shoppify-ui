@@ -248,7 +248,7 @@ li:last-child {
   border: 1px solid rgba(91, 77, 238, 0.06);
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1024px) {
   .purchases-container {
     max-width: 100vw;
     /* ocupa todo el ancho */

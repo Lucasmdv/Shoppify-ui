@@ -10,6 +10,7 @@ import { Category } from '../models/category';
 export class CreateProduct {
   products: Product[] = []
   categories: Category[] = []
+  product: Product | undefined
 
   constructor(
     private dialog: MatDialog,
@@ -17,9 +18,10 @@ export class CreateProduct {
     dialog
   }
 
-  setData(products: Product[], categories: Category[]) {
+  setData(products: Product[], categories: Category[], product?: Product) {
     this.products = products
     this.categories = categories
+    this.product = product
   }
 
   openDialog(refinedProducts: any[], categories: any[], currentFilters: any, renderRefinedProducts: (filters: any) => void) {
