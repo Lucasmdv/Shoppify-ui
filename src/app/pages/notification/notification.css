@@ -20,6 +20,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
+  gap: 12px;
 }
 
 .page-header h1 {
@@ -58,6 +59,7 @@
   grid-template-columns: 350px 1fr;
   gap: 32px;
   align-items: start;
+  width: 100%;
 }
 
 /* --- Left Column: List --- */
@@ -113,6 +115,7 @@
   cursor: pointer;
   transition: all 0.2s;
   box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  min-height: 72px;
 }
 
 .notification-card:hover {
@@ -155,6 +158,10 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
 }
 
 .card-link {
@@ -328,11 +335,15 @@
   margin-top: 16px;
   padding-top: 24px;
   border-top: 1px solid #eee;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .right-actions {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .btn-cancel, .btn-save, .btn-delete {
@@ -377,6 +388,65 @@
   }
   .editor-card {
     position: static;
+  }
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .btn-back {
+    width: 100%;
+    text-align: center;
+  }
+  .notification-manager {
+    padding: 16px 18px;
+  }
+  .notification-card {
+    padding: 12px 10px;
+  }
+  .section-local-header {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .section-local-header h2 {
+    font-size: 16px;
+  }
+  .btn-add {
+    width: 100%;
+    justify-content: center;
+    display: inline-flex;
+  }
+  .editor-card {
+    padding: 20px 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-header h1 {
+    font-size: 22px;
+  }
+  .notification-manager {
+    padding: 14px;
+  }
+  .card-thumb {
+    width: 48px;
+    height: 36px;
+  }
+  .time-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .right-actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+  .btn-cancel,
+  .btn-save,
+  .btn-delete {
+    width: 100%;
+    text-align: center;
   }
 }
 

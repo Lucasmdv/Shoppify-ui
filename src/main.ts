@@ -27,7 +27,7 @@ const registerBackButtonHandler = () => {
     return;
   }
 
-  CapacitorApp.addListener('backButton', ({ canGoBack }) => {
+  CapacitorApp.addListener('backButton', ({ canGoBack }: { canGoBack: boolean }) => {
     if (canGoBack) {
       window.history.back();
     } else {
