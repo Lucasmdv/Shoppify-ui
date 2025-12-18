@@ -1,176 +1,187 @@
-<section class="carousel-editor">
-    <div class="editor-shell">
-        <header class="editor-header">
-            <div class="header-copy">
-                <p class="eyebrow">Gestion de notificaciones</p>
-                <h1>Diseña y programa los eventos de tu tienda</h1>
-                <p>
-                    Visualiza tus notificaciones y crea nuevas sin perder la estetica de Shoppify.
-                </p>
+<div class="notification-manager">
+  
+  <header class="page-header">
+    <div class="header-content">
+      <h1>Crear Notificación</h1>
+      <p>Envía alertas y mensajes a tus usuarios.</p>
+    </div>
+    <button class="btn-back" (click)="goBack()">Volver al Admin</button>
+  </header>
 
+  <main class="content-grid">
+    
+    <section class="list-section">
+      <div class="section-local-header">
+        <h2>Recientes</h2>
+        <button class="btn-add" (click)="createItem()" [class.active-add]="!selectedItem">
+          + Nueva
+        </button>
+      </div>
+
+      <div class="notification-list">
+        @if (notifications.length === 0) {
+          <div class="empty-state">
+            <p>No hay notificaciones recientes.</p>
+          </div>
+        }
+
+        @for (item of notifications; track item.id) {
+          <div class="notification-card" 
+               (click)="onPreviewSelect(item)"
+               [class.selected]="selectedItem?.id === item.id">
+            
+            <div class="card-thumb" style="display:flex;align-items:center;justify-content:center;font-size:20px;">
+               @if(item.type === 'GLOBAL') { 🌍 } @else { 👤 }
             </div>
-     
-                    <button type="button" class="header-back" (click)="goBack()">Volver</button>
-</header>
+            
+            <div class="card-info">
+              <span class="card-title">
+                {{ item.title }}
+                @switch (getStatus(item)) {
+                  @case ('active') { <span class="badge-status status-active">Activa</span> }
+                  @case ('scheduled') { <span class="badge-status status-scheduled">Programada</span> }
+                  @case ('expired') { <span class="badge-status status-expired">Expirada</span> }
+                }
+              </span>
+              <span class="card-link" style="font-size:11px">{{ item.publishAt | date:'short' }}</span>
+              <span class="card-link" style="color:#aaa">{{ item.message | slice:0:30 }}...</span>
+            </div>
 
-        <div class="editor-grid">
-            <article class="panel preview-panel">
-                <div class="panel-header">
-                   <div class="slides-grid-container">
-                        <div class="slides-grid">
+            <div class="card-arrow">
+              <span class="material-icons">></span>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
 
-                                <button type="button" class="slide-card"
-                                
-                                (click)="createItem()"
-                                 [class.active] = "!selectedItem">
-                                
-                                <div class="thumb create-thumb" aria-hidden="true">
-                                    <span class="plus-icon">+</span>
-                                </div>
-                                
-                            </button>
-
-
-                            @for (item of carouselItems; track item.id) {
-                            <button type="button" class="slide-card"
-                                (click)="onPreviewSelect(item)"
-                                [class.active] = "selectedItem?.id == item.id">
-                                <div class="thumb" aria-hidden="true">
-                                    <img [src]="item.url" [alt]="item.title" loading="lazy" />
-                                </div>
-                                <div class="slide-meta">
-                                    <span class="slide-title">{{ item.title }}</span>
-                                    <span class="slide-link">{{ item.href }}</span>
-                                </div>
-                            </button>
-                            }
-                         
-                        </div>
-
-
-                   </div>
-
-                </div>
-
-            </article>
-
-            <article class="panel form-panel">
-                <div class="panel-header">
-                    <div class="panel-header-copy">
-                        @if (selectedItem) {
-                            <span class="panel-eyebrow">Slide seleccionado</span>
-                        } @else {
-                            <span class="panel-eyebrow">Crea tu nueva notificación</span>
-                        }
-                    </div>
-                </div>
-
-                <form class="carousel-form" [formGroup]="fg" (ngSubmit)="onSubmit()">
-                    <div class="form-field">
-                        <label for="title">Titulo destacado</label>
-                        <input
-                          id="title"
-                          type="text"
-                          placeholder="Ej. Ofertas navideñas"
-                          formControlName="title"
-                          [class.is-invalid]="showErrors('title')"
-                        />
-                        @if (showErrors('title')) {
-                          <div class="form-error">
-                            @if (hasError('title', 'required')) {
-                              <span>El titulo es obligatorio.</span>
-                            }
-                            @if (hasError('title', 'minlength')) {
-                              <span>Debe tener al menos 4 caracteres.</span>
-                            }
-                            @if (hasError('title', 'maxlength')) {
-                              <span>No puede superar los 80 caracteres.</span>
-                            }
-                          </div>
-                        }
-                    </div>
-
-                    <div class="form-field">
-                        <label for="href">Mensaje </label>
-                        <input
-                          id="href"
-                          type="text"
-                          placeholder="Ej. Aprovecha un 30% off en todo el pais"
-                          formControlName="href"
-                          [class.is-invalid]="showErrors('href')"
-                        />
-                        @if (showErrors('href')) {
-                          <div class="form-error">
-                            @if (hasError('href', 'required')) {
-                              <span>La ruta de destino es obligatoria.</span>
-                            }
-                            @if (hasError('href', 'pattern')) {
-                              <span>Debe comenzar con "/" o "http(s)://".</span>
-                            }
-                          </div>
-                        }
-
-                        <small>Define a donde se dirige el usuario al hacer click.</small>
-
-                    </div>
-
-                    <label for="title">Programar fecha</label>
-                      <mat-form-field>
-  <mat-date-range-input [rangePicker]="picker" [min]="minDate">
-    <input matStartDate formControlName="publishStart" placeholder="Fecha inicio">
-    <input matEndDate formControlName="publishEnd" placeholder="Fecha expiracion">
-  </mat-date-range-input>
-  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-date-range-picker #picker></mat-date-range-picker>
-
-
-</mat-form-field>
-      <div class="form-field">
-
-                          <div class="time-grid">
-                            <div class="time-field">
-                              <label for="publishStartTime">Hora inicio</label>
-                              <input
-                                id="publishStartTime"
-                                type="time"
-                                formControlName="publishStartTime"
-                              />
-                            </div>
-                            <div class="time-field">
-                              <label for="publishEndTime">Hora fin</label>
-                              <input
-                                id="publishEndTime"
-                                type="time"
-                                formControlName="publishEndTime"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <small>Seleccione en el calendario de que fecha hasta que otra fecha se mostrara la notificacion.</small>
-                  
-
+    <!-- Right Column: Editor Form -->
+    <section class="editor-section">
+      <div class="editor-card">
+        <div class="editor-header">
+          @if (selectedItem) {
+            <h3>Estas editando "{{selectedItem.title }}"</h3>
+          } @else {
+            <h3>Nueva notificación</h3>
+          }
           
-
-                    <div class="form-actions">
-                        <button class="btn primary" type="submit"
-                            [disabled]="fg.invalid || !fg.dirty">
-                            Guardar
-                        </button>
-                        <button class="btn ghost" type="button" (click)="resetCurrent()" [disabled]="!fg.dirty">
-                            Restablecer
-                        </button>
-                        <button class="btn danger" type="button" (click)="onDelete()"
-                            [disabled]="!selectedItem">Eliminar
-                        </button>
-                    </div>
-
-                </form>
-
-                
-            </article>
         </div>
 
-    </div>
-</section>
+        <form [formGroup]="fg" (ngSubmit)="onSubmit()" class="editor-form">
+          
+          <div class="form-type-badge">
+            <span class="badge-global">Esta notificacion se enviara a todos los usuarios</span>
+          </div>
+
+          <div class="form-group">
+            <label for="title">Título</label>
+            <input type="text" id="title" formControlName="title" placeholder="Ej: ¡Oferta Flash!">
+            <div class="error-msg" *ngIf="showErrors('title')">
+              Requerido (4-80 caracteres).
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Mensaje</label>
+            <textarea id="message" formControlName="message" rows="3" placeholder="Escribe el contenido de la alerta..."></textarea>
+            <div class="error-msg" *ngIf="showErrors('message')">
+              Requerido.
+            </div>
+          </div>
+
+          <!-- Delivery Mode -->
+          <div class="form-group">
+            <label>Cuándo enviar</label>
+            <div class="mode-toggles" style="display:flex; gap:16px; margin-bottom:8px;">
+              <label class="radio-label" style="display:flex; gap:8px; align-items:center; cursor:pointer;">
+                <input type="radio" formControlName="deliveryMode" value="immediate">
+                <span>⚡ Enviar Ahora</span>
+              </label>
+              <label class="radio-label" style="display:flex; gap:8px; align-items:center; cursor:pointer;">
+                <input type="radio" formControlName="deliveryMode" value="scheduled">
+                <span>📅 Programar</span>
+              </label>
+            </div>
+            
+            <!-- Immediate Info -->
+            @if (fg.get('deliveryMode')?.value === 'immediate') {
+              <div class="info-box" style="background:#e3edfb; color:#3483fa; padding:12px; border-radius:8px; font-size:13px; margin-bottom: 16px;">
+                La notificación se enviará inmediatamente a todos los usuarios.
+              </div>
+
+              <div class="form-group">
+                <label>Vencimiento (Opcional)</label>
+                <div style="display: flex; gap: 16px;">
+                  <mat-form-field appearance="outline" style="flex: 1;">
+                    <mat-label>Fecha de Vencimiento</mat-label>
+                    <input matInput [matDatepicker]="pickerImmediate" formControlName="immediateExpireDate">
+                    <mat-datepicker-toggle matIconSuffix [for]="pickerImmediate"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerImmediate></mat-datepicker>
+                  </mat-form-field>
+                  
+                  <div class="time-field" style="width: 120px;">
+                    <input type="time" formControlName="endTime" style="height: 56px; margin-top:0;">
+                  </div>
+                </div>
+                
+                <!-- Expiration Warning -->
+                @if (!fg.get('immediateExpireDate')?.value) {
+                  <div class="warning-box">
+                    ⚠️ Sin vencimiento: La notificación permanecerá activa indefinidamente.
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Scheduling -->
+          @if (fg.get('deliveryMode')?.value === 'scheduled') {
+            <div class="form-group">
+              <label>Programar fecha</label>
+              
+              <!-- Material Datepicker -->
+              <mat-form-field appearance="outline" class="w-100">
+              
+                <mat-date-range-input [rangePicker]="picker" [min]="minDate">
+                  <input matStartDate formControlName="publishStart" placeholder="Inicio">
+                  <input matEndDate formControlName="publishEnd" placeholder="Fin">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
+
+              <div class="time-grid">
+                <div class="time-field">
+                  <label for="sTime">Hora Inicio</label>
+                  <input type="time" id="sTime" formControlName="startTime">
+                </div>
+                <div class="time-field">
+                  <label for="eTime">Hora Fin</label>
+                  <input type="time" id="eTime" formControlName="endTime">
+                </div>
+              </div>
+            </div>
+          }
+
+          <div class="form-actions">
+            <div class="left-actions">
+               @if (selectedItem) {
+                <button type="button" class="btn-delete" (click)="onDelete()">Eliminar</button>
+               }
+            </div> 
+            <div class="right-actions">
+              <button type="button" class="btn-cancel" (click)="resetCurrent()">Limpiar</button>
+              <button type="submit" class="btn-save" [disabled]="fg.invalid">
+                {{ selectedItem ? 'Guardar Cambios' : 'Enviar Notificación' }}
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </section>
+
+  </main>
+</div>
 
 
