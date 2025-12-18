@@ -1,11 +1,15 @@
 <div class="purchases-container">
   <h2>Mis Compras</h2>
 
+  <div class="filters-toggle" (click)="toggleFilters()" (keyup.enter)="toggleFilters()" [class.open]="filtersOpen" role="button" tabindex="0">
+    <span>Filtros de compras</span>
+    <span class="chevron" [class.up]="filtersOpen">⌄</span>
+  </div>
 
-  <div class="filters">
+  <div class="filters" [class.is-open]="filtersOpen">
     <label>Desde: <input type="date" [(ngModel)]="filters.startDate"></label>
     <label>Hasta: <input type="date" [(ngModel)]="filters.endDate"></label>
-    <label>Método de pago:
+    <label>Metodo de pago:
       <select [(ngModel)]="filters.paymentMethod">
         <option value="">Todos</option>
         <option value="CASH">Efectivo</option>
@@ -14,11 +18,13 @@
         <option value="DIGITAL">Transferencia</option>
       </select>
     </label>
-    <label>Mínimo: <input type="number" [(ngModel)]="filters.minPrice"></label>
-    <label>Máximo: <input type="number" [(ngModel)]="filters.maxPrice"></label>
+    <label>Minimo: <input type="number" [(ngModel)]="filters.minPrice"></label>
+    <label>Maximo: <input type="number" [(ngModel)]="filters.maxPrice"></label>
 
-    <button class="clear-filters" type="button" (click)="clearFilters()">Limpiar filtros</button>
-    <button (click)="applyFilters()">Filtrar</button>
+    <div class="filters-actions">
+      <button class="clear-filters" type="button" (click)="clearFilters()">Limpiar filtros</button>
+      <button (click)="applyFilters()">Filtrar</button>
+    </div>
 
     @if (isAdmin) {
     <button type="button" (click)="toggleAdminView()" class="admin-toggle" id="admin-toggle"
@@ -35,7 +41,7 @@
         <option [value]="25">25</option>
         <option [value]="50">50</option>
       </select>
-      por página
+      por pagina
     </label>
     }
   </div>
@@ -44,7 +50,7 @@
   @if (totalPages > 1) {
   <div class="pagination">
     <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 0">Anterior</button>
-    <span>Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+    <span>Pagina {{ currentPage + 1 }} de {{ totalPages }}</span>
     <button (click)="changePage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1">Siguiente</button>
   </div>
   }
@@ -65,7 +71,7 @@
     </div>
   } @else{
     <div class="empty-purchases">
-      <p>No tenés compras registradas</p>
+      <p>No tenes compras registradas</p>
     </div>
   }
 </div>
