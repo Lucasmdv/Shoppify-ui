@@ -3,6 +3,8 @@ import { CommonModule, Location } from '@angular/common';
 import { ProductService } from '../../services/product-service';
 import { Router } from '@angular/router';
 import { SwalService } from '../../services/swal-service';
+import { MatDialog } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-products-file-form',
@@ -26,7 +28,8 @@ export class ProductsFileForm {
         private productService: ProductService,
         private router: Router,
         private location: Location,
-        private swal: SwalService
+        private swal: SwalService,
+        private dialog: MatDialog
     ) { }
 
     onFileSelected(event: any) {
@@ -108,5 +111,40 @@ export class ProductsFileForm {
 
     cancel() {
         this.location.back()
+    }
+
+    help() {
+        Swal.fire({
+            title: "Tutorial",
+            icon: "info",
+            html: `
+                <ol style="text-align: left;">
+                    <li> Genera un archivo excel con las columnas: 
+                        <ul>
+                            <li>discount_percentage</li>
+                            <li>price</li>
+                            <li>unit_price</li>
+                            <li>sold_quantity</li>
+                            <li>stock_quantity</li>
+                            <li>barcode</li>
+                            <li>brand</li>
+                            <li>img_url</li>
+                            <li>name</li>
+                            <li>sku</li>
+                            <li>description</li>
+                        </ul>
+                    </li>
+                    <li>Exporta el archivo como csv</li>
+                    <li>Arrastra el csv o seleccionalo desde tus archivos haciendo click en el rectangulo punteado</li>
+                    <li>Listo! Si hiciste todo correctamente vas a ver una tabla de previsualización con todos los productos a agregar</li>
+                    <li>Haz click en importar</li>
+                </ol>
+            `,
+            showCloseButton: true,
+            focusConfirm: false,
+            confirmButtonText: `<i class="fa fa-thumbs-up">Entendido!</i>`,
+            confirmButtonAriaLabel: "Thumbs up, great!",
+            width: "60rem"
+        });
     }
 }

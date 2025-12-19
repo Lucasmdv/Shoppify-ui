@@ -9,5 +9,5 @@ export interface ShipmentsParams {
     maxPrice?: number;
     pickup?: boolean;
     status: string,
-    adress: string
+    city: string
 }

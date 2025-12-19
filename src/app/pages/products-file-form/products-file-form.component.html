@@ -19,6 +19,8 @@
             </label>
         </div>
 
+
+
         @if(previewData.length > 0){
             <div>
             <h3>Vista Previa (Primeras filas)</h3>
@@ -46,6 +48,7 @@
         }
 
         <div class="form-actions">
+            <button class="btn-help" (click)="help()">Ayuda</button>
             <button class="btn-cancel" (click)="cancel()">Cancelar</button>
             <button class="btn-upload" (click)="uploadFile()" [disabled]="!selectedFile || isLoading">
                 {{ isLoading ? 'Importando...' : 'Importar Productos' }}
