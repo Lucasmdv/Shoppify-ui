@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../services/user-service';
 import { Shipment, Status } from '../../models/shipment';
 import { ShipmentService } from '../../services/shipment-service';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-purchase-card',
@@ -31,6 +32,7 @@ export class PurchaseCard implements OnInit {
 
   uService = inject(UserService)
   sService = inject(ShipmentService)
+  authService = inject(AuthService)
   router = inject(Router)
 
   ngOnInit(): void {
@@ -168,5 +170,16 @@ export class PurchaseCard implements OnInit {
     if (this.purchase.paymentLink) {
       window.open(this.purchase.paymentLink, '_blank');
     }
+  }
+
+  canContinuePayment(): boolean {
+    if (!this.purchase?.paymentLink || this.purchase?.paymentStatus !== PaymentStatus.PENDING) {
+      return false;
+    }
+    if (!this.isAdmin) {
+      return true;
+    }
+    const currentUserId = this.authService.user()?.id;
+    return !!currentUserId && currentUserId === this.purchase.userId;
   }
 }

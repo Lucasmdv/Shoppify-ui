@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuditService } from '../../services/audit-service';
+import { AuthService } from '../../services/auth-service';
 import { ShipmentService } from '../../services/shipment-service';
 import { Transaction, PaymentStatus } from '../../models/transaction';
 import { Shipment, Status } from '../../models/shipment';
@@ -19,6 +20,7 @@ export class PurchaseDetail implements OnInit {
   route = inject(ActivatedRoute);
   router = inject(Router);
   aService = inject(AuditService);
+  authService = inject(AuthService);
   sService = inject(ShipmentService);
 
   purchaseId: number | null = null;
@@ -140,5 +142,13 @@ export class PurchaseDetail implements OnInit {
     if (this.purchase?.paymentLink) {
       window.open(this.purchase.paymentLink, '_blank');
     }
+  }
+
+  canContinuePayment(): boolean {
+    if (!this.purchase?.paymentLink || this.purchase?.paymentStatus !== PaymentStatus.PENDING) {
+      return false;
+    }
+    const currentUserId = this.authService.user()?.id;
+    return !!currentUserId && currentUserId === this.purchase.userId;
   }
 }

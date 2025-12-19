@@ -143,7 +143,7 @@
              }
           </div>
         <div class="action-buttons">
-           @if (purchase.paymentStatus === PaymentStatus.PENDING && purchase.paymentLink) {
+           @if (canContinuePayment()) {
              <button (click)="continuePayment()" class="btn-secondary">Continuar pago</button>
            }
            @else if (purchase.detailTransactions.length === 1) {

@@ -78,7 +78,7 @@
     <div class="actions-col">
       <button class="btn-primary" (click)="viewPurchaseDetails()">Ver compra</button>
 
-      @if (purchase.paymentStatus === 'PENDING' && purchase.paymentLink) {
+      @if (canContinuePayment()) {
       <button class="btn-primary" style="background-color: #009ee3; border-color: #009ee3;"
         (click)="continuePayment()">Continuar pago</button>
       }
