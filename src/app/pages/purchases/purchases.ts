@@ -49,6 +49,9 @@ export class Purchases implements OnInit {
   }
 
   ngOnInit(): void {
+    const isMobile = typeof window !== 'undefined'
+      && (window.matchMedia?.('(max-width: 768px)')?.matches ?? window.innerWidth <= 768);
+    this.filtersOpen = !isMobile;
     this.route.queryParams.subscribe((params: any) => {
       if (params['collection_status'] || params['status'] || params['preference_id']) {
         this.router.navigate([], {

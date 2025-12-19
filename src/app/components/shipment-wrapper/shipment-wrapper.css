@@ -1,21 +1,22 @@
 .shipment-wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: flex-start;
     border: 2px solid #7b50fd;
     border-radius: 20px;
     background: #faf8ff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     max-width: 40rem;
-    min-height: 36rem;
+    min-height: auto;
+    gap: 8px;
 }
 
 .shipment-card {
-    min-height: 260px;
+    min-height: auto;
 }
 
 .sale-card {
     border-top: 1px solid #e5e0ff;
-    padding-top: 30px;
-    margin: 0 1em;
+    padding-top: 12px;
+    margin: 0 0.75em 0.75em;
 }

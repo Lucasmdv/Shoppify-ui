@@ -69,26 +69,28 @@ export class NotificationDropdown implements OnInit, OnDestroy {
     this.addNotification(notification);
     this.updateSelectedNotifications();
 
-    Swal.fire({
-      title: notification.title,
-      text: notification.message,
-      icon: 'info',
+    const toast = Swal.mixin({
       toast: true,
       position: 'bottom-end',
       showConfirmButton: false,
       timer: 8 * 1000,
       showCloseButton: true,
       timerProgressBar: true,
-      didOpen: (toast) => {
+    });
+
+    toast.fire({
+      title: notification.title,
+      text: notification.message,
+      icon: 'info',
+      didOpen: (toastEl) => {
         const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
         audio.play();
         if (notification.relatedProductId) {
-          toast.addEventListener('click', () => {
+          toastEl.addEventListener('click', () => {
             this.router.navigate(['/products/details', notification.relatedProductId]);
           });
-        }
-        else if (notification.relatedSaleId) {
-          toast.addEventListener('click', () => {
+        } else if (notification.relatedSaleId) {
+          toastEl.addEventListener('click', () => {
             this.router.navigate(['/purchase', notification.relatedSaleId]);
           });
         }

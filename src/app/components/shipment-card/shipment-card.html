@@ -21,25 +21,50 @@
         }
 
         <div class="data-container">
-            <p>Fecha de inicio: {{shipment.startDate}} </p>
+            <div class="data-row">
+                <span class="label">Inicio</span>
+                <span class="value">{{ shipment.startDate | date:'dd/MM/yyyy' }}</span>
+            </div>
 
             @if (shipment.endDate) {
-                <p>Fecha de finalización: {{shipment.endDate}} </p>
+                <div class="data-row">
+                    <span class="label">Fin</span>
+                    <span class="value">{{ shipment.endDate | date:'dd/MM/yyyy' }}</span>
+                </div>
             }
 
             @if (shipment.pickup) {
-                <p>Se retira en el local</p>
+                <div class="data-row">
+                    <span class="label">Entrega</span>
+                    <span class="value pickup-badge">Retiro en local</span>
+                </div>
+                @if (shipment.street || shipment.city || shipment.zip) {
+                    <div class="data-row address-row">
+                        <span class="label">Direccion</span>
+                        <span class="value address-text">
+                            {{ shipment.street }} {{ shipment.number || '' }},
+                            {{ shipment.city }},
+                            {{ shipment.zip }}
+                        </span>
+                    </div>
+                }
             }@else {
-                <p class="scroll-text">
-                    Dirección: 
-                    {{ shipment.street }} {{ shipment.number }}, 
-                    {{ shipment.city }}, 
-                    {{ shipment.zip }} 
-                </p>
+                <div class="data-row address-row">
+                    <span class="label">Direccion</span>
+                    <span class="value address-text">
+                        {{ shipment.street }} {{ shipment.number }},
+                        {{ shipment.city }},
+                        {{ shipment.zip }}
+                    </span>
+                </div>
             }
 
-            <p class="scroll-text" id="notes">{{ shipment.notes }} </p>
-
+            @if (shipment.notes) {
+                <div class="data-row notes-row">
+                    <span class="label">Notas</span>
+                    <span class="value scroll-text" id="notes">{{ shipment.notes }}</span>
+                </div>
+            }
         </div>
     </div>
 
