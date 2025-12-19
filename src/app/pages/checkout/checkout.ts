@@ -1,12 +1,12 @@
-import { Component, inject, viewChild } from '@angular/core';
+import { Component, inject, viewChild, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth-service';
 import { StoreService } from '../../services/store-service';
 import { CartService } from '../../services/cart-service';
-import Swal from 'sweetalert2';
 import { DetailCart } from '../../models/cart/cartResponse';
 import { CommonModule } from '@angular/common';
 import { MercadopagoButton } from '../../components/mercadopago-button/mercadopago-button';
 import { BackButtonComponent } from '../../components/back-button/back-button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -14,7 +14,8 @@ import { BackButtonComponent } from '../../components/back-button/back-button';
   templateUrl: './checkout.html',
   styleUrl: './checkout.css',
 })
-export class Checkout {
+export class Checkout implements OnInit {
+  private router = inject(Router);
   private aService = inject(AuthService);
   public cService = inject(CartService);
   private mpButton = viewChild(MercadopagoButton);
@@ -28,20 +29,33 @@ export class Checkout {
   storeConfig: any = null;
 
   ngOnInit(): void {
-    this.cService.getCart(this.aService.user()!.id!).subscribe({
+    if (!localStorage.getItem('shipping_data')) {
+      this.router.navigate(['/cart']);
+      return;
+    }
+
+    const userId = this.aService.user()?.id;
+    if (!userId) {
+      this.router.navigate(['/cart']);
+      return;
+    }
+
+    this.cService.getCart(userId).subscribe({
       next: (cart) => {
         const selectedIds = this.cService.selected();
         this.items = cart.items.filter(item => selectedIds.has(item.id!));
+
+        if (this.items.length === 0) {
+          this.router.navigate(['/cart']);
+          return;
+        }
+
         this.total = this.items.reduce((acc, item) => acc + (item.subtotal || 0), 0);
         this.fetchStoreAndCalculateShipping();
       },
       error: (err) => {
         console.error(err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops..',
-          text: 'Hubo un error al cargar los items del carrito',
-        });
+        this.router.navigate(['/cart']);
       },
     });
   }

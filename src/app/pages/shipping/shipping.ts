@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { StoreService } from '../../services/store-service';
 import { BackButtonComponent } from '../../components/back-button/back-button';
+import { CartService } from '../../services/cart-service';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-shipping-page',
@@ -16,6 +18,8 @@ export class ShippingPage implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   public storeService = inject(StoreService);
+  private cartService = inject(CartService);
+  private authService = inject(AuthService);
 
   shippingForm: FormGroup;
   deliveryType = signal<'delivery' | 'pickup'>('delivery');
@@ -32,12 +36,26 @@ export class ShippingPage implements OnInit {
   }
 
   ngOnInit() {
+    const user = this.authService.user();
+    if (user && user.id) {
+      this.cartService.getCart(user.id).subscribe({
+        next: (cart) => {
+          if (!cart.items || cart.items.length === 0) {
+            this.router.navigate(['/cart']);
+          }
+        },
+        error: () => this.router.navigate(['/cart'])
+      });
+    } else {
+      this.router.navigate(['/cart']);
+    }
+
     this.storeService.getStore().subscribe({
       next: (store) => {
         if (store && store.address) {
-            this.storeAddress.set(store.address);
+          this.storeAddress.set(store.address);
         } else {
-            this.storeAddress.set('Dirección no disponible');
+          this.storeAddress.set('Dirección no disponible');
         }
       },
       error: () => {
