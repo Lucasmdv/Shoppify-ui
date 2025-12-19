@@ -46,7 +46,7 @@ export class ProductsFileForm {
         this.productService.previewFile(this.selectedFile).subscribe({
             next: (data) => {
                 if (data && data.length > 0) {
-                    this.headers = Object.keys(data[0]);
+                    this.headers = Object.keys(data[0].data);
                     this.allPreviewData = data;
                     this.totalPages = Math.ceil(this.allPreviewData.length / this.pageSize);
                     this.currentPage = 1;
@@ -56,7 +56,7 @@ export class ProductsFileForm {
                 }
             },
             error: (err) => {
-                this.swal.error('Error al leer el archivo');
+                this.swal.error('Error al leer el archivo. Formato no válido de los campos ingresados');
                 console.error(err);
                 this.resetPreview();
             }
@@ -115,29 +115,40 @@ export class ProductsFileForm {
 
     help() {
         Swal.fire({
-            title: "Tutorial",
+            title: "Tutorial de Importación",
             icon: "info",
             html: `
-                <ol style="text-align: left;">
-                    <li> Genera un archivo excel con las columnas: 
-                        <ul>
-                            <li>name</li>
-                            <li>description</li>
-                            <li>price</li>
-                            <li>unit-price</li>
-                            <li>stock</li>
-                            <li>sku</li>
-                            <li>barcode</li>
-                            <li>brand</li>
-                            <li>img_url</li>
-                            <li>categories</li>
-                        </ul>
-                    </li>
-                    <li>Exporta el archivo como csv</li>
-                    <li>Arrastra el csv o seleccionalo desde tus archivos haciendo click en el rectangulo punteado</li>
-                    <li>Listo! Si hiciste todo correctamente vas a ver una tabla de previsualización con todos los productos a agregar</li>
-                    <li>Haz click en importar</li>
-                </ol>
+                <div style="text-align: left; font-size: 0.9rem;">
+                    <p>El archivo (Excel .xlsx o CSV) debe tener una fila de cabecera con los siguientes nombres exactos:</p>
+                    
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 1rem; border: 1px solid #ddd;">
+                        <thead style="background-color: #f8f9fa;">
+                            <tr>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Columna</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Obligatorio</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Tipo</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td style="border: 1px solid #ddd; padding: 8px;"><b>name</b></td><td style="border: 1px solid #ddd; padding: 8px; color: red;">Sí</td><td style="border: 1px solid #ddd; padding: 8px;">Texto</td><td style="border: 1px solid #ddd; padding: 8px;">Nombre del producto</td></tr>
+                            <tr><td style="border: 1px solid #ddd; padding: 8px;"><b>brand</b></td><td style="border: 1px solid #ddd; padding: 8px;">No</td><td style="border: 1px solid #ddd; padding: 8px;">Texto</td><td style="border: 1px solid #ddd; padding: 8px;">Marca</td></tr>
+                            <tr><td style="border: 1px solid #ddd; padding: 8px;"><b>sku</b></td><td style="border: 1px solid #ddd; padding: 8px; color: red;">Sí</td><td style="border: 1px solid #ddd; padding: 8px;">Texto</td><td style="border: 1px solid #ddd; padding: 8px;">Código único</td></tr>
+                            <tr><td style="border: 1px solid #ddd; padding: 8px;"><b>stock</b></td><td style="border: 1px solid #ddd; padding: 8px; color: red;">Sí</td><td style="border: 1px solid #ddd; padding: 8px;">Número</td><td style="border: 1px solid #ddd; padding: 8px;">Cantidad disponible</td></tr>
+                            <tr><td style="border: 1px solid #ddd; padding: 8px;"><b>price</b></td><td style="border: 1px solid #ddd; padding: 8px; color: red;">Sí</td><td style="border: 1px solid #ddd; padding: 8px;">Decimal</td><td style="border: 1px solid #ddd; padding: 8px;">Precio venta</td></tr>
+                            <tr><td style="border: 1px solid #ddd; padding: 8px;"><b>unit_price</b></td><td style="border: 1px solid #ddd; padding: 8px;">No</td><td style="border: 1px solid #ddd; padding: 8px;">Decimal</td><td style="border: 1px solid #ddd; padding: 8px;">Costo unitario</td></tr>
+                            <tr><td style="border: 1px solid #ddd; padding: 8px;"><b>categories</b></td><td style="border: 1px solid #ddd; padding: 8px;">No</td><td style="border: 1px solid #ddd; padding: 8px;">Texto</td><td style="border: 1px solid #ddd; padding: 8px;">Sep. por comas (ej. "TV,Sony")</td></tr>
+                            <tr><td style="border: 1px solid #ddd; padding: 8px;"><b>img_url</b></td><td style="border: 1px solid #ddd; padding: 8px;">No</td><td style="border: 1px solid #ddd; padding: 8px;">URL</td><td style="border: 1px solid #ddd; padding: 8px;">Link a imagen</td></tr>
+                            <tr><td style="border: 1px solid #ddd; padding: 8px;"><b>description</b></td><td style="border: 1px solid #ddd; padding: 8px;">No</td><td style="border: 1px solid #ddd; padding: 8px;">Texto</td><td style="border: 1px solid #ddd; padding: 8px;">Detalles</td></tr>
+                             <tr><td style="border: 1px solid #ddd; padding: 8px;"><b>barcode</b></td><td style="border: 1px solid #ddd; padding: 8px; color: red;">Sí</td><td style="border: 1px solid #ddd; padding: 8px;">Texto</td><td style="border: 1px solid #ddd; padding: 8px;">Código barras</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p><b>Ejemplo CSV:</b></p>
+                    <pre style="background: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto;">name,price,stock,categories
+iPhone 13,999.99,50,"Celulares,Apple"
+Samsung TV,500.00,20,"Electrónica,Hogar"</pre>
+                </div>
             `,
             showCloseButton: true,
             focusConfirm: false,

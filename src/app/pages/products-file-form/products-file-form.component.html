@@ -14,10 +14,10 @@
             <label for="fileInput" class="file-label">
                 <span class="create-product-button__icon">+</span>
                 @if(!selectedFile){
-                    <span>Seleccionar archivo CSV</span>
+                <span>Seleccionar archivo CSV</span>
                 }
                 @if(selectedFile){
-                    <span>{{ selectedFile.name }}</span>
+                <span>{{ selectedFile.name }}</span>
                 }
             </label>
         </div>
@@ -25,29 +25,33 @@
 
 
         @if(previewData.length > 0){
-            <div>
+        <div>
             <h3>Vista Previa (Primeras filas)</h3>
             <div class="table-responsive">
                 <table class="preview-table">
                     <thead>
                         <tr>
                             @for(header of headers; track $index){
-                                <th>{{ header }}</th>
+                            <th>{{ header }}</th>
                             }
                         </tr>
                     </thead>
                     <tbody>
                         @for(row of previewData; track $index){
-                            <tr>
-                                @for(header of headers; track $index){
-                                    <td>{{ row[header] }}</td>
-                                }
-                            </tr>
+                        <tr>
+                            @for(header of headers; track $index){
+                            <td [class.error-text]="row.errors && row.errors[header] && !(row.errors[header].includes('Duplicate') || row.errors[header].includes('Already exists'))"
+                                [class.duplicate-text]="row.errors && row.errors[header] && (row.errors[header].includes('Duplicate') || row.errors[header].includes('Already exists'))"
+                                [title]="row.errors && row.errors[header] ? row.errors[header] : ''">
+                                {{ row.data[header] }}
+                            </td>
+                            }
+                        </tr>
                         }
                     </tbody>
                 </table>
             </div>
-            </div>
+        </div>
         }
 
         <div class="form-actions">

@@ -227,3 +227,19 @@
     color: var(--text-secondary);
     font-size: 0.9rem;
 }
+
+.error-text {
+    color: #ef4444 !important;
+    /* Red-500 */
+    font-weight: 500;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    background-color: rgba(239, 68, 68, 0.05);
+}
+
+.duplicate-text {
+    color: #f59e0b !important;
+    /* Amber-500 */
+    font-weight: 500;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    background-color: rgba(245, 158, 11, 0.05);
+}
