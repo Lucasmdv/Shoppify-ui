@@ -61,6 +61,9 @@
         [i]="i"
         [isAdmin]="isAdmin"
         [showShipment]="true"
+        [showRebuy]="!isAdmin"
+        [showTotal]="isAdmin"
+        [showDate]="isAdmin"
       ></app-purchase-card>
     }
   </div>

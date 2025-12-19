@@ -52,9 +52,10 @@ export class PurchaseDetail implements OnInit {
            type: data.transaction?.type,
            storeName: data.transaction?.storeName,
            userId: data.transaction?.userId || data.userId,
-           detailTransactions: data.transaction?.detailTransactions || [],
-           paymentStatus: data.transaction?.paymentStatus, 
-           paymentDetail: data.transaction?.paymentDetail
+           detailTransactions: data.transaction?.detailTransactions || [],      
+           paymentStatus: data.transaction?.paymentStatus,
+           paymentDetail: data.transaction?.paymentDetail,
+           paymentLink: data.transaction?.paymentLink
         };
         
         // After purchase is loaded, try to load shipment
@@ -93,21 +94,24 @@ export class PurchaseDetail implements OnInit {
        return 'Llegó el ' + (this.shipment.endDate ? new Date(this.shipment.endDate).toLocaleDateString() : '');
      }
      if (this.shipment?.status === Status.SHIPPED) {
+        if (this.shipment?.pickup) {
+          return 'Listo para retirar en el local.';
+        }
         return 'Llega el ' + (this.shipment.endDate ? new Date(this.shipment.endDate).toLocaleDateString() : '');
      }
 
-     return 'En preparación'; 
+     return 'En preparación';
   }
 
   getStatusTitle(): string {
       if (this.purchase?.paymentStatus === PaymentStatus.CANCELLED) return 'Compra cancelada';
       if (this.purchase?.paymentStatus === PaymentStatus.REJECTED) return 'Pago rechazado';
       if (this.purchase?.paymentStatus === PaymentStatus.PENDING) return 'Pendiente de pago';
-      
-      
+
+
       if (this.shipment?.status === Status.DELIVERED) return 'Entregado';
-      if (this.shipment?.status === Status.SHIPPED) return 'En camino';
-      
+      if (this.shipment?.status === Status.SHIPPED) return this.shipment?.pickup ? 'Listo para retirar' : 'En camino';
+
       return 'En preparación';
   }
 
@@ -130,5 +134,11 @@ export class PurchaseDetail implements OnInit {
 
   goToProduct(id?: number) {
      if(id) this.router.navigate(['/products/details', id]);
+  }
+
+  continuePayment() {
+    if (this.purchase?.paymentLink) {
+      window.open(this.purchase.paymentLink, '_blank');
+    }
   }
 }

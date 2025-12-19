@@ -7,12 +7,12 @@
                 [(ngModel)]="shipment.status"
                 (ngModelChange)="updateStatus(shipment.status)">
 
-                <option value="PENDING">Pendiente</option>
-                <option value="PROCESSING">Procesando</option>
-                <option value="SHIPPED">Enviado</option>
-                <option value="DELIVERED">Entregado</option>
-                <option value="CANCELLED">Cancelado</option>
-                <option value="RETURNED">Devuelto</option>
+                <option value="PENDING">{{ getStatusLabel('PENDING') }}</option>
+                <option value="PROCESSING">{{ getStatusLabel('PROCESSING') }}</option>
+                <option value="SHIPPED">{{ getStatusLabel('SHIPPED') }}</option>
+                <option value="DELIVERED">{{ getStatusLabel('DELIVERED') }}</option>
+                <option value="CANCELLED">{{ getStatusLabel('CANCELLED') }}</option>
+                <option value="RETURNED">{{ getStatusLabel('RETURNED') }}</option>
             </select>
         }@else {
             <div [ngClass]="getStatusClass(shipment.status)">
