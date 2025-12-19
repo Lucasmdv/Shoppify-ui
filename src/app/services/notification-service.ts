@@ -19,6 +19,8 @@ export class NotificationService {
   private reconnectAttempts = 0;
   private currentUserId?: number;
   private shouldReconnect = false;
+  private heartbeatTimer?: ReturnType<typeof setInterval>;
+  private lastEventAt = 0;
 
   readonly API_URL = `${environment.apiUrl}/notifications/user`;
 
@@ -28,6 +30,7 @@ export class NotificationService {
     this.currentUserId = userId;
     this.shouldReconnect = true;
     this.clearReconnectTimer();
+    this.clearHeartbeatTimer();
     if (this.eventSource) {
       console.log('NotificationService: Closing existing connection');
       this.eventSource.close();
@@ -48,19 +51,22 @@ export class NotificationService {
         'ngrok-skip-browser-warning': 'true'
       }
     });
+    this.startHeartbeatMonitor();
 
     const handleNotification = (event: MessageEvent) => {
       this.zone.run(() => {
         console.log('NotificationService: Raw event received', event);
         try {
-          if (event.type === 'keepalive' || event.data === 'keepalive') {
+          if (event.type === 'keepalive' || event.data === 'keepalive') {       
+            this.lastEventAt = Date.now();
             return;
           }
-          const notification = this.adaptNotification(JSON.parse(event.data));
+          const notification = this.adaptNotification(JSON.parse(event.data));  
           console.log('NotificationService: Parsed notification', notification);
+          this.lastEventAt = Date.now();
           this.notificationSubject.next(notification);
         } catch (e) {
-          console.error('NotificationService: Error parsing notification', e);
+          console.error('NotificationService: Error parsing notification', e);  
         }
       });
     };
@@ -68,9 +74,13 @@ export class NotificationService {
     this.eventSource.onopen = (event) => {
       console.log('NotificationService: SSE Connection Opened', event);
       this.reconnectAttempts = 0;
+      this.lastEventAt = Date.now();
     };
 
-    this.eventSource.addEventListener('notification', handleNotification);
+    this.eventSource.addEventListener('notification', handleNotification);      
+    this.eventSource.addEventListener('keepalive', () => {
+      this.lastEventAt = Date.now();
+    });
     this.eventSource.onmessage = handleNotification;
 
     this.eventSource.onerror = (error) => {
@@ -132,6 +142,7 @@ export class NotificationService {
   public disconnect(): void {
     this.shouldReconnect = false;
     this.clearReconnectTimer();
+    this.clearHeartbeatTimer();
     if (this.eventSource) {
       this.eventSource.close();
     }
@@ -154,6 +165,31 @@ export class NotificationService {
     if (this.reconnectTimer) {
       clearTimeout(this.reconnectTimer);
       this.reconnectTimer = undefined;
+    }
+  }
+
+  private startHeartbeatMonitor(): void {
+    this.lastEventAt = Date.now();
+    this.heartbeatTimer = setInterval(() => {
+      if (!this.shouldReconnect || !this.currentUserId) {
+        return;
+      }
+      const now = Date.now();
+      if (now - this.lastEventAt > 70000) {
+        console.warn('NotificationService: SSE heartbeat timeout; reconnecting');
+        if (this.eventSource) {
+          this.eventSource.close();
+        }
+        this.clearReconnectTimer();
+        this.scheduleReconnect();
+      }
+    }, 15000);
+  }
+
+  private clearHeartbeatTimer(): void {
+    if (this.heartbeatTimer) {
+      clearInterval(this.heartbeatTimer);
+      this.heartbeatTimer = undefined;
     }
   }
 
