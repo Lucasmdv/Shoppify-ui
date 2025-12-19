@@ -251,7 +251,9 @@ export class ProductsPage {
         this.categories,
         this.currentFilters,
         (filters: any) => this.renderRefinedProducts(filters)
-      )
+      ).afterClosed().subscribe(() => {
+        this.renderRefinedProducts(this.currentFilters);
+      })
     }
   }
 
