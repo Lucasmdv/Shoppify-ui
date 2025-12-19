@@ -25,11 +25,11 @@ export class EditProfileForm {
 
   crearForm() {
     this.form = this.fb.group({
-      firstName: [this.data.firstName, [Validators.required, Validators.minLength(2), Validators.maxLength(20), Validators.pattern(/^[\p{L}\s]+$/u)]],
-      lastName: [this.data.lastName, [Validators.required, Validators.minLength(2), Validators.maxLength(20), Validators.pattern(/^[\p{L}\s]+$/u)]],
-      dni: [this.data.dni, [Validators.required, Validators.pattern(/^\d{8}$/)]],
+      firstName: [this.data.firstName, [Validators.required, Validators.minLength(2)]],
+      lastName: [this.data.lastName, [Validators.required, Validators.minLength(2)]],
+      dni: [this.data.dni, [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
       phone: [this.data.phone, [Validators.required, Validators.pattern(/^\d+$/), Validators.minLength(7), Validators.maxLength(20)]],
-      img: [this.data.img || '', [Validators.maxLength(255)]]
+      img: [this.data.img || '']
     })
   }
 

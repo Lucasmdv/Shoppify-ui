@@ -52,10 +52,9 @@ export class PurchaseDetail implements OnInit {
            type: data.transaction?.type,
            storeName: data.transaction?.storeName,
            userId: data.transaction?.userId || data.userId,
-           detailTransactions: data.transaction?.detailTransactions || [],      
-           paymentStatus: data.transaction?.paymentStatus,
-           paymentDetail: data.transaction?.paymentDetail,
-           paymentLink: data.transaction?.paymentLink
+           detailTransactions: data.transaction?.detailTransactions || [],
+           paymentStatus: data.transaction?.paymentStatus, 
+           paymentDetail: data.transaction?.paymentDetail
         };
         
         // After purchase is loaded, try to load shipment
@@ -131,11 +130,5 @@ export class PurchaseDetail implements OnInit {
 
   goToProduct(id?: number) {
      if(id) this.router.navigate(['/products/details', id]);
-  }
-
-  continuePayment() {
-    if (this.purchase?.paymentLink) {
-      window.open(this.purchase.paymentLink, '_blank');
-    }
   }
 }

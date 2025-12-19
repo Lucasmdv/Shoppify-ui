@@ -58,7 +58,7 @@ export class CategoryForm implements OnInit {
     this.form = this.fb.group({
       id: [this.category?.id || ''], 
       name: [this.category?.name || '', [Validators.required, Validators.pattern(/\S/), Validators.minLength(2), Validators.maxLength(50)]],
-      imgUrl: [this.category?.imgUrl || '', [Validators.maxLength(200), Validators.pattern(/^$|\\S(.*\\S)?$/)]]
+      imgUrl: [this.category?.imgUrl || '', Validators.maxLength(200)]
     })
     this.updatePreview()
     this.form.valueChanges.subscribe(() => this.updatePreview())
@@ -78,13 +78,11 @@ export class CategoryForm implements OnInit {
     }
 
     const formValues = this.form.value;
-    const imgUrl = (formValues.imgUrl || '').trim();
-    const payload = { ...formValues, imgUrl: imgUrl || undefined };
     const editMode = !!this.category 
 
     const request = editMode
-      ? this.categoryService.patch(payload)
-      : this.categoryService.post(payload)
+      ? this.categoryService.patch(formValues)
+      : this.categoryService.post(formValues)
 
     request.subscribe({
       next: () => {

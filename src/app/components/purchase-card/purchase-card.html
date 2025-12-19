@@ -75,14 +75,14 @@
     <div class="actions-col">
       <button class="btn-primary" (click)="viewPurchaseDetails()">Ver compra</button>
       
-      @if (purchase.paymentStatus === 'PENDING' && purchase.paymentLink) {      
+      @if (purchase.paymentStatus === 'PENDING' && purchase.paymentLink) {
         <button class="btn-primary" style="background-color: #009ee3; border-color: #009ee3;" (click)="continuePayment()">Continuar pago</button>
       }
 
-      @if (purchase.detailTransactions.length === 1 && purchase.paymentStatus !== 'PENDING') {
+      @if (purchase.detailTransactions.length === 1) {
    <button (click)="gotoDetailsProduct(purchase.detailTransactions[0].product?.id)"class="btn-secondary">Volver a comprar</button>
       }
-
+   
     </div>
 
   </div>

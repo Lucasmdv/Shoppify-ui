@@ -30,7 +30,7 @@ export class Register implements OnInit {
   ngOnInit(): void {
     this.fg = this.fb.group({
       //Credentials
-      email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100)]],
       username: ['', [
         Validators.required,
@@ -42,13 +42,11 @@ export class Register implements OnInit {
       //User
       firstName: ['', [
         Validators.required,
-        Validators.minLength(2),
         Validators.maxLength(20),
         Validators.pattern(this.namePattern)
       ]],
       lastName: ['', [
         Validators.required,
-        Validators.minLength(2),
         Validators.maxLength(20),
         Validators.pattern(this.namePattern)
       ]],

@@ -131,7 +131,7 @@ export class ProductForm implements OnInit {
       barcode: [this.product?.barcode || '', [Validators.required, Validators.minLength(12), Validators.maxLength(12)]],
       description: [this.product?.description || '', [Validators.maxLength(500)]],
       brand: [this.product?.brand || '', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      imgURL: [this.product?.imgURL || '', [Validators.maxLength(255)]],
+      imgURL: [this.product?.imgURL || ''],
       categories: [this.product?.categories || [], Validators.required],
     })
 

@@ -23,14 +23,12 @@ export class ShippingPage implements OnInit {
 
   constructor() {
     this.shippingForm = this.fb.group({
-      street: [''],
-      number: [''],
-      city: [''],
-      zip: [''],
+      street: ['', [Validators.required]],
+      number: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      zip: ['', [Validators.required]],
       notes: ['', [Validators.maxLength(100)]]
     });
-
-    this.applyDeliveryValidators(true);
   }
 
   ngOnInit() {
@@ -50,7 +48,7 @@ export class ShippingPage implements OnInit {
     const savedData = localStorage.getItem('shipping_data');
     if (savedData) {
       const parsed = JSON.parse(savedData);
-      this.setDeliveryType(parsed.type);
+      this.deliveryType.set(parsed.type);
       if (parsed.form) {
         this.shippingForm.patchValue(parsed.form);
       }
@@ -59,31 +57,6 @@ export class ShippingPage implements OnInit {
 
   setDeliveryType(type: 'delivery' | 'pickup') {
     this.deliveryType.set(type);
-    this.applyDeliveryValidators(type === 'delivery');
-  }
-
-  private applyDeliveryValidators(isDelivery: boolean) {
-    const street = this.shippingForm.get('street');
-    const number = this.shippingForm.get('number');
-    const city = this.shippingForm.get('city');
-    const zip = this.shippingForm.get('zip');
-
-    if (isDelivery) {
-      street?.setValidators([Validators.required, Validators.minLength(3), Validators.maxLength(120)]);
-      number?.setValidators([Validators.required, Validators.pattern(/^\d+$/), Validators.min(1)]);
-      city?.setValidators([Validators.required, Validators.minLength(2), Validators.maxLength(100)]);
-      zip?.setValidators([Validators.required, Validators.pattern(/^\d+$/), Validators.min(1)]);
-    } else {
-      street?.clearValidators();
-      number?.clearValidators();
-      city?.clearValidators();
-      zip?.clearValidators();
-    }
-
-    street?.updateValueAndValidity();
-    number?.updateValueAndValidity();
-    city?.updateValueAndValidity();
-    zip?.updateValueAndValidity();
   }
 
   onSubmit() {

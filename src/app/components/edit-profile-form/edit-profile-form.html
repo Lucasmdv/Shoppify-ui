@@ -24,8 +24,8 @@
       @if (form.controls['dni']?.hasError('required')) {
         <span class="error">El DNI es obligatorio</span>
       }
-      @if (form.controls['dni']?.hasError('pattern')) {
-        <span class="error">El DNI debe tener 8 digitos</span>
+      @if (form.controls['dni']?.hasError('minlength') || form.get('dni')?.hasError('maxlength')) {
+        <span class="error">El DNI debe tener 8 dígitos</span>
       }
     </div>
 

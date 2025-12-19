@@ -28,8 +28,6 @@
             @if (this.controls['imgUrl'].dirty) {
                 @if (this.controls['imgUrl'].hasError("maxlength")) {
                     <h5>La URL no puede superar los 200 caracteres</h5>
-                } @else if (this.controls['imgUrl'].hasError("pattern")) {
-                    <h5>La URL no puede estar en blanco</h5>
                 }
             }
         </fieldset>
