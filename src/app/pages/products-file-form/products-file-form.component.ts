@@ -121,17 +121,16 @@ export class ProductsFileForm {
                 <ol style="text-align: left;">
                     <li> Genera un archivo excel con las columnas: 
                         <ul>
-                            <li>discount_percentage</li>
+                            <li>name</li>
+                            <li>description</li>
                             <li>price</li>
-                            <li>unit_price</li>
-                            <li>sold_quantity</li>
-                            <li>stock_quantity</li>
+                            <li>unit-price</li>
+                            <li>stock</li>
+                            <li>sku</li>
                             <li>barcode</li>
                             <li>brand</li>
                             <li>img_url</li>
-                            <li>name</li>
-                            <li>sku</li>
-                            <li>description</li>
+                            <li>categories</li>
                         </ul>
                     </li>
                     <li>Exporta el archivo como csv</li>
