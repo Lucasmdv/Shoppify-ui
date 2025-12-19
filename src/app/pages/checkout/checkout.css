@@ -1,10 +1,13 @@
+.main-container{
+  min-height: 70vh;
+}
+
 .summary-card {
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 16px;
   padding: 1.25rem;
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-  position: sticky;
   top: 1rem;
   max-width: 500px; /* Added max-width to prevent it from being too wide if it's the only element */
   margin: 2rem auto; /* Center it */

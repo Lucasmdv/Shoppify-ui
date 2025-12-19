@@ -7,29 +7,26 @@
   }
 
   <div class="card-body">
-    
-    <div class="product-image-col" 
-         [class.mosaic]="purchase.detailTransactions.length > 1"
-         (click)="purchase.detailTransactions.length > 1 ? viewPurchaseDetails() : gotoDetailsProduct(purchase.detailTransactions[0].product?.id)">
-      
+
+    <div class="product-image-col" [class.mosaic]="purchase.detailTransactions.length > 1"
+      (click)="purchase.detailTransactions.length > 1 ? viewPurchaseDetails() : gotoDetailsProduct(purchase.detailTransactions[0].product?.id)">
+
       @if (purchase.detailTransactions && purchase.detailTransactions.length > 0) {
-        
-        @if (purchase.detailTransactions.length === 1) {
-           <img 
-             [src]="purchase.detailTransactions[0].product?.imgURL || 'assets/no-image.png'" 
-             alt="Producto">
-        } 
-        
-        @else {
-           @for (item of purchase.detailTransactions.slice(0, 4); track item.id) {
-             <div class="mini-img-container">
-               <img [src]="item.product?.imgURL || 'assets/no-image.png'" alt="Mini producto">
-             </div>
-           }
-        }
+
+      @if (purchase.detailTransactions.length === 1) {
+      <img [src]="purchase.detailTransactions[0].product?.imgURL || 'assets/no-image.png'" alt="Producto">
+      }
+
+      @else {
+      @for (item of purchase.detailTransactions.slice(0, 4); track item.id) {
+      <div class="mini-img-container">
+        <img [src]="item.product?.imgURL || 'assets/no-image.png'" alt="Mini producto">
+      </div>
+      }
+      }
 
       } @else {
-        <div class="no-image-placeholder">📷</div>
+      <div class="no-image-placeholder">📷</div>
       }
     </div>
 
@@ -38,21 +35,21 @@
         <span class="status-text" [ngClass]="getStatusColor()">
           {{ getStatusText() }}
         </span>
-        
+
         @if (getMainStatusMessage() === 'DELIVERED') {
-           <span class="arrival-text">Llegó el {{ shipment?.endDate | date:'d/M' }}</span>
+        <span class="arrival-text">Llegó el {{ shipment?.endDate | date:'d/M' }}</span>
         } @else if (getMainStatusMessage()) {
-           <span class="main-status-msg">{{ getMainStatusMessage() }}</span>
+        <span class="main-status-msg">{{ getMainStatusMessage() }}</span>
         }
       </div>
 
       <h3 class="product-title" (click)="gotoDetailsProduct(purchase.detailTransactions[0].product?.id)">
         {{ purchase.detailTransactions[0].product?.name }}
         @if (purchase.detailTransactions.length > 1) {
-          <span class="more-count">+ {{ purchase.detailTransactions.length - 1 }} productos más</span>
+        <span class="more-count">+ {{ purchase.detailTransactions.length - 1 }} productos más</span>
         }
       </h3>
-      
+
       <p class="units-text">
         {{ getTotalUnits() }} unidad{{ getTotalUnits() > 1 ? 'es' : '' }}       
       </p>
@@ -63,31 +60,33 @@
       }
 
       @if (isAdmin && purchase.userId) {
-         <div class="admin-data">
-           <span class="buyer-label">User ID: {{ purchase.userId }} | Compra #{{ purchase.id }}</span>
-            <button class="toggle-client" (click)="toggleClientInfo(purchase.userId)">
-              {{ clientsExpanded().has(purchase.userId!) ? 'Ocultar' : 'Ver cliente' }}
-            </button>
-         </div>
-         @if (clientsExpanded().has(purchase.userId!)) {
-           <div class="client-mini-details">
-             {{ clientsCache().get(purchase.userId!)?.firstName }} {{ clientsCache().get(purchase.userId!)?.lastName }} - {{ clientsCache().get(purchase.userId!)?.email }}
-           </div>
-         }
-       }
+      <div class="admin-data">
+        <span class="buyer-label">User ID: {{ purchase.userId }} | Compra #{{ purchase.id }}</span>
+        <button class="toggle-client" (click)="toggleClientInfo(purchase.userId)">
+          {{ clientsExpanded().has(purchase.userId!) ? 'Ocultar' : 'Ver cliente' }}
+        </button>
+      </div>
+      @if (clientsExpanded().has(purchase.userId!)) {
+      <div class="client-mini-details">
+        {{ clientsCache().get(purchase.userId!)?.firstName }} {{ clientsCache().get(purchase.userId!)?.lastName }} - {{
+        clientsCache().get(purchase.userId!)?.email }}
+      </div>
+      }
+      }
     </div>
 
     <div class="actions-col">
       <button class="btn-primary" (click)="viewPurchaseDetails()">Ver compra</button>
-      
+
       @if (purchase.paymentStatus === 'PENDING' && purchase.paymentLink) {
-        <button class="btn-primary" style="background-color: #009ee3; border-color: #009ee3;" (click)="continuePayment()">Continuar pago</button>
+      <button class="btn-primary" style="background-color: #009ee3; border-color: #009ee3;"
+        (click)="continuePayment()">Continuar pago</button>
       }
 
       @if (showRebuy && purchase.detailTransactions.length === 1 && purchase.paymentStatus !== 'PENDING') {
    <button (click)="gotoDetailsProduct(purchase.detailTransactions[0].product?.id)"class="btn-secondary">Volver a comprar</button>
       }
-   
+
     </div>
 
   </div>

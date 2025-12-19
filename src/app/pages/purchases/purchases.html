@@ -1,7 +1,9 @@
 <div class="purchases-container">
   <h2>Mis Compras</h2>
 
-  <div class="filters-toggle" (click)="toggleFilters()" (keyup.enter)="toggleFilters()" [class.open]="filtersOpen" role="button" tabindex="0">
+  @if(isAdmin){
+  <div class="filters-toggle" (click)="toggleFilters()" (keyup.enter)="toggleFilters()" [class.open]="filtersOpen"
+    role="button" tabindex="0">
     <span>Filtros de compras</span>
     <span class="chevron" [class.up]="filtersOpen">⌄</span>
   </div>
@@ -25,26 +27,27 @@
       <button class="clear-filters" type="button" (click)="clearFilters()">Limpiar filtros</button>
       <button (click)="applyFilters()">Filtrar</button>
     </div>
-
-    @if (isAdmin) {
-    <button type="button" (click)="toggleAdminView()" class="admin-toggle" id="admin-toggle"
-      [ngClass]="{ 'active': adminView }">
-      Ver todas las compras
-    </button>
-    }
-
-    @if (purchases().length > 5) {
-    <label>Mostrar:
-      <select [(ngModel)]="purchasesXPage" (change)="loadTransactions()">
-        <option [value]="5">5</option>
-        <option [value]="10">10</option>
-        <option [value]="25">25</option>
-        <option [value]="50">50</option>
-      </select>
-      por pagina
-    </label>
-    }
   </div>
+  }
+
+  @if (isAdmin) {
+  <button type="button" (click)="toggleAdminView()" class="admin-toggle" id="admin-toggle"
+    [ngClass]="{ 'active': adminView }">
+    Ver todas las compras
+  </button>
+  }
+
+  @if (purchases().length > 5) {
+  <label>Mostrar:
+    <select [(ngModel)]="purchasesXPage" (change)="loadTransactions()">
+      <option [value]="5">5</option>
+      <option [value]="10">10</option>
+      <option [value]="25">25</option>
+      <option [value]="50">50</option>
+    </select>
+    por pagina
+  </label>
+  }
 
   @if (purchases().length > 0) {
   @if (totalPages > 1) {
@@ -69,12 +72,12 @@
   </div>
 
   } @else if(filters.startDate || filters.endDate || filters.paymentMethod || filters.minPrice || filters.maxPrice) {
-    <div class="no-results">
-      <p>No se encontraron compras que coincidan con los filtros aplicados</p>
-    </div>
+  <div class="no-results">
+    <p>No se encontraron compras que coincidan con los filtros aplicados</p>
+  </div>
   } @else{
-    <div class="empty-purchases">
-      <p>No tenes compras registradas</p>
-    </div>
+  <div class="empty-purchases">
+    <p>No tenes compras registradas</p>
+  </div>
   }
 </div>
