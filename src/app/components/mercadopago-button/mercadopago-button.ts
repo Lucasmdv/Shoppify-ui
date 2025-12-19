@@ -54,9 +54,14 @@ export class MercadopagoButton implements OnDestroy {
         const parsed = JSON.parse(savedData);
 
         if (parsed.type === 'delivery') {
+          const form = parsed.form || {};
           shipment = {
             pickup: false,
-            ...parsed.form
+            street: form.street,
+            number: form.number ? Number(form.number) : undefined,
+            city: form.city,
+            zip: form.zip ? Number(form.zip) : undefined,
+            notes: form.notes
           };
         } else {
           shipment = { pickup: true };

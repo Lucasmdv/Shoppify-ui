@@ -1,10 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { catchError, map, of } from 'rxjs';
 import { BackButtonComponent } from '../../components/back-button/back-button';
 
 @Component({
@@ -22,35 +21,17 @@ export class CredentialsForm implements OnInit {
 
   ngOnInit(): void {
     this.accountForm = this.fb.group({
-      email: [this.authService.user()?.email, [Validators.required, Validators.email]],
-      password: ['', [Validators.minLength(6)]],
-      confirmPassword: ['', [], [this.passwordMatchValidator()]]
+      email: [this.authService.user()?.email, [Validators.required, Validators.email, Validators.maxLength(255)]],
+      password: ['', [Validators.minLength(8), Validators.maxLength(100)]],
+      confirmPassword: ['']
     })
+    this.accountForm.valueChanges.subscribe(() => this.updateCurrentPasswordValidator())
+    this.updateCurrentPasswordValidator()
   }
 
   get email() { return this.accountForm.get('email')! }
   get password() { return this.accountForm.get('password')! }
   get confirmPassword() { return this.accountForm.get('confirmPassword')! }
-
-  passwordMatchValidator(): AsyncValidatorFn {
-    return (control: AbstractControl) => {
-      const form = control.parent as FormGroup
-      if (!form) return of(null)
-
-      const currentPassword = control.value
-      const user = this.authService.user()
-
-      if (!currentPassword || !user?.email) return of(null)
-
-      const credentials = { email: user.email, password: currentPassword }
-
-      return this.authService.login(credentials).pipe(
-        map(() => null),
-        catchError(() => of({ passwordMismatch: true }))
-      )
-    }
-  }
-
 
   onSubmit() {
     if (this.accountForm.invalid) {
@@ -60,8 +41,19 @@ export class CredentialsForm implements OnInit {
 
     const newEmail = this.email.value !== this.authService.user()?.email ? this.email.value : undefined
     const newPassword = this.password.value || undefined
+    const currentPassword = this.confirmPassword.value || undefined
 
-    this.authService.updateCredential(newEmail, newPassword).subscribe({
+    if (!newEmail && !newPassword) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Sin cambios',
+        text: 'No hay cambios para guardar.',
+        background: '#f7f7f8',
+      })
+      return
+    }
+
+    this.authService.updateCredential(newEmail, newPassword, currentPassword).subscribe({
       next: () => {
         Swal.fire({
           title: 'Datos actualizados',
@@ -83,5 +75,18 @@ export class CredentialsForm implements OnInit {
         })
       }
     })
+  }
+
+  private updateCurrentPasswordValidator() {
+    const emailChanged = this.email.value !== this.authService.user()?.email
+    const passwordChanged = !!this.password.value
+    const needsCurrent = emailChanged || passwordChanged
+
+    if (needsCurrent) {
+      this.confirmPassword.setValidators([Validators.required])
+    } else {
+      this.confirmPassword.clearValidators()
+    }
+    this.confirmPassword.updateValueAndValidity({ emitEvent: false })
   }
 }

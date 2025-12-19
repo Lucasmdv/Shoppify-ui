@@ -33,6 +33,9 @@
               {{ getMainStatusMessage() }}
               @if (isGreenStatus()) { <span class="full-tag">⚡ FULL</span> }
            </p>
+           @if (purchase.paymentStatus === PaymentStatus.PENDING) {
+             <p class="sub-message">Si ya pagaste, en breve vas a recibir una notificacion con el estado del pago.</p>
+           }
            @if (purchase.paymentStatus === PaymentStatus.CANCELLED) {
              <p class="sub-message">Cancelamos la compra porque se cumplió el tiempo que tenías para hacer el pago.</p>
            }}
@@ -127,7 +130,10 @@
              </div>
           </div>
         <div class="action-buttons">
-           @if (purchase.detailTransactions.length === 1) {
+           @if (purchase.paymentStatus === PaymentStatus.PENDING && purchase.paymentLink) {
+             <button (click)="continuePayment()" class="btn-secondary">Continuar pago</button>
+           }
+           @if (purchase.paymentStatus !== PaymentStatus.PENDING && purchase.detailTransactions.length === 1) {
              <button (click)="goToProduct(purchase.detailTransactions[0].product?.id)"class="btn-secondary">Volver a comprar</button>
            }
          </div>

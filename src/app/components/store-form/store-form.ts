@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StoreService } from '../../services/store-service';
-import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, FormControl, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Store } from '../../models/store';
 import Swal from 'sweetalert2';
 import { RouterLink } from "@angular/router";
@@ -51,13 +51,30 @@ export class StoreForm implements OnInit {
       city: new FormControl('', [Validators.required, Validators.maxLength(100), Validators.minLength(3)]),
       postalCode: new FormControl('', [Validators.required, Validators.maxLength(20)]),
       phone: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.minLength(3)]),
-      facebook: new FormControl('', [Validators.maxLength(100), Validators.minLength(3)]),
-      instagram: new FormControl('', [Validators.maxLength(100), Validators.minLength(3)]),
-      twitter: new FormControl('', [Validators.maxLength(100), Validators.minLength(3)]),
+      facebook: new FormControl('', [Validators.maxLength(100), this.optionalMinLength(3)]),
+      instagram: new FormControl('', [Validators.maxLength(100), this.optionalMinLength(3)]),
+      twitter: new FormControl('', [Validators.maxLength(100), this.optionalMinLength(3)]),
       shippingCostSmall: new FormControl(0, [Validators.min(0)]),
       shippingCostMedium: new FormControl(0, [Validators.min(0)]),
       shippingCostLarge: new FormControl(0, [Validators.min(0)]),
     });
+  }
+  private optionalMinLength(min: number) {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value as string | null | undefined;
+      if (!value) {
+        return null;
+      }
+      return value.length < min ? { minlength: { requiredLength: min, actualLength: value.length } } : null;
+    };
+  }
+
+  private normalizeOptional(value: string | null | undefined): string | undefined {
+    if (!value) {
+      return undefined;
+    }
+    const trimmed = value.trim();
+    return trimmed ? trimmed : undefined;
   }
 
  onRestore(){
@@ -70,7 +87,14 @@ export class StoreForm implements OnInit {
       return;
     }
 
-    this.storeService.putStore(this.fg.value).subscribe({
+    const payload = {
+      ...this.fg.value,
+      facebook: this.normalizeOptional(this.fg.value.facebook),
+      instagram: this.normalizeOptional(this.fg.value.instagram),
+      twitter: this.normalizeOptional(this.fg.value.twitter),
+    }
+
+    this.storeService.putStore(payload).subscribe({
       next: (data) => {
         this.swalService.success("Formulario actualizado correctamente")
       },

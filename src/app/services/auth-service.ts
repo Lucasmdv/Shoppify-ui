@@ -138,12 +138,13 @@ export class AuthService {
     this.user.set(nextUser)
   }
 
-  updateCredential(newEmail?: string, newPassword?: string) {
+  updateCredential(newEmail?: string, newPassword?: string, currentPassword?: string) {
     const payload: any = {}
     const token = this.token()
 
     if (newEmail) payload.newEmail = newEmail
     if (newPassword) payload.newPassword = newPassword
+    if (currentPassword) payload.currentPassword = currentPassword
 
     if (!token) {
       console.warn('No hay token disponible. El usuario debe iniciar sesión nuevamente.')

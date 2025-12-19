@@ -103,8 +103,8 @@ export class CarouselForm implements OnInit {
   this.fg = this.fb.group({
     id:[''],
     title: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(80)]],
-    href: ['', [Validators.required, Validators.pattern(/^(\/|https?:\/\/).+/)]],
-    url: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+/)]]
+    href: ['', [Validators.required, Validators.pattern(/^(\/|https?:\/\/).+/), Validators.maxLength(512)]],
+    url: ['', [Validators.required, Validators.pattern(/^(\/|https?:\/\/).+/), Validators.maxLength(512)]]
   });
   }
 
