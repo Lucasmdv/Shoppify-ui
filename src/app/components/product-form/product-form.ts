@@ -178,6 +178,7 @@ export class ProductForm implements OnInit {
             }
             this.dialogRef?.close(true);
           });
+          
       },
       error: (err) => {
         const defaultMessage = editMode ? "Error al editar el producto" : "Error al agregar el producto";

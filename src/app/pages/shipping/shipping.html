@@ -40,13 +40,17 @@
                 <div class="form-group">
                     <label>Calle</label>
                     <input type="text" formControlName="street" placeholder="Ej: Av. Principal">
-                    @if (shippingForm.get('street')?.touched && shippingForm.get('street')?.invalid) {
-                        <span class="error-msg">Este campo es requerido</span>
+                    @if (shippingForm.get('street')?.touched) {
+                        @if (shippingForm.get('street')?.hasError('required')) {
+                            <span class="error-msg">Este campo es requerido</span>
+                        }@else if (shippingForm.get('street')?.hasError('maxlength')) {
+                            <span class="error-msg">No puede tener mas de 50 caracteres</span>
+                        }
                     }
                 </div>
                 <div class="form-group small">
                     <label>Número</label>
-                    <input type="text" formControlName="number" placeholder="1234">
+                    <input type="number" formControlName="number" placeholder="1234">
                     @if (shippingForm.get('number')?.touched && shippingForm.get('number')?.invalid) {
                         <span class="error-msg">Requerido</span>
                     }
@@ -57,15 +61,23 @@
                 <div class="form-group">
                     <label>Ciudad</label>
                     <input type="text" formControlName="city" placeholder="Tu ciudad">
-                    @if (shippingForm.get('city')?.touched && shippingForm.get('city')?.invalid) {
-                        <span class="error-msg">Requerido</span>
+                    @if (shippingForm.get('city')?.touched) {
+                        @if (shippingForm.get('city')?.hasError('required')) {
+                            <span class="error-msg">Requerido</span>
+                        }@else if (shippingForm.get('city')?.hasError('maxlength')) {
+                            <span class="error-msg">No puede tener mas de 50 caracteres</span>
+                        }
                     }
                 </div>
                 <div class="form-group small">
                     <label>CP</label>
                     <input type="text" formControlName="zip" placeholder="CP">
-                    @if (shippingForm.get('zip')?.touched && shippingForm.get('zip')?.invalid) {
-                        <span class="error-msg">Requerido</span>
+                    @if (shippingForm.get('zip')?.touched) {
+                        @if (shippingForm.get('zip')?.hasError('required')) {
+                            <span class="error-msg">Requerido</span>
+                        }@else if (shippingForm.get('zip')?.hasError('maxlength')) {
+                            <span class="error-msg">No puede tener mas de 50 caracteres</span>
+                        }
                     }
                 </div>
             </div>

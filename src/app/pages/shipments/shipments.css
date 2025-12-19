@@ -10,6 +10,29 @@ app-back-button {
   margin: 20px;
 }
 
+.filters-toggle {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  width: calc(100% - 40px);
+  margin: 0 20px 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  background: rgba(79, 70, 229, 0.06);
+  color: #4f46e5;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filters-toggle .chevron {
+  transition: transform 0.2s ease;
+}
+
+.filters-toggle .chevron.up {
+  transform: rotate(180deg);
+}
+
 .shipments-wrapper app-shipment-card {
   flex: 1 1 450px;
 }
@@ -22,6 +45,9 @@ app-back-button {
   justify-content: center;
   text-align: center;
   padding-top: 1rem;
+  transition: max-height 0.25s ease, opacity 0.2s ease;
+  max-height: none;
+  opacity: 1;
 }
 
 .filters label {
@@ -174,4 +200,46 @@ app-back-button {
   cursor: pointer;
   font-weight: 600;
 
+}
+
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: left;
+    padding-top: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .filters.is-open {
+    max-height: 1400px;
+    opacity: 1;
+    pointer-events: auto;
+    padding-top: 1rem;
+  }
+
+  .filters-toggle {
+    display: flex;
+  }
+
+  .filters > * {
+    height: auto;
+    width: 100%;
+  }
+
+  .filters label select,
+  .filters input,
+  .filters select,
+  .filters button,
+  #admin-toggle {
+    width: 100%;
+  }
+
+  .action-wrapper {
+    flex-direction: column;
+    width: 100%;
+  }
 }

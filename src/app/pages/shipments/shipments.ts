@@ -27,6 +27,7 @@ export class Shipments implements OnInit {
   purchasesXPage = 10
   currentPage = 0
   totalPages = 1
+  filtersOpen = false
   filters: ShipmentsParams = {
     startDate: '',
     endDate: '',
@@ -40,7 +41,14 @@ export class Shipments implements OnInit {
   }
 
   ngOnInit(): void {
+    this.filtersOpen = false
+    this.adminView = this.isAdmin
+    this.filters.clientId = this.adminView ? '' : this.user()?.id?.toString() ?? ''
     this.getShipments()
+  }
+
+  toggleFilters(): void {
+    this.filtersOpen = !this.filtersOpen
   }
 
   toggleAdminView(): void {
