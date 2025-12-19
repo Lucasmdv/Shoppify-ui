@@ -15,12 +15,16 @@ export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   const requiredPermissions = route.data['permissions'] as string[];
   if (requiredPermissions && requiredPermissions.length > 0) {
     if (!authService.hasAnyPermission(requiredPermissions)) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'No tienes permiso para acceder a este contenido',
-      });
       router.navigate(['']);
+      Swal.fire({
+        toast: true,
+        position: 'bottom-end',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        icon: 'error',
+        title: 'No tienes permiso para acceder a este contenido'
+      });
       return false;
     }
   }
