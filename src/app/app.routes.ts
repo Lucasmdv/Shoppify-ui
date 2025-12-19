@@ -71,7 +71,7 @@ export const routes: Routes = [
       { path: 'purchases', component: Purchases, canActivate: [authGuard] },
       { path: 'purchase/:id', component: PurchaseDetail, canActivate: [authGuard] },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'shipments', component: Shipments},
+      { path: 'shipments', component: Shipments, canActivate: [authGuard], data: { permissions: ['ADMIN']}},
 
     ]
   },
