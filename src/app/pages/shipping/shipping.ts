@@ -27,10 +27,10 @@ export class ShippingPage implements OnInit {
 
   constructor() {
     this.shippingForm = this.fb.group({
-      street: ['', [Validators.required]],
+      street: ['', [Validators.required, Validators.maxLength(50)]],
       number: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-      zip: ['', [Validators.required]],
+      city: ['', [Validators.required, Validators.maxLength(50)]],
+      zip: ['', [Validators.required, Validators.maxLength(50)]],
       notes: ['', [Validators.maxLength(100)]]
     });
   }
