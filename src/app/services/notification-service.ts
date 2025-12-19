@@ -123,7 +123,7 @@ export class NotificationService {
   public getAllNotifications(): Observable<NotificationResponse[]> {
     const url = `${environment.apiUrl}/notifications`;
     return this.http.get<SpringPage<NotificationResponse>>(url).pipe(
-      map(page => page.content || [])
+      map(page => (page.content || []).map((n) => this.adaptNotification(n)))
     );
   }
 

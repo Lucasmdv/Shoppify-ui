@@ -33,7 +33,7 @@ export class NotificationDropdown implements OnInit, OnDestroy {
       const user = this.authService.user();
       console.log('NotificationDropdown: User state changed', user);
       if (user && user.id) {
-        console.log('NotificationDropdown: Connecting for user', user.id);
+        console.log('NotificationDropdown: Connecting for user', user.id);      
         if (this.currentUserId !== user.id) {
           this.currentUserId = user.id;
           this.loadNotificationsForUser(user.id);
@@ -43,6 +43,7 @@ export class NotificationDropdown implements OnInit, OnDestroy {
         console.log('NotificationDropdown: Disconnecting');
         this.currentUserId = undefined;
         this.clearNotifications();
+        this.loadGlobalNotifications();
         this.notificationService.disconnect();
       }
     });
@@ -200,6 +201,18 @@ export class NotificationDropdown implements OnInit, OnDestroy {
     this.notifications = [];
     this.selectedNotifications = [];
     this.notificationType = 'general';
+  }
+
+  private loadGlobalNotifications() {
+    this.notificationService.getAllNotifications()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (notifications) => {
+          this.notifications = notifications;
+          this.updateSelectedNotifications();
+        },
+        error: (error) => console.error('NotificationDropdown: Error loading global notifications', error)
+      });
   }
 
   private closeDropdown() {
