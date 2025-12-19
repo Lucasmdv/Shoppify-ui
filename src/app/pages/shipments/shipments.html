@@ -1,5 +1,10 @@
-<div class="filters">
-  <app-back-button></app-back-button>
+<app-back-button></app-back-button>
+<div class="filters-toggle" (click)="toggleFilters()" (keyup.enter)="toggleFilters()" [class.open]="filtersOpen"
+  role="button" tabindex="0">
+  <span>Filtros de envios</span>
+  <span class="chevron" [class.up]="filtersOpen">v</span>
+</div>
+<div class="filters" [class.is-open]="filtersOpen">
   <label>Desde: <input type="date" [(ngModel)]="filters.startDate"></label>
   <label>Hasta: <input type="date" [(ngModel)]="filters.endDate"></label>
 
