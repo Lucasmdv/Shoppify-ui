@@ -43,7 +43,7 @@
                   @case ('expired') { <span class="badge-status status-expired">Expirada</span> }
                 }
               </span>
-              <span class="card-link" style="font-size:11px">{{ item.publishAt | date:'short' }}</span>
+              <span class="card-link" style="font-size:11px">{{ item.publishAt | date:'dd/MM/yyyy' }}</span>
               <span class="card-link" style="color:#aaa">{{ item.message | slice:0:30 }}...</span>
             </div>
 

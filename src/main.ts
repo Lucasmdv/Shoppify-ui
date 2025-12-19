@@ -1,9 +1,13 @@
 import { bootstrapApplication } from '@angular/platform-browser';
+import { registerLocaleData } from '@angular/common';
+import localeEsAr from '@angular/common/locales/es-AR';
 import { Capacitor } from '@capacitor/core';
 import { App as CapacitorApp } from '@capacitor/app';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { appConfig } from './app/app.config';
 import { App } from './app/app';
+
+registerLocaleData(localeEsAr, 'es-AR');
 
 const configureStatusBar = async () => {
   if (Capacitor.getPlatform() === 'web' || !Capacitor.isPluginAvailable('StatusBar')) {

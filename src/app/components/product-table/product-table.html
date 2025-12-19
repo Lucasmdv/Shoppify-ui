@@ -22,10 +22,10 @@
         <tr class="product-row">
             <td> {{p.id}} </td>
             <td> {{p.name}} </td>
-            <td> $ {{ p.price | number:'1.0-2' }} </td>
-            <td> $ {{ (p.priceWithDiscount ?? p.price) | number:'1.0-2' }} </td>
+            <td> {{ p.price | currency:'ARS':'symbol':'1.0-2' }} </td>
+            <td> {{ (p.priceWithDiscount ?? p.price) | currency:'ARS':'symbol':'1.0-2' }} </td>
             <td> {{ p.discountPercentage | number:'1.0-2' }}% </td>
-            <td> {{p.unitPrice | number:'1.0-2'}} </td>
+            <td> {{ p.unitPrice | currency:'ARS':'symbol':'1.0-2' }} </td>
             <td> {{p.stock}} </td>
             <td> {{p.sku}} </td>
             <td> {{p.barcode}} </td>

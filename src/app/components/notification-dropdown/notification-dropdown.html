@@ -35,7 +35,7 @@
           <div class="notification-copy">
             <p class="headline">{{ notification.title}}</p>
             <p class="message">{{ notification.message}}</p>
-            <span class="meta">{{ notification.createdAt | date }}</span>
+            <span class="meta">{{ notification.createdAt | date:'dd/MM/yyyy' }}</span>
           </div>
           @if (notification.type === 'product' || notification.type === 'personal') {
           <button

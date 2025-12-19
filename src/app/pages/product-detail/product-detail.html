@@ -68,24 +68,24 @@
         }@else {
         <div class="price-container">
           @if (product.discountPercentage > 0) {
-            <span class="price-original">$ {{ product.price | number:'1.0-2' }}</span>
+            <span class="price-original">{{ product.price | currency:'ARS':'symbol':'1.0-2' }}</span>
             <div class="price-row">
-              <span class="product-price">$ {{ product.priceWithDiscount | number:'1.0-2' }}</span>
+              <span class="product-price">{{ product.priceWithDiscount | currency:'ARS':'symbol':'1.0-2' }}</span>
               <span class="discount-badge">-{{ product.discountPercentage | number:'1.0-2' }}%</span>
             </div>
             @if (product.priceWithDiscount) {
-            <span class="price-savings">Ahorras $ {{ (product.price - product.priceWithDiscount) | number:'1.0-2' }}</span>
+            <span class="price-savings">Ahorras {{ (product.price - product.priceWithDiscount) | currency:'ARS':'symbol':'1.0-2' }}</span>
             }
            
           }
           @else {
-            <span class="product-price">$ {{ product.price | number:'1.0-2' }}</span>
+            <span class="product-price">{{ product.price | currency:'ARS':'symbol':'1.0-2' }}</span>
           }
 
          
           @if (product.priceWithDiscount! > 1000) {
             <span class="installment">
-              6 cuotas de $ {{ (product.priceWithDiscount! / 6) | number:'1.0-2' }}
+              6 cuotas de {{ (product.priceWithDiscount! / 6) | currency:'ARS':'symbol':'1.0-2' }}
             </span>
           }
         </div>

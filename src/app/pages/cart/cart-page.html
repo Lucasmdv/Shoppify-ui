@@ -31,11 +31,11 @@
 
               <div class="price-row">
                 @if (item.product?.discountPercentage ) {
-                <span class="price-original">{{ item.product?.price | currency}}</span>
-                <span class="price-final">{{ item.product?.priceWithDiscount ?? item.product?.price | currency}}</span>
+                <span class="price-original">{{ item.product?.price | currency:'ARS':'symbol':'1.0-2' }}</span>
+                <span class="price-final">{{ item.product?.priceWithDiscount ?? item.product?.price | currency:'ARS':'symbol':'1.0-2' }}</span>
                 <span class="discount-pill">-{{ item.product?.discountPercentage }}%</span>
                 } @else {
-                <span class="price-final">{{ item.product?.price | currency}}</span>
+                <span class="price-final">{{ item.product?.price | currency:'ARS':'symbol':'1.0-2' }}</span>
                 }
               </div>
 
@@ -59,7 +59,7 @@
           </div>
 
           <div class="item-subtotal">
-            <strong>{{ item.subtotal | currency }}</strong>
+            <strong>{{ item.subtotal | currency:'ARS':'symbol':'1.0-2' }}</strong>
           </div>
         </div>
         }
@@ -78,7 +78,7 @@
             {{ item.product?.name }}
             {{ item.quantity! > 1 ? '(' + item.quantity + ')' : '' }}
           </span>
-          <span>{{ item.subtotal | currency }}</span>
+          <span>{{ item.subtotal | currency:'ARS':'symbol':'1.0-2' }}</span>
         </div>
       </div>
     }
@@ -86,7 +86,7 @@
 
       <div class="summary-total">
         <span>Total</span>
-        <span class="total-amount">{{ total | currency }}</span>
+        <span class="total-amount">{{ total | currency:'ARS':'symbol':'1.0-2' }}</span>
       </div>
 
       <button (click)="router.navigate(['/cart/shipping'])" [disabled]="cService.selected().size === 0" class="checkout-btn">

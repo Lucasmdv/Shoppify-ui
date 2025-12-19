@@ -8,14 +8,14 @@
                 {{ item.product?.name }}
                 {{ item.quantity! > 1 ? '(' + item.quantity + ')' : '' }}
             </span>
-            <span>{{ item.subtotal | currency }}</span>
+            <span>{{ item.subtotal | currency:'ARS':'symbol':'1.0-2' }}</span>
         </div>
     </div>
     }
 
     <div class="summary-total">
         <span>Subtotal</span>
-        <span class="total-amount">{{ total | currency }}</span>
+        <span class="total-amount">{{ total | currency:'ARS':'symbol':'1.0-2' }}</span>
     </div>
 
     <div class="summary-total">
@@ -23,13 +23,13 @@
         @if (shippingCost === 0) {
         <span class="total-amount free-shipping">Envío gratis</span>
         } @else {
-        <span class="total-amount">{{ shippingCost | currency }}</span>
+        <span class="total-amount">{{ shippingCost | currency:'ARS':'symbol':'1.0-2' }}</span>
         }
     </div>
 
     <div class="summary-total">
         <span>Total</span>
-        <span class="total-amount">{{ finalTotal | currency }}</span>
+        <span class="total-amount">{{ finalTotal | currency:'ARS':'symbol':'1.0-2' }}</span>
     </div>
 
     <app-mercadopago-button [cartItems]="items"></app-mercadopago-button>

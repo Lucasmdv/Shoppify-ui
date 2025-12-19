@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
@@ -21,7 +21,7 @@ import { cilBell } from '@coreui/icons';
 
 @Component({
   selector: 'app-product-detail',
-  imports: [ProductCard, DecimalPipe],
+  imports: [ProductCard, CurrencyPipe, DecimalPipe],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.css'
 })

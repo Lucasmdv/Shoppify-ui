@@ -54,7 +54,7 @@
                </div>
                <div class="prod-info">
                   <p class="prod-name" (click)="goToProduct(item.product?.id)">{{ item.product?.name }}</p>
-                  <p class="prod-qty">{{ item.quantity }} unidad <span class="prod-info">{{item.subtotal | currency }}</span></p>
+                  <p class="prod-qty">{{ item.quantity }} unidad <span class="prod-info">{{ item.subtotal | currency:'ARS':'symbol':'1.0-2' }}</span></p>
                </div>
             </div>
          }
@@ -77,7 +77,7 @@
 
           <div class="summary-row">
              <span>Productos ({{ purchase.detailTransactions.length }})</span>
-             <span>{{ purchase.total | currency }}</span>
+             <span>{{ purchase.total | currency:'ARS':'symbol':'1.0-2' }}</span>
           </div>
           <div class="summary-row">
              <span>Envío</span>
@@ -85,7 +85,7 @@
           </div>
           <div class="summary-row total-row">
              <span>Total</span>
-             <span>{{ purchase.total | currency }}</span>
+             <span>{{ purchase.total | currency:'ARS':'symbol':'1.0-2' }}</span>
           </div>
           
           <hr>
@@ -105,7 +105,7 @@
                }
               
                 <div class="payment-text">
-                   <p class="amount">{{ purchase.total | currency }}</p>
+                   <p class="amount">{{ purchase.total | currency:'ARS':'symbol':'1.0-2' }}</p>
                  
                    <p class="status-sml" 
                       [class.text-red]="isRedStatus()" 

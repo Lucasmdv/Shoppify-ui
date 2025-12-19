@@ -19,19 +19,19 @@
     <div class="card-footer">
       <div class="pricing">
         @if (isMostrarDescuento && hasDiscount) {
-        <span class="price-original">$ {{ product.price | number:'1.0-2' }}</span>
+        <span class="price-original">{{ product.price | currency:'ARS':'symbol':'1.0-0' }}</span>
         <div class="price-row">
-          <span class="price price-final">$ {{ (product.priceWithDiscount ?? product.price) | number:'1.0-2' }}</span>
+          <span class="price price-final">{{ (product.priceWithDiscount ?? product.price) | currency:'ARS':'symbol':'1.0-0' }}</span>
           <span class="discount-badge">-{{ product.discountPercentage | number:'1.0-2' }}%</span>
         </div>
         }
         @else {
-        <span class="price">$ {{ product.price | number:'1.0-2' }}</span>
+        <span class="price">{{ product.price | currency:'ARS':'symbol':'1.0-0' }}</span>
         }
 
         @if ((product.priceWithDiscount ?? product.price) > 1000 && isMostrarCuotas) {
         <span class="installment">
-          6 cuotas de $ {{ ((product.priceWithDiscount ?? product.price) / 6) | number:'1.0-2' }}
+          6 cuotas de {{ ((product.priceWithDiscount ?? product.price) / 6) | currency:'ARS':'symbol':'1.0-0' }}
         </span>
         }
       </div>

@@ -1,4 +1,4 @@
-import { DecimalPipe } from '@angular/common';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Product } from '../../models/product';
 import { Router } from '@angular/router';
@@ -6,7 +6,7 @@ import { ImageFallbackDirective } from '../../core/directives/image-fallback';
 
 @Component({
   selector: 'app-product-card',
-  imports: [DecimalPipe, ImageFallbackDirective],
+  imports: [CurrencyPipe, DecimalPipe, ImageFallbackDirective],
   templateUrl: './product-card.html',
   styleUrl: './product-card.css'
 })
