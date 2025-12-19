@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../services/notification-service';
+import Swal from 'sweetalert2';
 import { NotificationResponse, NotificationPayload } from '../../models/notification/notification';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -184,24 +185,56 @@ export class Notification implements OnInit {
     if (this.selectedItem && this.selectedItem.id) {
        this.notificationService.updateNotification(this.selectedItem.id, payload).subscribe({
          next: (res) => {
-           alert('Notificación actualizada!');
+           Swal.fire({
+             toast: true,
+             position: 'bottom-end',
+             showConfirmButton: false,
+             timer: 4000,
+             timerProgressBar: true,
+             icon: 'success',
+             title: 'Notificación actualizada'
+           });
            this.loadHistory();
          },
          error: (err) => {
            console.error(err);
-           alert('Error al actualizar.');
+           Swal.fire({
+             toast: true,
+             position: 'bottom-end',
+             showConfirmButton: false,
+             timer: 5000,
+             timerProgressBar: true,
+             icon: 'error',
+             title: 'Error al actualizar'
+           });
          }
        });
     } else {
        this.notificationService.createNotification(payload).subscribe({
         next: (res) => {
-          alert('Notificación enviada!');
+          Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true,
+            icon: 'success',
+            title: 'Notificación enviada'
+          });
           this.resetCurrent();
           this.loadHistory();
         },
         error: (err) => {
           console.error(err);
-          alert('Error al crear notificación.');
+          Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            icon: 'error',
+            title: 'Error al crear notificación'
+          });
         }
       });
     }
@@ -209,20 +242,46 @@ export class Notification implements OnInit {
 
   onDelete() {
     if (!this.selectedItem || !this.selectedItem.id) return;
-    
-    if (confirm('¿Eliminar esta notificación del historial?')) {
-      this.notificationService.deleteNotification(this.selectedItem.id).subscribe({
+    const notificationId = this.selectedItem.id;
+    Swal.fire({
+      title: 'Eliminar notificación',
+      text: '¿Eliminar esta notificación del historial?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (!result.isConfirmed) {
+        return;
+      }
+      this.notificationService.deleteNotification(notificationId).subscribe({
         next: () => {
-          alert('Eliminada.');
+          Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true,
+            icon: 'success',
+            title: 'Notificación eliminada'
+          });
           this.resetCurrent();
           this.loadHistory();
         },
         error: (err) => {
            console.error(err);
-           alert('Error al eliminar (o no soportado por API).');
+           Swal.fire({
+             toast: true,
+             position: 'bottom-end',
+             showConfirmButton: false,
+             timer: 5000,
+             timerProgressBar: true,
+             icon: 'error',
+             title: 'Error al eliminar'
+           });
         }
       });
-    }
+    });
   }
 
   goBack() {
