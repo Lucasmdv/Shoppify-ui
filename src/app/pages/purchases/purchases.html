@@ -59,7 +59,15 @@
   }
   <div class="purchases-list">
     @for (purchase of purchases(); let i = $index; track purchase.id) {
-    <app-purchase-card [purchase]="purchase" [i]="i" [isAdmin]="isAdmin" [showShipment]="true"></app-purchase-card>
+      <app-purchase-card
+        [purchase]="purchase"
+        [i]="i"
+        [isAdmin]="isAdmin"
+        [showShipment]="true"
+        [showRebuy]="!isAdmin"
+        [showTotal]="isAdmin"
+        [showDate]="isAdmin"
+      ></app-purchase-card>
     }
   </div>
 

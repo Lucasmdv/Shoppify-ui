@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../services/user-service';
 import { Shipment, Status } from '../../models/shipment';
 import { ShipmentService } from '../../services/shipment-service';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-purchase-card',
@@ -19,6 +20,9 @@ export class PurchaseCard implements OnInit {
   @Input() i!: number
   @Input() isAdmin!: boolean
   @Input() showShipment!: boolean
+  @Input() showRebuy: boolean = true
+  @Input() showTotal: boolean = false
+  @Input() showDate: boolean = true
 
   shipment: Shipment | null = null;
   public Status = Status; 
@@ -28,6 +32,7 @@ export class PurchaseCard implements OnInit {
 
   uService = inject(UserService)
   sService = inject(ShipmentService)
+  authService = inject(AuthService)
   router = inject(Router)
 
   ngOnInit(): void {
@@ -55,7 +60,7 @@ export class PurchaseCard implements OnInit {
            this.purchase?.paymentDetail?.status === 'approved';
   }
   
- getMainStatusMessage(): string {
+  getMainStatusMessage(): string {
      // 1. Payment Errors/Warnings
      if (this.purchase?.paymentStatus === PaymentStatus.CANCELLED) {
        return 'Venció el plazo para pagar tu compra';
@@ -72,20 +77,24 @@ export class PurchaseCard implements OnInit {
        return 'Llegó el ' + (this.shipment.endDate ? new Date(this.shipment.endDate).toLocaleDateString() : '');
      }
      if (this.shipment?.status === Status.SHIPPED) {
-        return 'El vendedor despachó tu paquete.';
+        const isPickup = !!this.shipment?.pickup;
+        return isPickup ? 'Listo para retirar en el local.' : 'El vendedor despachó tu paquete.';
      }
 
-     return 'El vendedor está preparando tu paquete.'; 
+     return 'El vendedor está preparando tu paquete.';
   }
 
   getStatusText(): string {
       if (this.purchase?.paymentStatus === PaymentStatus.CANCELLED) return 'Compra cancelada';
       if (this.purchase?.paymentStatus === PaymentStatus.REJECTED) return 'Pago rechazado';
       if (this.purchase?.paymentStatus === PaymentStatus.PENDING && !this.isApproved()) return 'Pendiente de pago';
-      
+
       if (this.isApproved()) {
           if (this.shipment?.status === Status.DELIVERED) return 'Entregado';
-          if (this.shipment?.status === Status.SHIPPED) return 'En camino';
+          if (this.shipment?.status === Status.SHIPPED) {
+            const isPickup = !!this.shipment?.pickup;
+            return isPickup ? 'Listo para retirar' : 'En camino';
+          }
           return 'En preparación';
       }
       
@@ -161,5 +170,16 @@ export class PurchaseCard implements OnInit {
     if (this.purchase.paymentLink) {
       window.open(this.purchase.paymentLink, '_blank');
     }
+  }
+
+  canContinuePayment(): boolean {
+    if (!this.purchase?.paymentLink || this.purchase?.paymentStatus !== PaymentStatus.PENDING) {
+      return false;
+    }
+    if (!this.isAdmin) {
+      return true;
+    }
+    const currentUserId = this.authService.user()?.id;
+    return !!currentUserId && currentUserId === this.purchase.userId;
   }
 }

@@ -22,6 +22,7 @@ export class ShipmentStepper implements OnChanges {
     if (!this.shipment) return;
 
     const status = this.shipment.status;
+    const isPickup = !!this.shipment.pickup;
     const startDate = this.shipment.startDate;
     const endDate = this.shipment.endDate;
 
@@ -33,6 +34,15 @@ export class ShipmentStepper implements OnChanges {
     const isReturned = status === Status.RETURNED;
     const isCancelled = status === Status.CANCELLED;
 
+    const shippedTitle = isPickup ? 'Listo para retirar' : 'En camino';
+    const shippedDescription = isPickup
+      ? 'Tu pedido ya está listo para retirar en el local.'
+      : 'El vendedor despachó tu paquete.';
+    const deliveredTitle = isReturned ? 'Devuelto' : 'Entrega';
+    const deliveredDescription = isReturned
+      ? 'El paquete fue devuelto.'
+      : (isDelivered ? 'Llegó a tu domicilio.' : 'Llegará a tu domicilio.');
+
     this.steps = [
       {
         title: 'En preparación',
@@ -43,16 +53,16 @@ export class ShipmentStepper implements OnChanges {
         isLast: false
       },
       {
-        title: 'En camino',
-        description: 'El vendedor despachó tu paquete.',
-        date: isShipped ? startDate : undefined, 
+        title: shippedTitle,
+        description: shippedDescription,
+        date: isShipped ? startDate : undefined,
         active: isShipped && !isDelivered && !isReturned,
         completed: isDelivered || isReturned,
         isLast: false
       },
       {
-        title: isReturned ? 'Devuelto' : 'Entrega',
-        description: isReturned ? 'El paquete fue devuelto.' : (isDelivered ? 'Llegó a tu domicilio.' : 'Llegará a tu domicilio.'),
+        title: deliveredTitle,
+        description: deliveredDescription,
         date: endDate,
         active: isDelivered || isReturned,
         completed: isDelivered || isReturned,

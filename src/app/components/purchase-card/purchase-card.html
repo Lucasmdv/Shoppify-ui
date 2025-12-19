@@ -1,8 +1,10 @@
 <div class="meli-card">
-
-  <div class="card-date-header">
-    {{ (purchase.dateTime | date:'dd/MM/yyyy') }}
-  </div>
+  
+  @if (showDate) {
+    <div class="card-date-header">
+      {{ shipment?.startDate ? (shipment?.endDate ? (shipment?.endDate | date:'d/M') : (shipment?.startDate | date:'d/M')) : (purchase.dateTime | date:"d 'de' MMMM") }}
+    </div>
+  }
 
   <div class="card-body">
 
@@ -49,8 +51,13 @@
       </h3>
 
       <p class="units-text">
-        {{ getTotalUnits() }} unidad{{ getTotalUnits() > 1 ? 'es' : '' }}
+        {{ getTotalUnits() }} unidad{{ getTotalUnits() > 1 ? 'es' : '' }}       
       </p>
+      @if (showTotal) {
+      <p class="units-text">
+        Total: {{ purchase.total | currency:'ARS':'symbol':'1.0-2' }}
+      </p>
+      }
 
       @if (isAdmin && purchase.userId) {
       <div class="admin-data">
@@ -71,14 +78,13 @@
     <div class="actions-col">
       <button class="btn-primary" (click)="viewPurchaseDetails()">Ver compra</button>
 
-      @if (purchase.paymentStatus === 'PENDING' && purchase.paymentLink) {
+      @if (canContinuePayment()) {
       <button class="btn-primary" style="background-color: #009ee3; border-color: #009ee3;"
         (click)="continuePayment()">Continuar pago</button>
       }
 
-      @if (purchase.detailTransactions.length === 1) {
-      <button (click)="gotoDetailsProduct(purchase.detailTransactions[0].product?.id)" class="btn-secondary">Volver a
-        comprar</button>
+      @if (showRebuy && purchase.detailTransactions.length === 1 && purchase.paymentStatus !== 'PENDING') {
+   <button (click)="gotoDetailsProduct(purchase.detailTransactions[0].product?.id)"class="btn-secondary">Volver a comprar</button>
       }
 
     </div>
