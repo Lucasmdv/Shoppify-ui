@@ -15,12 +15,19 @@ export class NotificationService {
   private authService = inject(AuthService);
   private notificationSubject = new Subject<NotificationResponse>();
   private eventSource!: EventSource | EventSourcePolyfill;
+  private reconnectTimer?: ReturnType<typeof setTimeout>;
+  private reconnectAttempts = 0;
+  private currentUserId?: number;
+  private shouldReconnect = false;
 
   readonly API_URL = `${environment.apiUrl}/notifications/user`;
 
   constructor(private zone: NgZone) { }
 
   public connect(userId: number): void {
+    this.currentUserId = userId;
+    this.shouldReconnect = true;
+    this.clearReconnectTimer();
     if (this.eventSource) {
       console.log('NotificationService: Closing existing connection');
       this.eventSource.close();
@@ -28,7 +35,8 @@ export class NotificationService {
 
     const token = this.authService.token();
     if (!token) {
-      console.warn('NotificationService: Cannot connect SSE without token');
+      console.warn('NotificationService: Cannot connect SSE without token');    
+      this.shouldReconnect = false;
       return;
     }
 
@@ -59,6 +67,7 @@ export class NotificationService {
 
     this.eventSource.onopen = (event) => {
       console.log('NotificationService: SSE Connection Opened', event);
+      this.reconnectAttempts = 0;
     };
 
     this.eventSource.addEventListener('notification', handleNotification);
@@ -69,6 +78,7 @@ export class NotificationService {
       if (this.eventSource.readyState === EventSource.CLOSED) {
         console.log('NotificationService: SSE Closed');
       }
+      this.scheduleReconnect();
     };
   }
 
@@ -120,8 +130,30 @@ export class NotificationService {
   }
 
   public disconnect(): void {
+    this.shouldReconnect = false;
+    this.clearReconnectTimer();
     if (this.eventSource) {
       this.eventSource.close();
+    }
+  }
+
+  private scheduleReconnect(): void {
+    if (!this.shouldReconnect || !this.currentUserId || this.reconnectTimer) {
+      return;
+    }
+
+    const delay = Math.min(30000, 1000 * Math.pow(2, this.reconnectAttempts));
+    this.reconnectAttempts += 1;
+    this.reconnectTimer = setTimeout(() => {
+      this.reconnectTimer = undefined;
+      this.connect(this.currentUserId!);
+    }, delay);
+  }
+
+  private clearReconnectTimer(): void {
+    if (this.reconnectTimer) {
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = undefined;
     }
   }
 
