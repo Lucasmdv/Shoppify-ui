@@ -12,7 +12,7 @@ html, body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  padding-top: env(safe-area-inset-top);
+  padding-top: var(--safe-area-top, 0px);
 }
 
 app-root {
@@ -80,7 +80,7 @@ main, router-outlet {
 
 @supports (padding: max(0px)) {
   body {
-    padding-top: max(env(safe-area-inset-top), 0px);
+    padding-top: max(var(--safe-area-top, 0px), 0px);
   }
 }
 
