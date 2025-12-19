@@ -34,7 +34,7 @@ export class Shipments implements OnInit {
     maxPrice: undefined,
     clientId: this.user()?.id?.toString() ?? '',
     status: '',
-    adress: '',
+    city: '',
     page: this.currentPage,
     size: this.purchasesXPage
   }
@@ -72,7 +72,7 @@ export class Shipments implements OnInit {
       maxPrice: undefined,
       clientId: this.adminView ? '' : this.user()?.id?.toString() ?? '',
       status: '',
-      adress: '',
+      city: '',
       page: 0,
       size: this.purchasesXPage
     }
