@@ -1,8 +1,11 @@
 <div class="file-form-page">
     <div class="file-form-container">
         <div class="form-header">
-            <h2>Importar Productos</h2>
-            <p>Carga un archivo CSV para importar productos masivamente.</p>
+            <div class="form-header__title">
+                <h2>Importar Productos</h2>
+                <p>Carga un archivo CSV para importar productos masivamente.</p>
+            </div>
+            <button class="btn-help" (click)="help()">Ayuda</button>
         </div>
 
         <div class="file-input-wrapper">
@@ -48,7 +51,6 @@
         }
 
         <div class="form-actions">
-            <button class="btn-help" (click)="help()">Ayuda</button>
             <button class="btn-cancel" (click)="cancel()">Cancelar</button>
             <button class="btn-upload" (click)="uploadFile()" [disabled]="!selectedFile || isLoading">
                 {{ isLoading ? 'Importando...' : 'Importar Productos' }}

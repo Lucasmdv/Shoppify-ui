@@ -3,7 +3,7 @@
     justify-content: center;
     padding: 2rem;
     background-color: var(--bg-page-gradient-start);
-    min-height: 100vh;
+    min-height: 60vh;
 }
 
 .file-form-container {
@@ -16,6 +16,13 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
+}
+
+.form-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .form-header h2 {
@@ -128,10 +135,21 @@
 }
 
 .btn-help {
-    margin-right: auto;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgb(129, 86, 247);
+    background: rgb(129, 86, 247);
+    color: var(--bg-card);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
-.btn-cancel, .btn-help {
+.btn-help:hover {
+    background: var(--primary-hover);
+}
+
+.btn-cancel {
     padding: 0.75rem 1.5rem;
     border-radius: 999px;
     border: 1px solid var(--border-color);
@@ -142,7 +160,7 @@
     transition: background 0.2s ease;
 }
 
-.btn-cancel:hover, .btn-help:hover {
+.btn-cancel:hover {
     background: var(--bg-page-gradient-end);
 }
 

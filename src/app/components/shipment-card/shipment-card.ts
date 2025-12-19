@@ -16,11 +16,16 @@ export class ShipmentCard {
   @Input() showPurchaseCard!: boolean
 
   statusLabels: Record<string, string> = {
+    PENDING: "Pendiente",
     PROCESSING: "Procesando",
     SHIPPED: "Enviado",
     DELIVERED: "Entregado",
     CANCELLED: "Cancelado",
     RETURNED: "Devuelto",
+  };
+
+  pickupStatusLabels: Record<string, string> = {
+    SHIPPED: "Listo para retirar",
   };
 
   statusClasses: Record<string, string> = {
@@ -62,6 +67,9 @@ export class ShipmentCard {
   }
 
   getStatusLabel(status: string): string {
+    if (this.shipment?.pickup && this.pickupStatusLabels[status]) {
+      return this.pickupStatusLabels[status];
+    }
     return this.statusLabels[status] ?? "";
   }
 

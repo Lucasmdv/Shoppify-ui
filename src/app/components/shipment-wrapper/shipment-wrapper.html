@@ -16,6 +16,8 @@
             [purchase]="sale.transaction"
             [i]="index"
             [isAdmin]="isAdmin"
+            [showRebuy]="!isAdmin"
+            [showTotal]="isAdmin"
             [showShipment]="false">
         </app-purchase-card>
       }

@@ -118,16 +118,35 @@
     
           <div class="detail-section">
              <h4>Envío</h4>
+             @if (shipment.pickup) {
+             <div class="shipping-info">
+                <div class="truck-icon">🏬</div>
+                <div class="shipping-text">
+                   <p class="address">Retiro en local</p>
+                   @if (purchase.storeName) {
+                   <p class="city">{{ purchase.storeName }}</p>
+                   }
+                   @if (shipment.street) {
+                   <p class="city">{{ shipment.street }} {{ shipment.number }}</p>
+                   }
+                </div>
+             </div>
+             }
+             @else {
              <div class="shipping-info">
                 <div class="truck-icon">🚚</div>
                 <div class="shipping-text">
                    <p class="address">{{ shipment.street }} {{ shipment.number }}</p>
-                   <p class="city">Mar del Plata, Buenos Aires</p> 
+                   <p class="city">Mar del Plata, Buenos Aires</p>
                 </div>
              </div>
+             }
           </div>
         <div class="action-buttons">
-           @if (purchase.detailTransactions.length === 1) {
+           @if (canContinuePayment()) {
+             <button (click)="continuePayment()" class="btn-secondary">Continuar pago</button>
+           }
+           @else if (purchase.detailTransactions.length === 1) {
              <button (click)="goToProduct(purchase.detailTransactions[0].product?.id)"class="btn-secondary">Volver a comprar</button>
            }
          </div>
