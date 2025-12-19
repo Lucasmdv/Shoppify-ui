@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">shoppify-ui</string>
-    <string name="title_activity_main">shoppify-ui</string>
+    <string name="app_name">Shoppify</string>
+    <string name="title_activity_main">Shoppify</string>
     <string name="package_name">com.shoppify.app</string>
     <string name="custom_url_scheme">com.shoppify.app</string>
 </resources>

@@ -1,6 +1,7 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { registerLocaleData } from '@angular/common';
 import localeEsAr from '@angular/common/locales/es-AR';
+import { EdgeToEdge } from '@capawesome/capacitor-android-edge-to-edge-support';
 import { Capacitor } from '@capacitor/core';
 import { App as CapacitorApp } from '@capacitor/app';
 import { StatusBar, Style } from '@capacitor/status-bar';
@@ -15,11 +16,22 @@ const configureStatusBar = async () => {
   }
 
   try {
-    await StatusBar.setOverlaysWebView({ overlay: false });
-    await StatusBar.setStyle({ style: Style.Dark });
-
-    if (Capacitor.getPlatform() === 'android') {
+    const isAndroid = Capacitor.getPlatform() === 'android';
+    await StatusBar.setOverlaysWebView({ overlay: isAndroid });
+    document.documentElement.style.setProperty(
+      '--safe-area-top',
+      isAndroid ? '0px' : 'env(safe-area-inset-top)'
+    );
+    if (isAndroid) {
+      if (Capacitor.isPluginAvailable('EdgeToEdge')) {
+        await EdgeToEdge.enable();
+        await EdgeToEdge.setBackgroundColor({ color: '#ffffff' });
+      }
       await StatusBar.setBackgroundColor({ color: '#ffffff' });
+      await StatusBar.setStyle({ style: Style.Light });
+      await StatusBar.show();
+    } else {
+      await StatusBar.setStyle({ style: Style.Light });
     }
   } catch (error) {
     console.warn('StatusBar configuration failed', error);
@@ -45,3 +57,4 @@ registerBackButtonHandler();
 
 bootstrapApplication(App, appConfig)
   .catch((err) => console.error(err));
+

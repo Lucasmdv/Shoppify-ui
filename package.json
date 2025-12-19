@@ -36,6 +36,7 @@
     "@capacitor/cli": "^7.4.4",
     "@capacitor/core": "^7.4.4",
     "@capacitor/status-bar": "^7.0.4",
+    "@capawesome/capacitor-android-edge-to-edge-support": "^7.2.3",
     "@coreui/angular": "~5.5.17",
     "@coreui/angular-chartjs": "5.5",
     "@coreui/chartjs": "^4.0.0",
