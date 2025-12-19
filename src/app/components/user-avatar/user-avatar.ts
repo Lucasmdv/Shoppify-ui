@@ -38,36 +38,34 @@ export class UserAvatar {
     this.showMenu = false;
   }
 
-  logout(){
-
-Swal.fire({
-  title: '¿Cerrar sesión?',
-  text: 'Tu sesión actual se cerrará',
-  icon: 'warning',
-  iconColor: '#6141e8',
-  showCancelButton: true,
-  background:"#f7f7f8",
-  color:"black",
-
-  confirmButtonText: 'Sí, cerrar sesión',
-  cancelButtonText: 'Cancelar'
-}).then((result) => {
-  if (result.isConfirmed) {
+  logout() {
     Swal.fire({
-      title: 'Sesión cerrada',
-      text: 'Has salido correctamente de tu cuenta.',
-      icon: 'success',
-      background:"#f7f7f8",
-  color:"black",
-      confirmButtonText: 'Aceptar'
-    }).then(() => {
-      this.auth.logout();
+      title: '¿Cerrar sesión?',
+      text: 'Tu sesión actual se cerrará',
+      icon: 'warning',
+      iconColor: '#6141e8',
+      showCancelButton: true,
+      background: "#f7f7f8",
+      color: "black",
+      confirmButtonText: 'Sí, cerrar sesión',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.auth.logout();
+        localStorage.clear();
+        sessionStorage.clear();
+        Swal.fire({
+          title: 'Sesión cerrada',
+          text: 'Has salido correctamente de tu cuenta.',
+          icon: 'success',
+          background: "#f7f7f8",
+          color: "black",
+          confirmButtonText: 'Aceptar'
+        }).then(() => {
+          window.location.href = '/auth/login';
+        });
+      }
     });
-  }
-});
-
-    
-
   }
 }
 
